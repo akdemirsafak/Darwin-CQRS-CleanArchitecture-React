@@ -1,5 +1,4 @@
 ﻿using Darwin.Core.BaseDto;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Darwin.API.Controllers
