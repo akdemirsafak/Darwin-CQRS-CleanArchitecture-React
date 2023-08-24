@@ -9,4 +9,5 @@ public class DarwinDbContext:DbContext
     {
         
     }
+    public DbSet<Music> Musics { get; set; }
 }

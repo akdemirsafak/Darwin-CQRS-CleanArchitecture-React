@@ -9,12 +9,12 @@ public class DarwinResponse<T>
     [JsonIgnore] public int StatusCode { get; set; }
 
     //Static Factory Method
-    public static DarwinResponse<T> Success(T Data, int statusCode = 0)
+    public static DarwinResponse<T> Success(T Data, int statusCode = 200)
     {
         return new DarwinResponse<T> { Data = Data, StatusCode = statusCode };
     }
 
-    public static DarwinResponse<T> Success(int statusCode = 0)
+    public static DarwinResponse<T> Success(int statusCode = 200)
     {
         return new DarwinResponse<T> { Data = default, StatusCode = statusCode };
     }

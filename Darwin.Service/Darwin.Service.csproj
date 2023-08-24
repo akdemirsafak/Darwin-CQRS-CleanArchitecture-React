@@ -7,10 +7,6 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Folder Include="Musics\Queries\" />
-  </ItemGroup>
-
-  <ItemGroup>
     <ProjectReference Include="..\Darwin.Infrastructure\Darwin.Infrastructure.csproj" />
     <ProjectReference Include="..\Darwin.Model\Darwin.Model.csproj" />
   </ItemGroup>
