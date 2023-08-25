@@ -1,6 +1,6 @@
 ﻿using Darwin.Model.Request.Musics;
-using Darwin.Service.Musics.Commands;
 using Darwin.Service.Musics.Commands.Create;
+using Darwin.Service.Musics.Commands.Delete;
 using Darwin.Service.Musics.Commands.Update;
 using Darwin.Service.Musics.Queries;
 using MediatR;
@@ -26,6 +26,11 @@ namespace Darwin.API.Controllers
         public async Task<IActionResult> GetById(Guid id)
         {
             return CreateActionResult(await _mediator.Send(new GetMusicByIdQuery(id)));
+        }
+        [HttpGet("/Search{searchText}")]
+        public async Task<IActionResult> Search(string searchText)
+        {
+            return CreateActionResult(await _mediator.Send(new SearchMusicsQuery(searchText)));
         }
         [HttpPost]
         public async Task<IActionResult> Create([FromBody] CreateMusicRequest request)

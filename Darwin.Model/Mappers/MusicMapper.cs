@@ -10,6 +10,9 @@ public class MusicMapper : Profile
     public MusicMapper()
     {
         CreateMap<GetMusicResponse, Music>().ReverseMap();
+
+        CreateMap<SearchMusicResponse, Music>().ReverseMap();
+
         CreateMap<CreateMusicRequest, Music>().ReverseMap();
     }
 }
