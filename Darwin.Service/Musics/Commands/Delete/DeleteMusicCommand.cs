@@ -5,11 +5,11 @@ using Darwin.Core.RepositoryCore;
 using Darwin.Model.Common;
 using Darwin.Service.Common;
 
-namespace Darwin.Service.Musics.Commands;
+namespace Darwin.Service.Musics.Commands.Delete;
 
 public class DeleteMusicCommand:ICommand<DarwinResponse<NoContent>>
 {
-    private Guid Id { get; }
+    public Guid Id { get; }
 
     public DeleteMusicCommand(Guid id)
     {
