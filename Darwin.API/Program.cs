@@ -1,4 +1,3 @@
-
 using Darwin.Core.RepositoryCore;
 using Darwin.Infrastructure;
 using Darwin.Infrastructure.Repository;
@@ -7,7 +6,6 @@ using Darwin.Service.Musics.Commands.Create;
 using FluentValidation.AspNetCore;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.DependencyInjection;
 using System.Reflection;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -30,11 +28,11 @@ builder.Services.AddDbContext<DarwinDbContext>(opt =>
 
 builder.Services.AddScoped(typeof(IGenericRepositoryAsync<>), typeof(GenericRepositoryAsync<>));
 
-//builder.Services.AddMediatR(cfg => cfg.RegisterServicesFromAssemblies(Assembly.GetExecutingAssembly()));
-builder.Services.AddMediatR(cfg => cfg.RegisterServicesFromAssemblyContaining<CreateMusicCommand>(
-));
+builder.Services.AddMediatR(typeof(CreateMusicCommand).Assembly);
+
 
 builder.Services.AddAutoMapper(typeof(MusicMapper));
+builder.Services.AddAuthentication();
 
 var app = builder.Build();
 
@@ -47,6 +45,7 @@ if (app.Environment.IsDevelopment())
 
 app.UseHttpsRedirection();
 
+app.UseAuthentication();
 app.UseAuthorization();
 
 app.MapControllers();

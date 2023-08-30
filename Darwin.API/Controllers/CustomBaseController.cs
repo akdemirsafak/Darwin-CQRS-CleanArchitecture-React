@@ -4,7 +4,7 @@ using Microsoft.AspNetCore.Mvc;
 namespace Darwin.API.Controllers
 {
     [ApiController]
-    [Route("api/v1/[controller]")]
+    [Route("[controller]")]
     public class CustomBaseController : ControllerBase
     {
         [NonAction]

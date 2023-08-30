@@ -1,6 +1,4 @@
-﻿using System.ComponentModel.DataAnnotations;
-
-namespace Darwin.Core.Entities;
+﻿namespace Darwin.Core.Entities;
 
 public class BaseEntity
 {

@@ -24,11 +24,7 @@ public class GetMusicsQuery : IQuery<DarwinResponse<List<GetMusicResponse>>>
         public async Task<DarwinResponse<List<GetMusicResponse>>> Handle(GetMusicsQuery request, CancellationToken cancellationToken)
         {
             var musics = await _repository.GetAllAsync();
-            //if (musics.Any())
-            //{
-            //    return DarwinResponse<List<GetMusicResponse>>.Success();
-            //}
-            return DarwinResponse<List<GetMusicResponse>>.Success(_mapper.Map<List<GetMusicResponse>>(musics),200);
+            return DarwinResponse<List<GetMusicResponse>>.Success(_mapper.Map<List<GetMusicResponse>>(musics), 200);
 
         }
     }

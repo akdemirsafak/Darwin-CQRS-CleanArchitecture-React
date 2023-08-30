@@ -1,6 +1,6 @@
 ﻿namespace Darwin.Model.Response.Musics;
 
-public class SearchMusicResponse
+public class UpdatedMusicResponse
 {
     public Guid Id { get; set; }
     public string Name { get; set; }
