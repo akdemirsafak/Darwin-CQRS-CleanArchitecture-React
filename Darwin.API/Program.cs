@@ -1,3 +1,4 @@
+using Darwin.Core.Entities;
 using Darwin.Core.RepositoryCore;
 using Darwin.Infrastructure;
 using Darwin.Infrastructure.Repository;
@@ -5,6 +6,7 @@ using Darwin.Model.Mappers;
 using Darwin.Service.Musics.Commands.Create;
 using FluentValidation.AspNetCore;
 using MediatR;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using System.Reflection;
 
@@ -25,6 +27,11 @@ builder.Services.AddDbContext<DarwinDbContext>(opt =>
     opt.UseNpgsql(builder.Configuration.GetConnectionString("PostgreConnection"),
     option => { option.MigrationsAssembly(Assembly.GetAssembly(typeof(DarwinDbContext))!.GetName().Name); });
 });
+
+builder.Services.AddIdentity<AppUser, AppRole>()
+.AddEntityFrameworkStores<DarwinDbContext>()
+.AddDefaultTokenProviders();
+
 
 builder.Services.AddScoped(typeof(IGenericRepositoryAsync<>), typeof(GenericRepositoryAsync<>));
 
