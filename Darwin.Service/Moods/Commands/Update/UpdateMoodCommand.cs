@@ -40,6 +40,7 @@ public class UpdateMoodCommand : ICommand<DarwinResponse<UpdatedMoodResponse>>
             }
             existMood.ImageUrl = request.Model.ImageUrl;
             existMood.Name = request.Model.Name;
+            existMood.IsUsable = request.Model.IsUsable;
             existMood.UpdatedAt = DateTime.UtcNow.Ticks;
             await _repository.UpdateAsync(existMood);
             return DarwinResponse<UpdatedMoodResponse>.Success(_mapper.Map<UpdatedMoodResponse>(existMood),204);
