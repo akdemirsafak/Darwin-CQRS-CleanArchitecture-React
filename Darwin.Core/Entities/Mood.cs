@@ -8,5 +8,5 @@ public class Mood:BaseEntity
     public string Name { get; set; }
     public string? ImageUrl { get; set; }
     public bool IsUsable { get; set; }
-    public virtual IList<MusicMood> Music { get; set; }
+    public virtual IList<Music> Music { get; set; }
 }

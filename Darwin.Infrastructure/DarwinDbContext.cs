@@ -1,5 +1,4 @@
-﻿using System.Security.Cryptography.X509Certificates;
-using Darwin.Core.Entities;
+﻿using Darwin.Core.Entities;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 
@@ -14,11 +13,11 @@ public class DarwinDbContext : IdentityDbContext<AppUser, AppRole, string>
     public DbSet<Music> Musics { get; set; }
     public DbSet<Mood> Moods { get; set; }
     public DbSet<Category> Categories { get; set; }
-    public DbSet<MusicCategory> MusicCategories { get; set; }
-    public DbSet<MusicMood> MusicMoods { get; set; }
 
     protected override void OnModelCreating(ModelBuilder builder)
     {
+        builder.Entity<Mood>().Navigation(c => c.Music).AutoInclude();
+        builder.Entity<Category>().Navigation(c => c.Musics).AutoInclude();
         base.OnModelCreating(builder);
     }
 }

@@ -34,16 +34,17 @@ public class CreateMusicCommand : ICommand<DarwinResponse<CreatedMusicResponse>>
                 Name = request.Model.Name,
                 ImageUrl = request.Model.ImageUrl,
                 IsUsable = request.Model.IsUsable,
-                Categories = new List<MusicCategory>(),
-                Moods = new List<MusicMood>(),
+                Moods=new List<Mood>(),
+                Categories=new List<Category>(),
             };
+            
 
             foreach (var moodId in request.Model.MoodIds)
             {
                 Mood existMood = await _dbContext.Moods.FindAsync(moodId);
                 if (existMood != null)
                 {
-                    music.Moods.Add(new MusicMood() { Mood = existMood });
+                    music.Moods.Add(existMood);
                 }
             }
             foreach (var categoryId in request.Model.CategoryIds)
@@ -51,7 +52,7 @@ public class CreateMusicCommand : ICommand<DarwinResponse<CreatedMusicResponse>>
                 Category existCategory = await _dbContext.Categories.FindAsync(categoryId);
                 if (existCategory != null)
                 {
-                    music.Categories.Add(new MusicCategory() { Category = existCategory });
+                    music.Categories.Add(existCategory);
                 }
             }
             await _dbContext.AddAsync(music);
