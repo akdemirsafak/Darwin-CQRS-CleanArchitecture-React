@@ -37,11 +37,18 @@ builder.Services.AddScoped(typeof(IGenericRepositoryAsync<>), typeof(GenericRepo
 
 builder.Services.AddMediatR(typeof(CreateMusicCommand).Assembly);
 
+builder.Services.AddCors(options =>
+     options.AddDefaultPolicy(builder =>
+     builder.AllowAnyHeader().AllowAnyMethod().AllowAnyOrigin()));
+
 
 builder.Services.AddAutoMapper(typeof(MusicMapper));
 builder.Services.AddAuthentication();
 
+
 var app = builder.Build();
+
+app.UseCors();
 
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
