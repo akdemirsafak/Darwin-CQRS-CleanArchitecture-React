@@ -11,11 +11,11 @@ using Microsoft.AspNetCore.Mvc;
 namespace Darwin.API.Controllers;
 
 
-public class CategoriesController : CustomBaseController
+public class CategoryController : CustomBaseController
 {
     private readonly IMediator _mediator;
 
-    public CategoriesController(IMediator mediator)
+    public CategoryController(IMediator mediator)
     {
         _mediator = mediator;
     }
