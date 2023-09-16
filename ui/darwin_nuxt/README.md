@@ -1,3 +1,16 @@
+## Create and Add vuetify
+
+1. npx nuxi init projectName
+2. cd projectName
+3. npm i vuetify@next sass
+4. Create vuetify.ts in plugins folder and configure
+5. npm i @mdi/font 
+6. Configure nuxt.config.ts
+
+
+
+
+
 # Nuxt 3 Minimal Starter
 
 Look at the [Nuxt 3 documentation](https://nuxt.com/docs/getting-started/introduction) to learn more.
