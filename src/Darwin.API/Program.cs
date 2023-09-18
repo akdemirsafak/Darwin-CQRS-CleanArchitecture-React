@@ -8,11 +8,23 @@ using FluentValidation.AspNetCore;
 using MediatR;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using Sentry;
 using System.Reflection;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
+
+//SENTRY
+builder.WebHost.UseSentry(options =>
+    options.ConfigureScope(scope =>
+    {
+        scope.Level = SentryLevel.Debug;
+    }));
+
+//SentrySdk.CaptureMessage("Hello Sentry");
+
+//SENTRY END
 
 builder.Services.AddControllers();
 
@@ -47,6 +59,12 @@ builder.Services.AddAuthentication();
 
 
 var app = builder.Build();
+
+//SENTRY Middleware
+
+app.UseSentryTracing();
+
+/// SENTRY Middleware End
 
 app.UseCors();
 
