@@ -4,13 +4,14 @@ using Darwin.Service.Categories.Commands.Delete;
 using Darwin.Service.Categories.Commands.Update;
 using Darwin.Service.Categories.Queries;
 using MediatR;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
 namespace Darwin.API.Controllers;
 
-
+[Authorize]
 public class CategoryController : CustomBaseController
 {
     private readonly IMediator _mediator;
