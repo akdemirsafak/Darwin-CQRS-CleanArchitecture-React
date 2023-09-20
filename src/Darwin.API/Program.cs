@@ -4,12 +4,16 @@ using Darwin.Infrastructure;
 using Darwin.Infrastructure.Repository;
 using Darwin.Model.Mappers;
 using Darwin.Service.Musics.Commands.Create;
+using Darwin.Service.TokenOperations;
 using FluentValidation.AspNetCore;
 using MediatR;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.IdentityModel.Tokens;
 using Sentry;
 using System.Reflection;
+using System.Text;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -44,6 +48,29 @@ builder.Services.AddIdentity<AppUser, AppRole>()
 .AddEntityFrameworkStores<DarwinDbContext>()
 .AddDefaultTokenProviders();
 
+var tokenOptions = builder.Configuration.GetSection("AppTokenOptions").Get<AppTokenOptions>();
+
+builder.Services.AddAuthentication(options =>
+{
+    options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+    options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+}).AddJwtBearer(options =>
+{
+    options.TokenValidationParameters = new TokenValidationParameters
+    {
+        ValidateIssuer = true,
+        ValidateAudience = true,
+        ValidateLifetime = true,
+        ValidIssuer = tokenOptions!.Issuer,
+        ValidAudience = tokenOptions.Audience[0],
+        ValidateIssuerSigningKey = true,
+        IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(tokenOptions.SecurityKey))
+    };
+});
+
+builder.Services.AddScoped<ITokenService, TokenService>();
+
+builder.Services.Configure<AppTokenOptions>(builder.Configuration.GetSection("AppTokenOptions"));
 
 builder.Services.AddScoped(typeof(IGenericRepositoryAsync<>), typeof(GenericRepositoryAsync<>));
 
