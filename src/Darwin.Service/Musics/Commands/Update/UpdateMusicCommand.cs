@@ -1,10 +1,10 @@
-﻿using AutoMapper;
-using Darwin.Core.BaseDto;
+﻿using Darwin.Core.BaseDto;
 using Darwin.Core.Entities;
 using Darwin.Core.RepositoryCore;
 using Darwin.Model.Request.Musics;
 using Darwin.Model.Response.Musics;
 using Darwin.Service.Common;
+using Mapster;
 
 namespace Darwin.Service.Musics.Commands.Update;
 
@@ -21,12 +21,10 @@ public class UpdateMusicCommand : ICommand<DarwinResponse<UpdatedMusicResponse>>
     public class Handler : ICommandHandler<UpdateMusicCommand, DarwinResponse<UpdatedMusicResponse>>
     {
         private readonly IGenericRepositoryAsync<Music> _repository;
-        private readonly IMapper _mapper;
 
-        public Handler(IGenericRepositoryAsync<Music> repository, IMapper mapper)
+        public Handler(IGenericRepositoryAsync<Music> repository)
         {
             _repository = repository;
-            _mapper = mapper;
         }
 
         public async Task<DarwinResponse<UpdatedMusicResponse>> Handle(UpdateMusicCommand request, CancellationToken cancellationToken)
@@ -41,7 +39,7 @@ public class UpdateMusicCommand : ICommand<DarwinResponse<UpdatedMusicResponse>>
             existMusic.IsUsable = request.Model.IsUsable;
             existMusic.UpdatedAt = DateTime.UtcNow.Ticks;
             await _repository.UpdateAsync(existMusic);
-            return DarwinResponse<UpdatedMusicResponse>.Success(_mapper.Map<UpdatedMusicResponse>(existMusic), 204);
+            return DarwinResponse<UpdatedMusicResponse>.Success(existMusic.Adapt<UpdatedMusicResponse>(), 204);
         }
     }
 }

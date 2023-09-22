@@ -1,16 +1,15 @@
-﻿using AutoMapper;
-using Darwin.Core.BaseDto;
+﻿using Darwin.Core.BaseDto;
 using Darwin.Core.Entities;
 using Darwin.Core.RepositoryCore;
-using Darwin.Model.Common;
 using Darwin.Model.Request.Categories;
 using Darwin.Model.Response.Categories;
 using Darwin.Service.Common;
+using Mapster;
 
 namespace Darwin.Service.Categories.Commands.Update;
 
 public class UpdateCategoryCommand : ICommand<DarwinResponse<UpdatedCategoryResponse>>
-{    
+{
     public Guid Id { get; }
     public UpdateCategoryRequest Model { get; }
     public UpdateCategoryCommand(Guid id, UpdateCategoryRequest model)
@@ -18,16 +17,15 @@ public class UpdateCategoryCommand : ICommand<DarwinResponse<UpdatedCategoryResp
         Id = id;
         Model = model;
     }
- 
+
     public class Handler : ICommandHandler<UpdateCategoryCommand, DarwinResponse<UpdatedCategoryResponse>>
     {
         private readonly IGenericRepositoryAsync<Category> _repository;
-        private readonly IMapper _mapper;
 
-        public Handler(IGenericRepositoryAsync<Category> repository, IMapper mapper)
+
+        public Handler(IGenericRepositoryAsync<Category> repository)
         {
             _repository = repository;
-            _mapper = mapper;
         }
 
         public async Task<DarwinResponse<UpdatedCategoryResponse>> Handle(UpdateCategoryCommand request, CancellationToken cancellationToken)
@@ -42,7 +40,7 @@ public class UpdateCategoryCommand : ICommand<DarwinResponse<UpdatedCategoryResp
             existCategory.IsUsable = request.Model.IsUsable;
             existCategory.UpdatedAt = DateTime.UtcNow.Ticks;
             await _repository.UpdateAsync(existCategory);
-            return DarwinResponse<UpdatedCategoryResponse>.Success(_mapper.Map<UpdatedCategoryResponse>(existCategory),204);
+            return DarwinResponse<UpdatedCategoryResponse>.Success(existCategory.Adapt<UpdatedCategoryResponse>(), 204);
         }
     }
 }

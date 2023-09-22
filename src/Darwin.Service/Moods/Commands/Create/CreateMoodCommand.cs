@@ -1,11 +1,10 @@
-﻿using AutoMapper;
-using Darwin.Core.BaseDto;
+﻿using Darwin.Core.BaseDto;
 using Darwin.Core.Entities;
 using Darwin.Core.RepositoryCore;
-using Darwin.Model.Common;
 using Darwin.Model.Request.Moods;
 using Darwin.Model.Response.Moods;
 using Darwin.Service.Common;
+using Mapster;
 
 namespace Darwin.Service.Moods.Commands.Create;
 
@@ -20,12 +19,11 @@ public class CreateMoodCommand : ICommand<DarwinResponse<CreatedMoodResponse>>
     public class Handler : ICommandHandler<CreateMoodCommand, DarwinResponse<CreatedMoodResponse>>
     {
         private readonly IGenericRepositoryAsync<Mood> _repository;
-        private readonly IMapper _mapper;
 
-        public Handler(IGenericRepositoryAsync<Mood> repository, IMapper mapper)
+
+        public Handler(IGenericRepositoryAsync<Mood> repository)
         {
             _repository = repository;
-            _mapper = mapper;
         }
 
         public async Task<DarwinResponse<CreatedMoodResponse>> Handle(CreateMoodCommand request, CancellationToken cancellationToken)
@@ -35,9 +33,9 @@ public class CreateMoodCommand : ICommand<DarwinResponse<CreatedMoodResponse>>
             {
                 return DarwinResponse<CreatedMoodResponse>.Fail("Allready exist.");
             }
-            Mood mood = _mapper.Map<Mood>(request.Model);
+            Mood mood = request.Model.Adapt<Mood>();
             await _repository.CreateAsync(mood);
-            return DarwinResponse<CreatedMoodResponse>.Success(_mapper.Map<CreatedMoodResponse>(mood),201);
+            return DarwinResponse<CreatedMoodResponse>.Success(mood.Adapt<CreatedMoodResponse>(), 201);
         }
     }
 }
