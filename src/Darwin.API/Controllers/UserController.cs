@@ -1,5 +1,4 @@
 ﻿using Darwin.Model.Request.Users;
-using Darwin.Service.Musics.Queries;
 using Darwin.Service.Users.Commands.Create;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;

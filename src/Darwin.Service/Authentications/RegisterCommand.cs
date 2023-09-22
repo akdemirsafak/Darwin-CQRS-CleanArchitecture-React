@@ -1,6 +1,5 @@
 ﻿using Darwin.Core.BaseDto;
 using Darwin.Core.Entities;
-using Darwin.Model.Common;
 using Darwin.Model.Request.Authentications;
 using Darwin.Service.Common;
 using Darwin.Service.TokenOperations;
@@ -31,7 +30,7 @@ public class RegisterCommand : ICommand<DarwinResponse<TokenResponse>>
         public async Task<DarwinResponse<TokenResponse>> Handle(RegisterCommand request, CancellationToken cancellationToken)
         {
             var hasUser= await _userManager.FindByNameAsync(request.Model.UserName);
-            if(hasUser is not null)
+            if (hasUser is not null)
             {
                 return DarwinResponse<TokenResponse>.Fail("Already exist Username.", 400);
             }
@@ -43,9 +42,9 @@ public class RegisterCommand : ICommand<DarwinResponse<TokenResponse>>
             var registerResult= await _userManager.CreateAsync(newUser,request.Model.Password);
             if (!registerResult.Succeeded)
             {
-                return DarwinResponse<TokenResponse>.Fail(new List<string> { $"Email veya şifre yanlış.", $"Başarısız giriş sayısı : {registerResult.Errors.SelectMany(x=>x.Description).ToList()}"});
+                return DarwinResponse<TokenResponse>.Fail(new List<string> { $"Email veya şifre yanlış.", $"Başarısız giriş sayısı : {registerResult.Errors.SelectMany(x => x.Description).ToList()}" });
             }
-            return DarwinResponse<TokenResponse>.Success(_tokenService.CreateToken(newUser),201);
+            return DarwinResponse<TokenResponse>.Success(_tokenService.CreateToken(newUser), 201);
         }
     }
 }

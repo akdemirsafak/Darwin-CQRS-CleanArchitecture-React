@@ -1,7 +1,6 @@
 ﻿using Darwin.Core.RepositoryCore;
 using Microsoft.EntityFrameworkCore;
 using System.Linq.Expressions;
-using System.Security.Principal;
 
 namespace Darwin.Infrastructure.Repository
 {

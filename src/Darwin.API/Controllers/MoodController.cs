@@ -1,8 +1,4 @@
-﻿using Darwin.Model.Request.Categories;
-using Darwin.Model.Request.Moods;
-using Darwin.Service.Categories.Commands.Create;
-using Darwin.Service.Categories.Commands.Update;
-using Darwin.Service.Categories.Queries;
+﻿using Darwin.Model.Request.Moods;
 using Darwin.Service.Moods.Commands.Create;
 using Darwin.Service.Moods.Commands.Update;
 using Darwin.Service.Moods.Queries;
