@@ -1,10 +1,10 @@
-﻿using AutoMapper;
-using Darwin.Core.BaseDto;
+﻿using Darwin.Core.BaseDto;
 using Darwin.Core.Entities;
 using Darwin.Infrastructure;
 using Darwin.Model.Request.Musics;
 using Darwin.Model.Response.Musics;
 using Darwin.Service.Common;
+using Mapster;
 
 namespace Darwin.Service.Musics.Commands.Create;
 
@@ -19,12 +19,10 @@ public class CreateMusicCommand : ICommand<DarwinResponse<CreatedMusicResponse>>
     public class Handler : ICommandHandler<CreateMusicCommand, DarwinResponse<CreatedMusicResponse>>
     {
         private readonly DarwinDbContext _dbContext;
-        private readonly IMapper _mapper;
 
-        public Handler(DarwinDbContext dbContext, IMapper mapper)
+        public Handler(DarwinDbContext dbContext)
         {
             _dbContext = dbContext;
-            _mapper = mapper;
         }
 
         public async Task<DarwinResponse<CreatedMusicResponse>> Handle(CreateMusicCommand request, CancellationToken cancellationToken)
@@ -37,7 +35,7 @@ public class CreateMusicCommand : ICommand<DarwinResponse<CreatedMusicResponse>>
                 Moods=new List<Mood>(),
                 Categories=new List<Category>(),
             };
-            
+
 
             foreach (var moodId in request.Model.MoodIds)
             {
@@ -57,7 +55,7 @@ public class CreateMusicCommand : ICommand<DarwinResponse<CreatedMusicResponse>>
             }
             await _dbContext.AddAsync(music);
             await _dbContext.SaveChangesAsync();
-            return DarwinResponse<CreatedMusicResponse>.Success(_mapper.Map<CreatedMusicResponse>(music), 201);
+            return DarwinResponse<CreatedMusicResponse>.Success(music.Adapt<CreatedMusicResponse>(), 201);
         }
     }
 }

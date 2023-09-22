@@ -1,13 +1,13 @@
-﻿using AutoMapper;
-using Darwin.Core.BaseDto;
+﻿using Darwin.Core.BaseDto;
 using Darwin.Core.Entities;
 using Darwin.Core.RepositoryCore;
 using Darwin.Model.Response.Categories;
 using Darwin.Service.Common;
+using Mapster;
 
 namespace Darwin.Service.Categories.Queries;
 
-public class GetCategoryByIdQuery:IQuery<DarwinResponse<GetCategoryResponse>>
+public class GetCategoryByIdQuery : IQuery<DarwinResponse<GetCategoryResponse>>
 {
     public Guid Id { get; }
 
@@ -19,18 +19,17 @@ public class GetCategoryByIdQuery:IQuery<DarwinResponse<GetCategoryResponse>>
     public class Handler : IQueryHandler<GetCategoryByIdQuery, DarwinResponse<GetCategoryResponse>>
     {
         private readonly IGenericRepositoryAsync<Category> _repository;
-        private readonly IMapper _mapper;
 
-        public Handler(IGenericRepositoryAsync<Category> repository, IMapper mapper)
+
+        public Handler(IGenericRepositoryAsync<Category> repository)
         {
             _repository = repository;
-            _mapper = mapper;
         }
 
         public async Task<DarwinResponse<GetCategoryResponse>> Handle(GetCategoryByIdQuery request, CancellationToken cancellationToken)
         {
             var category = await _repository.GetAsync(x=>x.Id==request.Id);
-            return DarwinResponse<GetCategoryResponse>.Success(_mapper.Map<GetCategoryResponse>(category));
+            return DarwinResponse<GetCategoryResponse>.Success(category.Adapt<GetCategoryResponse>());
         }
     }
 }

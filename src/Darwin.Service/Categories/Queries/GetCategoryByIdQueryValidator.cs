@@ -2,7 +2,7 @@
 
 namespace Darwin.Service.Categories.Queries;
 
-public class GetCategoryByIdQueryValidator:AbstractValidator<GetCategoryByIdQuery>
+public class GetCategoryByIdQueryValidator : AbstractValidator<GetCategoryByIdQuery>
 {
     public GetCategoryByIdQueryValidator()
     {

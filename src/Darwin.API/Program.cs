@@ -2,11 +2,9 @@ using Darwin.Core.Entities;
 using Darwin.Core.RepositoryCore;
 using Darwin.Infrastructure;
 using Darwin.Infrastructure.Repository;
-using Darwin.Model.Mappers;
 using Darwin.Service.Musics.Commands.Create;
 using Darwin.Service.TokenOperations;
 using FluentValidation.AspNetCore;
-using MediatR;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
@@ -74,14 +72,14 @@ builder.Services.Configure<AppTokenOptions>(builder.Configuration.GetSection("Ap
 
 builder.Services.AddScoped(typeof(IGenericRepositoryAsync<>), typeof(GenericRepositoryAsync<>));
 
-builder.Services.AddMediatR(typeof(CreateMusicCommand).Assembly);
+//builder.Services.AddMediatR(cfg => cfg.RegisterServicesFromAssemblies(Assembly.GetExecutingAssembly()));
+
+builder.Services.AddMediatR(cfg => cfg.RegisterServicesFromAssemblyContaining(typeof(CreateMusicCommand)));
 
 builder.Services.AddCors(options =>
      options.AddDefaultPolicy(builder =>
      builder.AllowAnyHeader().AllowAnyMethod().AllowAnyOrigin()));
 
-
-builder.Services.AddAutoMapper(typeof(MusicMapper));
 builder.Services.AddAuthentication();
 
 

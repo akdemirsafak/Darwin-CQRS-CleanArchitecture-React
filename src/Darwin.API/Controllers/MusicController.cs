@@ -41,7 +41,7 @@ namespace Darwin.API.Controllers
         [HttpPut("{id}")]
         public async Task<IActionResult> Update(Guid id, [FromBody] UpdateMusicRequest request)
         {
-            return CreateActionResult(await _mediator.Send(new UpdateMusicCommand(id,request)));
+            return CreateActionResult(await _mediator.Send(new UpdateMusicCommand(id, request)));
         }
         [HttpDelete("{id}")]
         public async Task<IActionResult> Delete(Guid id)

@@ -1,11 +1,10 @@
-﻿using AutoMapper;
-using Darwin.Core.BaseDto;
+﻿using Darwin.Core.BaseDto;
 using Darwin.Core.Entities;
 using Darwin.Core.RepositoryCore;
-using Darwin.Model.Common;
 using Darwin.Model.Request.Categories;
 using Darwin.Model.Response.Categories;
 using Darwin.Service.Common;
+using Mapster;
 
 namespace Darwin.Service.Categories.Commands.Create;
 
@@ -21,19 +20,17 @@ public class CreateCategoryCommand : ICommand<DarwinResponse<CreatedCategoryResp
     public class Handler : ICommandHandler<CreateCategoryCommand, DarwinResponse<CreatedCategoryResponse>>
     {
         private readonly IGenericRepositoryAsync<Category> _repository;
-        private readonly IMapper _mapper;
 
-        public Handler(IGenericRepositoryAsync<Category> repository, IMapper mapper)
+        public Handler(IGenericRepositoryAsync<Category> repository)
         {
             _repository = repository;
-            _mapper = mapper;
         }
 
         public async Task<DarwinResponse<CreatedCategoryResponse>> Handle(CreateCategoryCommand request, CancellationToken cancellationToken)
         {
-            var entity= _mapper.Map<Category>(request.Model);
+            var entity= request.Model.Adapt<Category>();
             await _repository.CreateAsync(entity);
-            return DarwinResponse<CreatedCategoryResponse>.Success(_mapper.Map<CreatedCategoryResponse>(entity),201);
+            return DarwinResponse<CreatedCategoryResponse>.Success(entity.Adapt<CreatedCategoryResponse>(), 201);
         }
     }
 }

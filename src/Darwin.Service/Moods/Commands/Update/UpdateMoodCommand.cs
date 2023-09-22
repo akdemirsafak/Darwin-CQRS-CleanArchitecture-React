@@ -1,12 +1,10 @@
-﻿using AutoMapper;
-using Darwin.Core.BaseDto;
+﻿using Darwin.Core.BaseDto;
 using Darwin.Core.Entities;
 using Darwin.Core.RepositoryCore;
-using Darwin.Model.Common;
-using Darwin.Model.Request.Categories;
 using Darwin.Model.Request.Moods;
 using Darwin.Model.Response.Moods;
 using Darwin.Service.Common;
+using Mapster;
 
 namespace Darwin.Service.Moods.Commands.Update;
 
@@ -23,12 +21,11 @@ public class UpdateMoodCommand : ICommand<DarwinResponse<UpdatedMoodResponse>>
     public class Handler : ICommandHandler<UpdateMoodCommand, DarwinResponse<UpdatedMoodResponse>>
     {
         private readonly IGenericRepositoryAsync<Mood> _repository;
-        private readonly IMapper _mapper;
 
-        public Handler(IGenericRepositoryAsync<Mood> repository, IMapper mapper)
+
+        public Handler(IGenericRepositoryAsync<Mood> repository)
         {
             _repository = repository;
-            _mapper = mapper;
         }
 
         public async Task<DarwinResponse<UpdatedMoodResponse>> Handle(UpdateMoodCommand request, CancellationToken cancellationToken)
@@ -43,7 +40,7 @@ public class UpdateMoodCommand : ICommand<DarwinResponse<UpdatedMoodResponse>>
             existMood.IsUsable = request.Model.IsUsable;
             existMood.UpdatedAt = DateTime.UtcNow.Ticks;
             await _repository.UpdateAsync(existMood);
-            return DarwinResponse<UpdatedMoodResponse>.Success(_mapper.Map<UpdatedMoodResponse>(existMood),204);
+            return DarwinResponse<UpdatedMoodResponse>.Success(existMood.Adapt<UpdatedMoodResponse>(), 204);
         }
     }
 }

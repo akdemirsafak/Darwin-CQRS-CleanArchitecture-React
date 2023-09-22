@@ -7,6 +7,13 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="Helper\**" />
+    <Content Remove="Helper\**" />
+    <EmbeddedResource Remove="Helper\**" />
+    <None Remove="Helper\**" />
+  </ItemGroup>
+
+  <ItemGroup>
     <PackageReference Include="Microsoft.AspNetCore.OpenApi" Version="7.0.10" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="7.0.10">
       <PrivateAssets>all</PrivateAssets>
@@ -19,10 +26,6 @@
 
   <ItemGroup>
     <ProjectReference Include="..\Darwin.Service\Darwin.Service.csproj" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Folder Include="Helper\" />
   </ItemGroup>
 
 </Project>

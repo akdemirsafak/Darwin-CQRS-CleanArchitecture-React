@@ -2,7 +2,7 @@
 
 namespace Darwin.Core.Entities;
 
-public class Music:BaseEntity
+public class Music : BaseEntity
 {
     [Required, MinLength(3), MaxLength(64)]
     public string Name { get; set; }
