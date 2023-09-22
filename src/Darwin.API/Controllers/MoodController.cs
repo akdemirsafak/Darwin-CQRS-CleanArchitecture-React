@@ -10,12 +10,10 @@ namespace Darwin.API.Controllers;
 
 public class MoodController : CustomBaseController
 {
-    private readonly IMediator _mediator;
-
-    public MoodController(IMediator mediator)
+    public MoodController(IMediator mediator) : base(mediator)
     {
-        _mediator = mediator;
     }
+
     [HttpGet]
     public async Task<IActionResult> Get()
     {

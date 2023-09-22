@@ -8,12 +8,10 @@ namespace Darwin.API.Controllers;
 
 public class AuthenticationController : CustomBaseController
 {
-    private readonly IMediator _mediator;
-
-    public AuthenticationController(IMediator mediator)
+    public AuthenticationController(IMediator mediator) : base(mediator)
     {
-        _mediator = mediator;
     }
+
     [HttpPost("[action]")]
     public async Task<IActionResult> Login(LoginRequest request)
     {

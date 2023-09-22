@@ -10,11 +10,8 @@ namespace Darwin.API.Controllers
 {
     public class MusicController : CustomBaseController
     {
-        private readonly IMediator _mediator;
-
-        public MusicController(IMediator mediator)
+        public MusicController(IMediator mediator) : base(mediator)
         {
-            _mediator = mediator;
         }
 
         [HttpGet]

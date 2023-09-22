@@ -9,11 +9,10 @@ namespace Darwin.API.Controllers;
 
 public class UserController : CustomBaseController
 {
-    private readonly IMediator _mediator;
-    public UserController(IMediator mediator)
+    public UserController(IMediator mediator) : base(mediator)
     {
-        _mediator = mediator;
     }
+
     [HttpPost]
     public async Task<IActionResult> Create([FromBody] CreateUserRequest request)
     {

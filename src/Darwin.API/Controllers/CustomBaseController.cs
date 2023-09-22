@@ -1,4 +1,5 @@
 ﻿using Darwin.Core.BaseDto;
+using MediatR;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Darwin.API.Controllers
@@ -7,6 +8,12 @@ namespace Darwin.API.Controllers
     [Route("[controller]")]
     public class CustomBaseController : ControllerBase
     {
+        protected readonly IMediator _mediator;
+
+        public CustomBaseController(IMediator mediator)
+        {
+            _mediator = mediator;
+        }
         [NonAction]
         public IActionResult CreateActionResult<T>(DarwinResponse<T> response)
         {
