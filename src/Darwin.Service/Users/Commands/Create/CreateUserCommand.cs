@@ -35,12 +35,7 @@ public class CreateUserCommand : ICommand<DarwinResponse<NoContent>>
             var createUserResult = await _userManager.CreateAsync(appUser, request.Model.Password);
             if (!createUserResult.Succeeded)
             {
-                var errors = new List<string>();
-                foreach (var error in createUserResult.Errors)
-                {
-                    errors.Add(error.Description);
-                }
-                return DarwinResponse<NoContent>.Fail(errors, 400);
+                return DarwinResponse<NoContent>.Fail(createUserResult.Errors.Select(x => x.Description).ToList(), 400);
             }
             return DarwinResponse<NoContent>.Success(201);
         }
