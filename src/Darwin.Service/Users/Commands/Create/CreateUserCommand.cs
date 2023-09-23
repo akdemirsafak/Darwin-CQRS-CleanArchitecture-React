@@ -2,12 +2,15 @@ using Darwin.Core.BaseDto;
 using Darwin.Core.Entities;
 using Darwin.Model.Common;
 using Darwin.Model.Request.Users;
+using Darwin.Model.Response.Users;
 using Darwin.Service.Common;
+using Darwin.Service.Helpers;
+using Mapster;
 using Microsoft.AspNetCore.Identity;
 
 namespace Darwin.Service.Users.Commands.Create;
 
-public class CreateUserCommand : ICommand<DarwinResponse<NoContent>>
+public class CreateUserCommand : ICommand<DarwinResponse<CreatedUserResponse>>
 {
     public CreateUserRequest Model { get; }
 
@@ -16,7 +19,7 @@ public class CreateUserCommand : ICommand<DarwinResponse<NoContent>>
         Model = model;
     }
 
-    public class Handler : ICommandHandler<CreateUserCommand, DarwinResponse<NoContent>>
+    public class Handler : ICommandHandler<CreateUserCommand, DarwinResponse<CreatedUserResponse>>
     {
         private readonly UserManager<AppUser> _userManager;
 
@@ -25,19 +28,19 @@ public class CreateUserCommand : ICommand<DarwinResponse<NoContent>>
             _userManager = userManager;
         }
 
-        public async Task<DarwinResponse<NoContent>> Handle(CreateUserCommand request, CancellationToken cancellationToken)
+        public async Task<DarwinResponse<CreatedUserResponse>> Handle(CreateUserCommand request, CancellationToken cancellationToken)
         {
             var appUser = new AppUser()
             {
                 Email = request.Model.Email,
-                UserName = Guid.NewGuid().ToString()
+                UserName = UserNameGeneratorThanEmail.Generate(request.Model.Email)
             };
             var createUserResult = await _userManager.CreateAsync(appUser, request.Model.Password);
             if (!createUserResult.Succeeded)
             {
-                return DarwinResponse<NoContent>.Fail(createUserResult.Errors.Select(x => x.Description).ToList(), 400);
+                return DarwinResponse<CreatedUserResponse>.Fail(createUserResult.Errors.Select(x => x.Description).ToList(), 400);
             }
-            return DarwinResponse<NoContent>.Success(201);
+            return DarwinResponse<CreatedUserResponse>.Success(appUser.Adapt<CreatedUserResponse>(),201);
         }
     }
 }
