@@ -29,11 +29,6 @@ public class RegisterCommand : ICommand<DarwinResponse<TokenResponse>>
 
         public async Task<DarwinResponse<TokenResponse>> Handle(RegisterCommand request, CancellationToken cancellationToken)
         {
-            var hasUser= await _userManager.FindByNameAsync(request.Model.UserName);
-            if (hasUser is not null)
-            {
-                return DarwinResponse<TokenResponse>.Fail("Already exist Username.", 400);
-            }
             if (request.Model.Password != request.Model.PasswordAgain)
             {
                 return DarwinResponse<TokenResponse>.Fail("Passwords do not match.", 400);
@@ -42,7 +37,7 @@ public class RegisterCommand : ICommand<DarwinResponse<TokenResponse>>
             var registerResult= await _userManager.CreateAsync(newUser,request.Model.Password);
             if (!registerResult.Succeeded)
             {
-                return DarwinResponse<TokenResponse>.Fail(new List<string> { $"Email veya şifre yanlış.", $"Başarısız giriş sayısı : {registerResult.Errors.SelectMany(x => x.Description).ToList()}" });
+                return DarwinResponse<TokenResponse>.Fail(registerResult.Errors.Select(x => x.Description).ToList());
             }
             return DarwinResponse<TokenResponse>.Success(_tokenService.CreateToken(newUser), 201);
         }

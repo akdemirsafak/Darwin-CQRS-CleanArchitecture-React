@@ -2,6 +2,7 @@ using Darwin.Core.Entities;
 using Darwin.Core.RepositoryCore;
 using Darwin.Infrastructure;
 using Darwin.Infrastructure.Repository;
+using Darwin.Service.Localizations;
 using Darwin.Service.Musics.Commands.Create;
 using Darwin.Service.TokenOperations;
 using FluentValidation.AspNetCore;
@@ -44,6 +45,7 @@ builder.Services.AddDbContext<DarwinDbContext>(opt =>
 
 builder.Services.AddIdentity<AppUser, AppRole>()
 .AddEntityFrameworkStores<DarwinDbContext>()
+.AddErrorDescriber<LocalizationsIdentityErrorDescriber>()
 .AddDefaultTokenProviders();
 
 var tokenOptions = builder.Configuration.GetSection("AppTokenOptions").Get<AppTokenOptions>();
