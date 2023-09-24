@@ -1,10 +1,8 @@
 using Darwin.Core.BaseDto;
 using Darwin.Core.Entities;
-using Darwin.Model.Common;
 using Darwin.Model.Request.Users;
 using Darwin.Model.Response.Users;
 using Darwin.Service.Common;
-using Darwin.Service.Helpers;
 using Mapster;
 using Microsoft.AspNetCore.Identity;
 
@@ -30,17 +28,13 @@ public class CreateUserCommand : ICommand<DarwinResponse<CreatedUserResponse>>
 
         public async Task<DarwinResponse<CreatedUserResponse>> Handle(CreateUserCommand request, CancellationToken cancellationToken)
         {
-            var appUser = new AppUser()
-            {
-                Email = request.Model.Email,
-                UserName = UserNameGeneratorThanEmail.Generate(request.Model.Email)
-            };
+            var appUser = request.Model.Adapt<AppUser>();
             var createUserResult = await _userManager.CreateAsync(appUser, request.Model.Password);
             if (!createUserResult.Succeeded)
             {
                 return DarwinResponse<CreatedUserResponse>.Fail(createUserResult.Errors.Select(x => x.Description).ToList(), 400);
             }
-            return DarwinResponse<CreatedUserResponse>.Success(appUser.Adapt<CreatedUserResponse>(),201);
+            return DarwinResponse<CreatedUserResponse>.Success(appUser.Adapt<CreatedUserResponse>(), 201);
         }
     }
 }

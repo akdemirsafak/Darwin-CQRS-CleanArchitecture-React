@@ -2,23 +2,23 @@
 
 namespace Darwin.Service.Localizations;
 
-public class LocalizationsIdentityErrorDescriber: IdentityErrorDescriber
+public class LocalizationsIdentityErrorDescriber : IdentityErrorDescriber
 {
     public override IdentityError DuplicateEmail(string email)
     {
-        return new IdentityError {Code = "DuplicateEmail", Description=$"'{email} zaten kullanılıyor.'"};
+        return new IdentityError { Code = "DuplicateEmail", Description = $"'{email} email adresi zaten kullanılıyor.'" };
     }
     public override IdentityError InvalidEmail(string? email)
     {
-        return new IdentityError { Code = "InvalidEmail", Description = $"'{email}' kullanılamaz." };
+        return new IdentityError { Code = "InvalidEmail", Description = $"'{email}' email adresi kullanılamaz." };
     }
     public override IdentityError DuplicateUserName(string userName)
     {
-        return new IdentityError { Code = "DuplicateUserName", Description = $"'{userName} zaten kullanılıyor.'" };
+        return new IdentityError { Code = "DuplicateUserName", Description = $"'{userName} kullanıcı adı zaten kullanılıyor.'" };
     }
     public override IdentityError InvalidUserName(string? userName)
     {
-        return new IdentityError { Code = "InvalidUserName", Description = $"'{userName}' kullanılamaz." };
+        return new IdentityError { Code = "InvalidUserName", Description = $"'{userName}' kullanıcı adı kullanılamaz." };
     }
     public override IdentityError PasswordTooShort(int length)
     {
