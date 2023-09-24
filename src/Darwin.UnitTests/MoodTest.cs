@@ -93,6 +93,7 @@ public class MoodTest
 
         Assert.NotNull(result.Data);
         Assert.True(result.StatusCode == 201);
+        //Assert.Equal(result.Data, createdMoodResponse);
     }
 
 
