@@ -43,7 +43,10 @@ builder.Services.AddDbContext<DarwinDbContext>(opt =>
     option => { option.MigrationsAssembly(Assembly.GetAssembly(typeof(DarwinDbContext))!.GetName().Name); });
 });
 
-builder.Services.AddIdentity<AppUser, AppRole>()
+builder.Services.AddIdentity<AppUser, AppRole>(x =>
+{
+    x.User.RequireUniqueEmail = true;
+})
 .AddEntityFrameworkStores<DarwinDbContext>()
 .AddErrorDescriber<LocalizationsIdentityErrorDescriber>()
 .AddDefaultTokenProviders();
