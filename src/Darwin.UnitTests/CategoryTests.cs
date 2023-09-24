@@ -117,7 +117,6 @@ public class CategoryTests
 
 
 
-
     [Fact]
     public async Task CreateCategory_Should_Success_WhenCreated()
     {
@@ -222,6 +221,7 @@ public class CategoryTests
             DeletedAt=null
         };
         _categoryRepository.GetAsync(Arg.Any<Expression<Func<Category,bool>>>()).Returns(Task.FromResult(category));
+        _categoryRepository.RemoveAsync(Arg.Any<Category>()).Returns(Task.FromResult(category));
 
         var command=new DeleteCategoryCommand(category.Id);
         var commandHandler=new DeleteCategoryCommand.Handler(_categoryRepository);
