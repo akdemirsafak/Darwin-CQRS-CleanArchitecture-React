@@ -1,5 +1,6 @@
 ﻿using Darwin.Core.BaseDto;
 using Darwin.Core.Entities;
+using Darwin.Core.RepositoryCore;
 using Darwin.Infrastructure;
 using Darwin.Model.Request.Musics;
 using Darwin.Model.Response.Musics;
@@ -18,11 +19,16 @@ public class CreateMusicCommand : ICommand<DarwinResponse<CreatedMusicResponse>>
     }
     public class Handler : ICommandHandler<CreateMusicCommand, DarwinResponse<CreatedMusicResponse>>
     {
-        private readonly DarwinDbContext _dbContext;
 
-        public Handler(DarwinDbContext dbContext)
+        private readonly IGenericRepositoryAsync<Music> _musicRepositoryAsync;
+        private readonly IGenericRepositoryAsync<Category> _categoryRepositoryAsync;
+        private readonly IGenericRepositoryAsync<Mood> _moodRepositoryAsync;
+
+        public Handler(IGenericRepositoryAsync<Music> musicRepositoryAsync, IGenericRepositoryAsync<Category> categoryRepositoryAsync, IGenericRepositoryAsync<Mood> moodRepositoryAsync)
         {
-            _dbContext = dbContext;
+            _musicRepositoryAsync = musicRepositoryAsync;
+            _categoryRepositoryAsync = categoryRepositoryAsync;
+            _moodRepositoryAsync = moodRepositoryAsync;
         }
 
         public async Task<DarwinResponse<CreatedMusicResponse>> Handle(CreateMusicCommand request, CancellationToken cancellationToken)
@@ -37,9 +43,10 @@ public class CreateMusicCommand : ICommand<DarwinResponse<CreatedMusicResponse>>
             };
 
 
+
             foreach (var moodId in request.Model.MoodIds)
             {
-                Mood existMood = await _dbContext.Moods.FindAsync(moodId);
+                Mood existMood = await _moodRepositoryAsync.GetAsync(x=>x.Id==moodId);
                 if (existMood != null)
                 {
                     music.Moods.Add(existMood);
@@ -47,14 +54,13 @@ public class CreateMusicCommand : ICommand<DarwinResponse<CreatedMusicResponse>>
             }
             foreach (var categoryId in request.Model.CategoryIds)
             {
-                Category existCategory = await _dbContext.Categories.FindAsync(categoryId);
+                Category existCategory = await _categoryRepositoryAsync.GetAsync(x=>x.Id==categoryId);
                 if (existCategory != null)
                 {
                     music.Categories.Add(existCategory);
                 }
             }
-            await _dbContext.AddAsync(music);
-            await _dbContext.SaveChangesAsync();
+            await _musicRepositoryAsync.CreateAsync(music);
             return DarwinResponse<CreatedMusicResponse>.Success(music.Adapt<CreatedMusicResponse>(), 201);
         }
     }
