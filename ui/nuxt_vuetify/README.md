@@ -4,6 +4,7 @@
 2. npm i vuetify@^3.3.17
 3. npm i sass
 4. npm i @mdi/font 
+5. npm install --save-dev nuxt-icon
 
 
 
