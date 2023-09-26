@@ -1,5 +1,7 @@
 <template>
     <div>
-        Default layout
+       <Navbar></Navbar>
+        <NuxtPage/>
+        <Footer></Footer>
     </div>
 </template>
