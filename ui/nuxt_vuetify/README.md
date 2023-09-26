@@ -1,5 +1,14 @@
 # Nuxt 3 Minimal Starter
 
+1. create nuxt app
+2. npm i vuetify@^3.3.17
+3. npm i sass
+4. npm i @mdi/font 
+
+
+
+
+<hr>
 Look at the [Nuxt 3 documentation](https://nuxt.com/docs/getting-started/introduction) to learn more.
 
 ## Setup
