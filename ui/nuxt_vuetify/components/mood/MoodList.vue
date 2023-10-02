@@ -1,5 +1,5 @@
 <template>
     <div>
-        This is a navbar 
+        CategoryListHere
     </div>
 </template>

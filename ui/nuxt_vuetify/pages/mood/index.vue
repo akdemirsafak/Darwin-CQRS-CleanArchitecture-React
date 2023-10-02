@@ -1,5 +1,5 @@
 <template>
     <div>
-        Burası footer
+        Mood
     </div>
 </template>
