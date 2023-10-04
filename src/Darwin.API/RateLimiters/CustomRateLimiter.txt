@@ -1,0 +1,23 @@
+﻿//builder.Services.AddRateLimiter(options => {
+//    options.AddPolicy<string, CustomRateLimitPolicy>("MyCustomPolicy");
+//});
+
+ public class CustomRateLimitPolicy : IRateLimiterPolicy<string>
+    {
+        public Func<OnRejectedContext, CancellationToken, ValueTask>? OnRejected => (context, cancellationToken) =>
+        {
+            //log..
+            return new();
+        };
+
+        public RateLimitPartition<string> GetPartition(HttpContext httpContext)
+        {
+            return RateLimitPartition.GetFixedWindowLimiter("", _ => new()
+            {
+                PermitLimit = 4,
+                QueueLimit = 2,
+                QueueProcessingOrder = QueueProcessingOrder.OldestFirst,
+                Window = TimeSpan.FromSeconds(30)
+            });
+        }
+    }
