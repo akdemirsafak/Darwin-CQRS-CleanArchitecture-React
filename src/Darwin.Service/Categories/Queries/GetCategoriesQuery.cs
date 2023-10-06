@@ -12,9 +12,9 @@ public class GetCategoriesQuery : IQuery<DarwinResponse<List<GetCategoryResponse
 
     public class Handler : IQueryHandler<GetCategoriesQuery, DarwinResponse<List<GetCategoryResponse>>>
     {
-        private readonly IGenericRepositoryAsync<Category> _repository;
+        private readonly IGenericRepository<Category> _repository;
 
-        public Handler(IGenericRepositoryAsync<Category> repository)
+        public Handler(IGenericRepository<Category> repository)
         {
             _repository = repository;
         }

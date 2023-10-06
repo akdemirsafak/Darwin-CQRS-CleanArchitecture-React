@@ -1,7 +1,6 @@
 ﻿using Darwin.Core.BaseDto;
 using Darwin.Core.Entities;
 using Darwin.Core.RepositoryCore;
-using Darwin.Infrastructure;
 using Darwin.Model.Request.Musics;
 using Darwin.Model.Response.Musics;
 using Darwin.Service.Common;
@@ -20,11 +19,11 @@ public class CreateMusicCommand : ICommand<DarwinResponse<CreatedMusicResponse>>
     public class Handler : ICommandHandler<CreateMusicCommand, DarwinResponse<CreatedMusicResponse>>
     {
 
-        private readonly IGenericRepositoryAsync<Music> _musicRepositoryAsync;
-        private readonly IGenericRepositoryAsync<Category> _categoryRepositoryAsync;
-        private readonly IGenericRepositoryAsync<Mood> _moodRepositoryAsync;
+        private readonly IGenericRepository<Music> _musicRepositoryAsync;
+        private readonly IGenericRepository<Category> _categoryRepositoryAsync;
+        private readonly IGenericRepository<Mood> _moodRepositoryAsync;
 
-        public Handler(IGenericRepositoryAsync<Music> musicRepositoryAsync, IGenericRepositoryAsync<Category> categoryRepositoryAsync, IGenericRepositoryAsync<Mood> moodRepositoryAsync)
+        public Handler(IGenericRepository<Music> musicRepositoryAsync, IGenericRepository<Category> categoryRepositoryAsync, IGenericRepository<Mood> moodRepositoryAsync)
         {
             _musicRepositoryAsync = musicRepositoryAsync;
             _categoryRepositoryAsync = categoryRepositoryAsync;

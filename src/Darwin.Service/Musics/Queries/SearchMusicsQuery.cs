@@ -17,10 +17,10 @@ public class SearchMusicsQuery : IQuery<DarwinResponse<List<SearchMusicResponse>
     }
     public class Handler : IQueryHandler<SearchMusicsQuery, DarwinResponse<List<SearchMusicResponse>>>
     {
-        private readonly IGenericRepositoryAsync<Music> _repository;
+        private readonly IGenericRepository<Music> _repository;
 
 
-        public Handler(IGenericRepositoryAsync<Music> repository)
+        public Handler(IGenericRepository<Music> repository)
         {
             _repository = repository;
         }

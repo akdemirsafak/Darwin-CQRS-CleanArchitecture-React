@@ -20,10 +20,10 @@ public class UpdateMoodCommand : ICommand<DarwinResponse<UpdatedMoodResponse>>
 
     public class Handler : ICommandHandler<UpdateMoodCommand, DarwinResponse<UpdatedMoodResponse>>
     {
-        private readonly IGenericRepositoryAsync<Mood> _repository;
+        private readonly IGenericRepository<Mood> _repository;
 
 
-        public Handler(IGenericRepositoryAsync<Mood> repository)
+        public Handler(IGenericRepository<Mood> repository)
         {
             _repository = repository;
         }

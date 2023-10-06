@@ -75,7 +75,7 @@ builder.Services.AddScoped<ITokenService, TokenService>();
 
 builder.Services.Configure<AppTokenOptions>(builder.Configuration.GetSection("AppTokenOptions"));
 
-builder.Services.AddScoped(typeof(IGenericRepositoryAsync<>), typeof(GenericRepositoryAsync<>));
+builder.Services.AddScoped(typeof(IGenericRepository<>), typeof(GenericRepository<>));
 
 //builder.Services.AddMediatR(cfg => cfg.RegisterServicesFromAssemblies(Assembly.GetExecutingAssembly()));
 
