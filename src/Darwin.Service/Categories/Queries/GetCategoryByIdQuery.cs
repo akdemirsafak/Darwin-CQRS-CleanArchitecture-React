@@ -18,10 +18,10 @@ public class GetCategoryByIdQuery : IQuery<DarwinResponse<GetCategoryResponse>>
 
     public class Handler : IQueryHandler<GetCategoryByIdQuery, DarwinResponse<GetCategoryResponse>>
     {
-        private readonly IGenericRepositoryAsync<Category> _repository;
+        private readonly IGenericRepository<Category> _repository;
 
 
-        public Handler(IGenericRepositoryAsync<Category> repository)
+        public Handler(IGenericRepository<Category> repository)
         {
             _repository = repository;
         }
