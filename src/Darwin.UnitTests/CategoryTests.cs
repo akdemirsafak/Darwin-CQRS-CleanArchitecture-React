@@ -16,10 +16,10 @@ namespace Darwin.UnitTests;
 
 public class CategoryTests
 {
-    private readonly IGenericRepositoryAsync<Category> _categoryRepository;
+    private readonly IGenericRepository<Category> _categoryRepository;
     public CategoryTests()
     {
-        _categoryRepository = Substitute.For<IGenericRepositoryAsync<Category>>();
+        _categoryRepository = Substitute.For<IGenericRepository<Category>>();
     }
 
     [Fact]

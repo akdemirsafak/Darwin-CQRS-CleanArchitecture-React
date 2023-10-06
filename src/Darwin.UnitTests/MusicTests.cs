@@ -14,15 +14,15 @@ namespace Darwin.UnitTests;
 
 public class MusicTests
 {
-    private readonly IGenericRepositoryAsync<Music> _musicRepository;
-    private readonly IGenericRepositoryAsync<Mood> _moodRepository;
-    private readonly IGenericRepositoryAsync<Category> _categoryRepository;
+    private readonly IGenericRepository<Music> _musicRepository;
+    private readonly IGenericRepository<Mood> _moodRepository;
+    private readonly IGenericRepository<Category> _categoryRepository;
 
     public MusicTests()
     {
-        _musicRepository = Substitute.For<IGenericRepositoryAsync<Music>>();
-        _moodRepository = Substitute.For<IGenericRepositoryAsync<Mood>>();
-        _categoryRepository = Substitute.For<IGenericRepositoryAsync<Category>>();
+        _musicRepository = Substitute.For<IGenericRepository<Music>>();
+        _moodRepository = Substitute.For<IGenericRepository<Mood>>();
+        _categoryRepository = Substitute.For<IGenericRepository<Category>>();
     }
 
     //GetMusics

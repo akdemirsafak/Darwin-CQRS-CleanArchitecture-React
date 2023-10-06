@@ -13,10 +13,10 @@ namespace Darwin.UnitTests;
 
 public class MoodTest
 {
-    private readonly IGenericRepositoryAsync<Mood> _moodRepository;
+    private readonly IGenericRepository<Mood> _moodRepository;
     public MoodTest()
     {
-        _moodRepository = Substitute.For<IGenericRepositoryAsync<Mood>>();
+        _moodRepository = Substitute.For<IGenericRepository<Mood>>();
     }
 
 
