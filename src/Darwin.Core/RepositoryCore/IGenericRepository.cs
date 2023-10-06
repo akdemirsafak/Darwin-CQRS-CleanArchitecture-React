@@ -2,7 +2,7 @@
 
 namespace Darwin.Core.RepositoryCore
 {
-    public interface IGenericRepositoryAsync<T> where T : class
+    public interface IGenericRepository<T> where T : class
     {
         Task<List<T>> GetAllAsync(Expression<Func<T, bool>> filter = null);
         Task<T> GetAsync(Expression<Func<T, bool>> filter);

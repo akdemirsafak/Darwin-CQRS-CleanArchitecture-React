@@ -6,7 +6,7 @@ public class CreateMoodCommandValidator : AbstractValidator<CreateMoodCommand>
 {
     public CreateMoodCommandValidator()
     {
-        RuleFor(x=>x.Model.Name)
+        RuleFor(x => x.Model.Name)
             .NotNull()
             .NotEmpty()
             .Length(3, 64);

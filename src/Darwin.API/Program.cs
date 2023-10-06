@@ -2,11 +2,10 @@ using Darwin.Core.Entities;
 using Darwin.Core.RepositoryCore;
 using Darwin.Infrastructure;
 using Darwin.Infrastructure.Repository;
-using Darwin.Model.Mappers;
+using Darwin.Service.Localizations;
 using Darwin.Service.Musics.Commands.Create;
 using Darwin.Service.TokenOperations;
 using FluentValidation.AspNetCore;
-using MediatR;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
@@ -44,8 +43,12 @@ builder.Services.AddDbContext<DarwinDbContext>(opt =>
     option => { option.MigrationsAssembly(Assembly.GetAssembly(typeof(DarwinDbContext))!.GetName().Name); });
 });
 
-builder.Services.AddIdentity<AppUser, AppRole>()
+builder.Services.AddIdentity<AppUser, AppRole>(x =>
+{
+    x.User.RequireUniqueEmail = true;
+})
 .AddEntityFrameworkStores<DarwinDbContext>()
+.AddErrorDescriber<LocalizationsIdentityErrorDescriber>()
 .AddDefaultTokenProviders();
 
 var tokenOptions = builder.Configuration.GetSection("AppTokenOptions").Get<AppTokenOptions>();
@@ -72,16 +75,16 @@ builder.Services.AddScoped<ITokenService, TokenService>();
 
 builder.Services.Configure<AppTokenOptions>(builder.Configuration.GetSection("AppTokenOptions"));
 
-builder.Services.AddScoped(typeof(IGenericRepositoryAsync<>), typeof(GenericRepositoryAsync<>));
+builder.Services.AddScoped(typeof(IGenericRepository<>), typeof(GenericRepository<>));
 
-builder.Services.AddMediatR(typeof(CreateMusicCommand).Assembly);
+//builder.Services.AddMediatR(cfg => cfg.RegisterServicesFromAssemblies(Assembly.GetExecutingAssembly()));
+
+builder.Services.AddMediatR(cfg => cfg.RegisterServicesFromAssemblyContaining(typeof(CreateMusicCommand)));
 
 builder.Services.AddCors(options =>
      options.AddDefaultPolicy(builder =>
      builder.AllowAnyHeader().AllowAnyMethod().AllowAnyOrigin()));
 
-
-builder.Services.AddAutoMapper(typeof(MusicMapper));
 builder.Services.AddAuthentication();
 
 

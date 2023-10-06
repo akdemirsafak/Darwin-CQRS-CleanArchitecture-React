@@ -14,11 +14,8 @@ namespace Darwin.API.Controllers;
 [Authorize]
 public class CategoryController : CustomBaseController
 {
-    private readonly IMediator _mediator;
-
-    public CategoryController(IMediator mediator)
+    public CategoryController(IMediator mediator) : base(mediator)
     {
-        _mediator = mediator;
     }
 
     [HttpGet]

@@ -2,7 +2,7 @@
 
 namespace Darwin.Service.Musics.Queries;
 
-public class GetMusicByIdQueryValidator:AbstractValidator<GetMusicByIdQuery>
+public class GetMusicByIdQueryValidator : AbstractValidator<GetMusicByIdQuery>
 {
     public GetMusicByIdQueryValidator()
     {

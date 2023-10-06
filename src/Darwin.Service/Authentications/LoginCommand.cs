@@ -1,7 +1,5 @@
-﻿using AutoMapper;
-using Darwin.Core.BaseDto;
+﻿using Darwin.Core.BaseDto;
 using Darwin.Core.Entities;
-using Darwin.Model.Common;
 using Darwin.Model.Request.Authentications;
 using Darwin.Service.Common;
 using Darwin.Service.TokenOperations;
@@ -9,9 +7,9 @@ using Microsoft.AspNetCore.Identity;
 
 namespace Darwin.Service.Authentications;
 
-public class LoginCommand:ICommand<DarwinResponse<TokenResponse>>
+public class LoginCommand : ICommand<DarwinResponse<TokenResponse>>
 {
-    public LoginRequest Model { get;}
+    public LoginRequest Model { get; }
 
     public LoginCommand(LoginRequest model)
     {
@@ -48,11 +46,11 @@ public class LoginCommand:ICommand<DarwinResponse<TokenResponse>>
             }
             existUser.LastLogin = DateTime.UtcNow.Ticks;
             var updateResult=await _userManager.UpdateAsync(existUser);
-            if(!updateResult.Succeeded)
+            if (!updateResult.Succeeded)
             {
                 return DarwinResponse<TokenResponse>.Fail("Login cannot updated.", 500); //Refactor
             }
-            return DarwinResponse<TokenResponse>.Success(_tokenService.CreateToken(existUser),200);
+            return DarwinResponse<TokenResponse>.Success(_tokenService.CreateToken(existUser), 200);
         }
     }
 }

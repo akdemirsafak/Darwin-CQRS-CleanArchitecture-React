@@ -9,7 +9,7 @@ using System.Text;
 
 namespace Darwin.Service.TokenOperations;
 
-public class TokenService:ITokenService
+public class TokenService : ITokenService
 {
     private readonly AppTokenOptions _tokenOptions;
     private readonly UserManager<AppUser> _userManager;

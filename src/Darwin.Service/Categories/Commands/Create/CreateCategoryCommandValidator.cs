@@ -6,7 +6,7 @@ public class CreateCategoryCommandValidator : AbstractValidator<CreateCategoryCo
 {
     public CreateCategoryCommandValidator()
     {
-        RuleFor(x=>x.Model.Name).NotEmpty().NotNull().Length(3,64);
+        RuleFor(x => x.Model.Name).NotEmpty().NotNull().Length(3, 64);
         RuleFor(x => x.Model.ImageUrl).NotEmpty().NotNull();
 
     }

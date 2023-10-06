@@ -1,5 +1,4 @@
 ﻿using Darwin.Model.Request.Users;
-using Darwin.Service.Musics.Queries;
 using Darwin.Service.Users.Commands.Create;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
@@ -10,11 +9,10 @@ namespace Darwin.API.Controllers;
 
 public class UserController : CustomBaseController
 {
-    private readonly IMediator _mediator;
-    public UserController(IMediator mediator)
+    public UserController(IMediator mediator) : base(mediator)
     {
-        _mediator = mediator;
     }
+
     [HttpPost]
     public async Task<IActionResult> Create([FromBody] CreateUserRequest request)
     {
