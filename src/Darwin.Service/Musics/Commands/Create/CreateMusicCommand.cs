@@ -1,10 +1,10 @@
-﻿using AutoMapper;
-using Darwin.Core.BaseDto;
+﻿using Darwin.Core.BaseDto;
 using Darwin.Core.Entities;
-using Darwin.Infrastructure;
+using Darwin.Core.RepositoryCore;
 using Darwin.Model.Request.Musics;
 using Darwin.Model.Response.Musics;
 using Darwin.Service.Common;
+using Mapster;
 
 namespace Darwin.Service.Musics.Commands.Create;
 
@@ -18,13 +18,16 @@ public class CreateMusicCommand : ICommand<DarwinResponse<CreatedMusicResponse>>
     }
     public class Handler : ICommandHandler<CreateMusicCommand, DarwinResponse<CreatedMusicResponse>>
     {
-        private readonly DarwinDbContext _dbContext;
-        private readonly IMapper _mapper;
 
-        public Handler(DarwinDbContext dbContext, IMapper mapper)
+        private readonly IGenericRepository<Music> _musicRepositoryAsync;
+        private readonly IGenericRepository<Category> _categoryRepositoryAsync;
+        private readonly IGenericRepository<Mood> _moodRepositoryAsync;
+
+        public Handler(IGenericRepository<Music> musicRepositoryAsync, IGenericRepository<Category> categoryRepositoryAsync, IGenericRepository<Mood> moodRepositoryAsync)
         {
-            _dbContext = dbContext;
-            _mapper = mapper;
+            _musicRepositoryAsync = musicRepositoryAsync;
+            _categoryRepositoryAsync = categoryRepositoryAsync;
+            _moodRepositoryAsync = moodRepositoryAsync;
         }
 
         public async Task<DarwinResponse<CreatedMusicResponse>> Handle(CreateMusicCommand request, CancellationToken cancellationToken)
@@ -37,11 +40,12 @@ public class CreateMusicCommand : ICommand<DarwinResponse<CreatedMusicResponse>>
                 Moods=new List<Mood>(),
                 Categories=new List<Category>(),
             };
-            
+
+
 
             foreach (var moodId in request.Model.MoodIds)
             {
-                Mood existMood = await _dbContext.Moods.FindAsync(moodId);
+                Mood existMood = await _moodRepositoryAsync.GetAsync(x=>x.Id==moodId);
                 if (existMood != null)
                 {
                     music.Moods.Add(existMood);
@@ -49,15 +53,14 @@ public class CreateMusicCommand : ICommand<DarwinResponse<CreatedMusicResponse>>
             }
             foreach (var categoryId in request.Model.CategoryIds)
             {
-                Category existCategory = await _dbContext.Categories.FindAsync(categoryId);
+                Category existCategory = await _categoryRepositoryAsync.GetAsync(x=>x.Id==categoryId);
                 if (existCategory != null)
                 {
                     music.Categories.Add(existCategory);
                 }
             }
-            await _dbContext.AddAsync(music);
-            await _dbContext.SaveChangesAsync();
-            return DarwinResponse<CreatedMusicResponse>.Success(_mapper.Map<CreatedMusicResponse>(music), 201);
+            await _musicRepositoryAsync.CreateAsync(music);
+            return DarwinResponse<CreatedMusicResponse>.Success(music.Adapt<CreatedMusicResponse>(), 201);
         }
     }
 }

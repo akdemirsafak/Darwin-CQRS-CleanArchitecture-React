@@ -2,7 +2,7 @@
 
 namespace Darwin.Core.Entities;
 
-public class Category:BaseEntity
+public class Category : BaseEntity
 {
     [Required, MinLength(3), MaxLength(64)]
     public string Name { get; set; }

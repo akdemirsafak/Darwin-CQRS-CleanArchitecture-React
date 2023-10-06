@@ -1,13 +1,12 @@
-﻿using AutoMapper;
-using Darwin.Core.BaseDto;
-using Darwin.Core.RepositoryCore;
+﻿using Darwin.Core.BaseDto;
 using Darwin.Core.Entities;
+using Darwin.Core.RepositoryCore;
 using Darwin.Model.Common;
 using Darwin.Service.Common;
 
 namespace Darwin.Service.Categories.Commands.Delete;
 
-public class DeleteCategoryCommand:ICommand<DarwinResponse<NoContent>>
+public class DeleteCategoryCommand : ICommand<DarwinResponse<NoContent>>
 {
     public Guid Id { get; }
 
@@ -18,13 +17,12 @@ public class DeleteCategoryCommand:ICommand<DarwinResponse<NoContent>>
 
     public class Handler : ICommandHandler<DeleteCategoryCommand, DarwinResponse<NoContent>>
     {
-        private readonly IGenericRepositoryAsync<Category> _repository;
-        private readonly IMapper _mapper;
+        private readonly IGenericRepository<Category> _repository;
 
-        public Handler(IGenericRepositoryAsync<Category> repository, IMapper mapper)
+
+        public Handler(IGenericRepository<Category> repository)
         {
             _repository = repository;
-            _mapper = mapper;
         }
 
         public async Task<DarwinResponse<NoContent>> Handle(DeleteCategoryCommand request, CancellationToken cancellationToken)

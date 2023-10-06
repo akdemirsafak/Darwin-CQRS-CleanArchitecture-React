@@ -1,15 +1,14 @@
 ﻿using Darwin.Core.RepositoryCore;
 using Microsoft.EntityFrameworkCore;
 using System.Linq.Expressions;
-using System.Security.Principal;
 
 namespace Darwin.Infrastructure.Repository
 {
-    public class GenericRepositoryAsync<T> : IGenericRepositoryAsync<T> where T : class
+    public class GenericRepository<T> : IGenericRepository<T> where T : class
     {
         private readonly DarwinDbContext _dbContext;
 
-        public GenericRepositoryAsync(DarwinDbContext dbContext)
+        public GenericRepository(DarwinDbContext dbContext)
         {
             _dbContext = dbContext;
         }
@@ -18,12 +17,12 @@ namespace Darwin.Infrastructure.Repository
         {
             return await (filter == null ?
                     _dbContext.Set<T>().ToListAsync() :
-                    _dbContext.Set<T>().Where(filter).ToListAsync());
+                    _dbContext.Set<T>().Where(filter).AsNoTracking().ToListAsync());
         }
 
         public async Task<T> GetAsync(Expression<Func<T, bool>> filter)
         {
-            return await _dbContext.Set<T>().SingleOrDefaultAsync(filter);
+            return await _dbContext.Set<T>().AsNoTracking().SingleOrDefaultAsync(filter);
         }
 
         public async Task RemoveAsync(T entity)

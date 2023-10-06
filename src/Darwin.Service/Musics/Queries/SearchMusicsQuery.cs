@@ -1,13 +1,13 @@
-﻿using AutoMapper;
-using Darwin.Core.BaseDto;
+﻿using Darwin.Core.BaseDto;
 using Darwin.Core.Entities;
 using Darwin.Core.RepositoryCore;
 using Darwin.Model.Response.Musics;
 using Darwin.Service.Common;
+using Mapster;
 
 namespace Darwin.Service.Musics.Queries;
 
-public class SearchMusicsQuery:IQuery<DarwinResponse<List<SearchMusicResponse>>>
+public class SearchMusicsQuery : IQuery<DarwinResponse<List<SearchMusicResponse>>>
 {
     public string SearchText { get; }
 
@@ -17,12 +17,11 @@ public class SearchMusicsQuery:IQuery<DarwinResponse<List<SearchMusicResponse>>>
     }
     public class Handler : IQueryHandler<SearchMusicsQuery, DarwinResponse<List<SearchMusicResponse>>>
     {
-        private readonly IGenericRepositoryAsync<Music> _repository;
-        private readonly IMapper _mapper;
+        private readonly IGenericRepository<Music> _repository;
 
-        public Handler(IMapper mapper, IGenericRepositoryAsync<Music> repository)
+
+        public Handler(IGenericRepository<Music> repository)
         {
-            _mapper = mapper;
             _repository = repository;
         }
 
@@ -30,7 +29,7 @@ public class SearchMusicsQuery:IQuery<DarwinResponse<List<SearchMusicResponse>>>
         {
             var existMusics= await _repository.GetAllAsync(x=>
             x.Name.ToLower().TrimStart().TrimEnd().Contains(request.SearchText.ToLower().TrimStart().TrimEnd()));
-            return DarwinResponse<List<SearchMusicResponse>>.Success(_mapper.Map<List<SearchMusicResponse>>(existMusics));
+            return DarwinResponse<List<SearchMusicResponse>>.Success(existMusics.Adapt<List<SearchMusicResponse>>());
         }
     }
 }

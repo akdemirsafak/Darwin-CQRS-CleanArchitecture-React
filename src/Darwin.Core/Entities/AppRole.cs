@@ -2,6 +2,6 @@
 
 namespace Darwin.Core.Entities;
 
-public class AppRole:IdentityRole
+public class AppRole : IdentityRole
 {
 }

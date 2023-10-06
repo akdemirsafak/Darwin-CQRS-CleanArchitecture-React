@@ -2,7 +2,7 @@
 
 namespace Darwin.Service.Musics.Queries;
 
-public class SearchMusicsQueryValidator:AbstractValidator<SearchMusicsQuery>
+public class SearchMusicsQueryValidator : AbstractValidator<SearchMusicsQuery>
 {
     public SearchMusicsQueryValidator()
     {

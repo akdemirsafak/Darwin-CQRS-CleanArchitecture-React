@@ -2,7 +2,7 @@
 
 namespace Darwin.Core.Entities;
 
-public class Mood:BaseEntity
+public class Mood : BaseEntity
 {
     [Required, MinLength(3), MaxLength(64)]
     public string Name { get; set; }

@@ -1,23 +1,22 @@
-﻿using AutoMapper;
-using Darwin.Core.BaseDto;
+﻿using Darwin.Core.BaseDto;
 using Darwin.Core.Entities;
 using Darwin.Core.RepositoryCore;
 using Darwin.Model.Response.Moods;
 using Darwin.Service.Common;
+using Mapster;
 
 namespace Darwin.Service.Moods.Queries;
 
-public class GetMoodsQuery:IQuery<DarwinResponse<List<GetMoodResponse>>>
+public class GetMoodsQuery : IQuery<DarwinResponse<List<GetMoodResponse>>>
 {
     public class Handler : IQueryHandler<GetMoodsQuery, DarwinResponse<List<GetMoodResponse>>>
     {
-        private readonly IGenericRepositoryAsync<Mood> _repository;
-        private readonly IMapper _mapper;
+        private readonly IGenericRepository<Mood> _repository;
 
-        public Handler(IGenericRepositoryAsync<Mood> repository, IMapper mapper)
+
+        public Handler(IGenericRepository<Mood> repository)
         {
             _repository = repository;
-            _mapper = mapper;
         }
 
         public async Task<DarwinResponse<List<GetMoodResponse>>> Handle(GetMoodsQuery request, CancellationToken cancellationToken)
@@ -27,7 +26,7 @@ public class GetMoodsQuery:IQuery<DarwinResponse<List<GetMoodResponse>>>
             {
                 return DarwinResponse<List<GetMoodResponse>>.Fail("NotFound.");
             }
-            return DarwinResponse<List<GetMoodResponse>>.Success(_mapper.Map<List<GetMoodResponse>>(moods));
+            return DarwinResponse<List<GetMoodResponse>>.Success(moods.Adapt<List<GetMoodResponse>>());
         }
     }
 }

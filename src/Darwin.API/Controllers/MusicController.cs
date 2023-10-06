@@ -10,11 +10,8 @@ namespace Darwin.API.Controllers
 {
     public class MusicController : CustomBaseController
     {
-        private readonly IMediator _mediator;
-
-        public MusicController(IMediator mediator)
+        public MusicController(IMediator mediator) : base(mediator)
         {
-            _mediator = mediator;
         }
 
         [HttpGet]
@@ -41,7 +38,7 @@ namespace Darwin.API.Controllers
         [HttpPut("{id}")]
         public async Task<IActionResult> Update(Guid id, [FromBody] UpdateMusicRequest request)
         {
-            return CreateActionResult(await _mediator.Send(new UpdateMusicCommand(id,request)));
+            return CreateActionResult(await _mediator.Send(new UpdateMusicCommand(id, request)));
         }
         [HttpDelete("{id}")]
         public async Task<IActionResult> Delete(Guid id)
