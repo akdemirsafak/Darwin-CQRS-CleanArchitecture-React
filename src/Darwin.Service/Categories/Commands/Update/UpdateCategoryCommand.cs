@@ -20,10 +20,10 @@ public class UpdateCategoryCommand : ICommand<DarwinResponse<UpdatedCategoryResp
 
     public class Handler : ICommandHandler<UpdateCategoryCommand, DarwinResponse<UpdatedCategoryResponse>>
     {
-        private readonly IGenericRepositoryAsync<Category> _repository;
+        private readonly IGenericRepository<Category> _repository;
 
 
-        public Handler(IGenericRepositoryAsync<Category> repository)
+        public Handler(IGenericRepository<Category> repository)
         {
             _repository = repository;
         }

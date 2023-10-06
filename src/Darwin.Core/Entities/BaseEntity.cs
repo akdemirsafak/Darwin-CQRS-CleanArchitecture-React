@@ -1,6 +1,6 @@
 ﻿namespace Darwin.Core.Entities;
 
-public class BaseEntity
+public abstract class BaseEntity
 {
     public Guid Id { get; set; }
     public long CreatedAt { get; set; }

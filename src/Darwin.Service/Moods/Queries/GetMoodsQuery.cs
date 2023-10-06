@@ -11,10 +11,10 @@ public class GetMoodsQuery : IQuery<DarwinResponse<List<GetMoodResponse>>>
 {
     public class Handler : IQueryHandler<GetMoodsQuery, DarwinResponse<List<GetMoodResponse>>>
     {
-        private readonly IGenericRepositoryAsync<Mood> _repository;
+        private readonly IGenericRepository<Mood> _repository;
 
 
-        public Handler(IGenericRepositoryAsync<Mood> repository)
+        public Handler(IGenericRepository<Mood> repository)
         {
             _repository = repository;
         }

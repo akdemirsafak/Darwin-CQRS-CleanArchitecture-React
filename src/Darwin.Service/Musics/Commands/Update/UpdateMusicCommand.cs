@@ -20,9 +20,9 @@ public class UpdateMusicCommand : ICommand<DarwinResponse<UpdatedMusicResponse>>
 
     public class Handler : ICommandHandler<UpdateMusicCommand, DarwinResponse<UpdatedMusicResponse>>
     {
-        private readonly IGenericRepositoryAsync<Music> _repository;
+        private readonly IGenericRepository<Music> _repository;
 
-        public Handler(IGenericRepositoryAsync<Music> repository)
+        public Handler(IGenericRepository<Music> repository)
         {
             _repository = repository;
         }

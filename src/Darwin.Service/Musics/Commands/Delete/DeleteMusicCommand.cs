@@ -17,9 +17,9 @@ public class DeleteMusicCommand : ICommand<DarwinResponse<NoContent>>
 
     public class Handler : ICommandHandler<DeleteMusicCommand, DarwinResponse<NoContent>>
     {
-        private readonly IGenericRepositoryAsync<Music> _repository;
+        private readonly IGenericRepository<Music> _repository;
 
-        public Handler(IGenericRepositoryAsync<Music> repository)
+        public Handler(IGenericRepository<Music> repository)
         {
             _repository = repository;
         }

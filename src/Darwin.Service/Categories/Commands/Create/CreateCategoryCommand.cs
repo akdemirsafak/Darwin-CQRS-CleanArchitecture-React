@@ -19,9 +19,9 @@ public class CreateCategoryCommand : ICommand<DarwinResponse<CreatedCategoryResp
 
     public class Handler : ICommandHandler<CreateCategoryCommand, DarwinResponse<CreatedCategoryResponse>>
     {
-        private readonly IGenericRepositoryAsync<Category> _repository;
+        private readonly IGenericRepository<Category> _repository;
 
-        public Handler(IGenericRepositoryAsync<Category> repository)
+        public Handler(IGenericRepository<Category> repository)
         {
             _repository = repository;
         }

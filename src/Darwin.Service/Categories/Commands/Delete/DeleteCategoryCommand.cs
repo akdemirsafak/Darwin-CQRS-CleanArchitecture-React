@@ -17,10 +17,10 @@ public class DeleteCategoryCommand : ICommand<DarwinResponse<NoContent>>
 
     public class Handler : ICommandHandler<DeleteCategoryCommand, DarwinResponse<NoContent>>
     {
-        private readonly IGenericRepositoryAsync<Category> _repository;
+        private readonly IGenericRepository<Category> _repository;
 
 
-        public Handler(IGenericRepositoryAsync<Category> repository)
+        public Handler(IGenericRepository<Category> repository)
         {
             _repository = repository;
         }

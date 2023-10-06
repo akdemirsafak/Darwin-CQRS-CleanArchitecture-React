@@ -12,9 +12,9 @@ public class GetMusicsQuery : IQuery<DarwinResponse<List<GetMusicResponse>>>
 
     public class Handler : IQueryHandler<GetMusicsQuery, DarwinResponse<List<GetMusicResponse>>>
     {
-        private readonly IGenericRepositoryAsync<Music> _repository;
+        private readonly IGenericRepository<Music> _repository;
 
-        public Handler(IGenericRepositoryAsync<Music> repository)
+        public Handler(IGenericRepository<Music> repository)
         {
             _repository = repository;
         }
