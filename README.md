@@ -12,10 +12,11 @@
 10. Attribute Based Entity Configurations
 11. Fluent Validation for Request's
 12. Identity Authentication / Authorization
-13. Policy and Role based Authorization
-14. Identity Localization
-15. Json Web Token / JwtBearer
-16. RateLimiter -> TokenBucket
-17. Sentry.io for Log Monitoring
-18. Cors
-19. xUnit and NSubstitute Mock for Unit tests 
+13. Identity Error Describer
+14. Policy and Role based Authorization
+15. Identity Localization
+16. Json Web Token / JwtBearer
+17. RateLimiter -> TokenBucket
+18. Sentry.io for Log Monitoring
+19. Cors
+20. xUnit and NSubstitute Mock for Unit tests 
