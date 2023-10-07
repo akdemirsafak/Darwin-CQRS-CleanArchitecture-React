@@ -3,9 +3,8 @@ using Darwin.Core.RepositoryCore;
 using Darwin.Core.UnitofWorkCore;
 using Darwin.Model.Request.Moods;
 using Darwin.Model.Response.Moods;
-using Darwin.Service.Moods.Commands.Create;
-using Darwin.Service.Moods.Commands.Update;
-using Darwin.Service.Moods.Queries;
+using Darwin.Service.Features.Moods.Commands;
+using Darwin.Service.Features.Moods.Queries;
 using Mapster;
 using NSubstitute;
 using System.Linq.Expressions;
@@ -50,8 +49,8 @@ public class MoodTest
         _moodRepository.GetAllAsync().Returns(Task.FromResult(moodList));
         moodList.Adapt<List<GetMoodResponse>>();
 
-        var command= new GetMoodsQuery();
-        var commandHandler= new GetMoodsQuery.Handler(_moodRepository);
+        var command= new GetMoods.Query();
+        var commandHandler= new GetMoods.QueryHandler(_moodRepository);
 
         //Act
 
@@ -86,8 +85,8 @@ public class MoodTest
             Name=mood.Name
         };
         var request= new CreateMoodRequest(mood.Name,mood.ImageUrl,mood.IsUsable);
-        var command= new CreateMoodCommand(request);
-        var commandHandler= new CreateMoodCommand.Handler(_moodRepository,_unitOfWork);
+        var command= new CreateMood.Command(request);
+        var commandHandler= new CreateMood.CommandHandler(_moodRepository,_unitOfWork);
 
         //action
 
@@ -130,8 +129,8 @@ public class MoodTest
             Name=newValues.Name
         };
         var request= new UpdateMoodRequest(newValues.Name,newValues.ImageUrl,newValues.IsUsable);
-        var command= new UpdateMoodCommand(mood.Id,request);
-        var commandHandler=new UpdateMoodCommand.Handler(_moodRepository, _unitOfWork);
+        var command= new UpdateMood.Command(mood.Id,request);
+        var commandHandler=new UpdateMood.CommandHandler(_moodRepository, _unitOfWork);
 
         // Action
         var result= await commandHandler.Handle(command,CancellationToken.None);
