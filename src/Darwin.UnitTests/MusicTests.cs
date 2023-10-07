@@ -1,5 +1,6 @@
 ﻿using Darwin.Core.Entities;
 using Darwin.Core.RepositoryCore;
+using Darwin.Core.UnitofWorkCore;
 using Darwin.Model.Request.Musics;
 using Darwin.Model.Response.Musics;
 using Darwin.Service.Musics.Commands.Create;
@@ -17,12 +18,14 @@ public class MusicTests
     private readonly IGenericRepository<Music> _musicRepository;
     private readonly IGenericRepository<Mood> _moodRepository;
     private readonly IGenericRepository<Category> _categoryRepository;
+    private readonly IUnitOfWork _unitOfWork;
 
     public MusicTests()
     {
         _musicRepository = Substitute.For<IGenericRepository<Music>>();
         _moodRepository = Substitute.For<IGenericRepository<Mood>>();
         _categoryRepository = Substitute.For<IGenericRepository<Category>>();
+        _unitOfWork = Substitute.For<IUnitOfWork>();
     }
 
     //GetMusics
@@ -87,7 +90,7 @@ public class MusicTests
         _musicRepository.RemoveAsync(Arg.Any<Music>()).Returns(Task.FromResult(music));
 
         var command= new DeleteMusicCommand(music.Id);
-        var commandHandler = new DeleteMusicCommand.Handler(_musicRepository);
+        var commandHandler = new DeleteMusicCommand.Handler(_musicRepository,_unitOfWork);
     }
 
 
@@ -194,7 +197,7 @@ public class MusicTests
             }
         };
         string searchText="Still";
-        _musicRepository.GetAllAsync(Arg.Any<Expression<Func<Music,bool>>>()).Returns(Task.FromResult(musicList));
+        _musicRepository.GetAllAsync(Arg.Any<Expression<Func<Music, bool>>>()).Returns(Task.FromResult(musicList));
         musicList.Adapt<List<GetMusicResponse>>();
         var query= new SearchMusicsQuery(searchText);
         var queryHandler= new SearchMusicsQuery.Handler(_musicRepository);
@@ -206,7 +209,7 @@ public class MusicTests
     }
 
 
-    
+
     //CreateMusic
 
 
@@ -278,7 +281,7 @@ public class MusicTests
         music.Adapt<CreatedMusicResponse>();
         var request=new CreateMusicRequest(music.Name,music.ImageUrl,music.IsUsable,categoryIds,moodIds);
         var command=new CreateMusicCommand(request);
-        var commandHandler=new CreateMusicCommand.Handler(_musicRepository,_categoryRepository,_moodRepository);
+        var commandHandler=new CreateMusicCommand.Handler(_musicRepository,_categoryRepository,_moodRepository,_unitOfWork);
 
         //act
         var result=await commandHandler.Handle(command,CancellationToken.None);

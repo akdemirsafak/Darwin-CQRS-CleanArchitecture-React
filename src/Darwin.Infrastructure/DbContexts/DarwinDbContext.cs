@@ -2,7 +2,7 @@
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 
-namespace Darwin.Infrastructure;
+namespace Darwin.Infrastructure.DbContexts;
 
 public class DarwinDbContext : IdentityDbContext<AppUser, AppRole, string>
 {
@@ -13,6 +13,7 @@ public class DarwinDbContext : IdentityDbContext<AppUser, AppRole, string>
     public DbSet<Music> Musics { get; set; }
     public DbSet<Mood> Moods { get; set; }
     public DbSet<Category> Categories { get; set; }
+
 
     protected override void OnModelCreating(ModelBuilder builder)
     {
