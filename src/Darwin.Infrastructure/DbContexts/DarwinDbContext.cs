@@ -14,6 +14,7 @@ public class DarwinDbContext : IdentityDbContext<AppUser, AppRole, string>
     public DbSet<Mood> Moods { get; set; }
     public DbSet<Category> Categories { get; set; }
 
+
     protected override void OnModelCreating(ModelBuilder builder)
     {
         builder.Entity<Mood>().Navigation(c => c.Music).AutoInclude();
