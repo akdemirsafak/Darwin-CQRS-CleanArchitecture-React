@@ -1,4 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore.Migrations;
+﻿using System;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
 #nullable disable
@@ -6,7 +7,7 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace Darwin.Infrastructure.Migrations
 {
     /// <inheritdoc />
-    public partial class readynow : Migration
+    public partial class InitialCreate : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -30,6 +31,7 @@ namespace Darwin.Infrastructure.Migrations
                 columns: table => new
                 {
                     Id = table.Column<string>(type: "text", nullable: false),
+                    LastLogin = table.Column<long>(type: "bigint", nullable: true),
                     UserName = table.Column<string>(type: "character varying(256)", maxLength: 256, nullable: true),
                     NormalizedUserName = table.Column<string>(type: "character varying(256)", maxLength: 256, nullable: true),
                     Email = table.Column<string>(type: "character varying(256)", maxLength: 256, nullable: true),
@@ -74,6 +76,7 @@ namespace Darwin.Infrastructure.Migrations
                     Id = table.Column<Guid>(type: "uuid", nullable: false),
                     Name = table.Column<string>(type: "character varying(64)", maxLength: 64, nullable: false),
                     ImageUrl = table.Column<string>(type: "text", nullable: true),
+                    IsUsable = table.Column<bool>(type: "boolean", nullable: false),
                     CreatedAt = table.Column<long>(type: "bigint", nullable: false),
                     UpdatedAt = table.Column<long>(type: "bigint", nullable: true),
                     DeletedAt = table.Column<long>(type: "bigint", nullable: true)
@@ -89,8 +92,7 @@ namespace Darwin.Infrastructure.Migrations
                 {
                     Id = table.Column<Guid>(type: "uuid", nullable: false),
                     Name = table.Column<string>(type: "character varying(64)", maxLength: 64, nullable: false),
-                    ImageUrl = table.Column<string>(type: "text", nullable: true),
-                    Publishers = table.Column<string>(type: "character varying(100)", maxLength: 100, nullable: false),
+                    ImageUrl = table.Column<string>(type: "text", nullable: false),
                     IsUsable = table.Column<bool>(type: "boolean", nullable: false),
                     CreatedAt = table.Column<long>(type: "bigint", nullable: false),
                     UpdatedAt = table.Column<long>(type: "bigint", nullable: true),
@@ -99,6 +101,20 @@ namespace Darwin.Infrastructure.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Musics", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "UserRefreshTokens",
+                columns: table => new
+                {
+                    Id = table.Column<Guid>(type: "uuid", nullable: false),
+                    UserId = table.Column<string>(type: "text", nullable: false),
+                    Code = table.Column<string>(type: "text", nullable: false),
+                    Expiration = table.Column<DateTime>(type: "timestamp with time zone", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_UserRefreshTokens", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
@@ -236,11 +252,11 @@ namespace Darwin.Infrastructure.Migrations
                 columns: table => new
                 {
                     MoodsId = table.Column<Guid>(type: "uuid", nullable: false),
-                    MusicsId = table.Column<Guid>(type: "uuid", nullable: false)
+                    MusicId = table.Column<Guid>(type: "uuid", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_MoodMusic", x => new { x.MoodsId, x.MusicsId });
+                    table.PrimaryKey("PK_MoodMusic", x => new { x.MoodsId, x.MusicId });
                     table.ForeignKey(
                         name: "FK_MoodMusic_Moods_MoodsId",
                         column: x => x.MoodsId,
@@ -248,8 +264,8 @@ namespace Darwin.Infrastructure.Migrations
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "FK_MoodMusic_Musics_MusicsId",
-                        column: x => x.MusicsId,
+                        name: "FK_MoodMusic_Musics_MusicId",
+                        column: x => x.MusicId,
                         principalTable: "Musics",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
@@ -298,9 +314,9 @@ namespace Darwin.Infrastructure.Migrations
                 column: "MusicsId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_MoodMusic_MusicsId",
+                name: "IX_MoodMusic_MusicId",
                 table: "MoodMusic",
-                column: "MusicsId");
+                column: "MusicId");
         }
 
         /// <inheritdoc />
@@ -326,6 +342,9 @@ namespace Darwin.Infrastructure.Migrations
 
             migrationBuilder.DropTable(
                 name: "MoodMusic");
+
+            migrationBuilder.DropTable(
+                name: "UserRefreshTokens");
 
             migrationBuilder.DropTable(
                 name: "AspNetRoles");

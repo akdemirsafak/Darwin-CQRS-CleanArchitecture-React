@@ -37,7 +37,7 @@ public class RegisterCommand : ICommand<DarwinResponse<TokenResponse>>
             {
                 return DarwinResponse<TokenResponse>.Fail(registerResult.Errors.Select(x => x.Description).ToList());
             }
-            return DarwinResponse<TokenResponse>.Success(_tokenService.CreateToken(appUser), 201);
+            return DarwinResponse<TokenResponse>.Success(await _tokenService.CreateTokenAsync(appUser), 201);
         }
     }
 }
