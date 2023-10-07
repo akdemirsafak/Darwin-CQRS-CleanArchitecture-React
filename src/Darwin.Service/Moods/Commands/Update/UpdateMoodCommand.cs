@@ -1,6 +1,7 @@
 ﻿using Darwin.Core.BaseDto;
 using Darwin.Core.Entities;
 using Darwin.Core.RepositoryCore;
+using Darwin.Core.UnitofWorkCore;
 using Darwin.Model.Request.Moods;
 using Darwin.Model.Response.Moods;
 using Darwin.Service.Common;
@@ -21,11 +22,13 @@ public class UpdateMoodCommand : ICommand<DarwinResponse<UpdatedMoodResponse>>
     public class Handler : ICommandHandler<UpdateMoodCommand, DarwinResponse<UpdatedMoodResponse>>
     {
         private readonly IGenericRepository<Mood> _repository;
+        private readonly IUnitOfWork _unitOfWork;
 
 
-        public Handler(IGenericRepository<Mood> repository)
+        public Handler(IGenericRepository<Mood> repository, IUnitOfWork unitOfWork)
         {
             _repository = repository;
+            _unitOfWork = unitOfWork;
         }
 
         public async Task<DarwinResponse<UpdatedMoodResponse>> Handle(UpdateMoodCommand request, CancellationToken cancellationToken)
@@ -40,6 +43,7 @@ public class UpdateMoodCommand : ICommand<DarwinResponse<UpdatedMoodResponse>>
             existMood.IsUsable = request.Model.IsUsable;
             existMood.UpdatedAt = DateTime.UtcNow.Ticks;
             await _repository.UpdateAsync(existMood);
+            await _unitOfWork.CommitAsync();
             return DarwinResponse<UpdatedMoodResponse>.Success(existMood.Adapt<UpdatedMoodResponse>(), 204);
         }
     }

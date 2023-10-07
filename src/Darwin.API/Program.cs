@@ -1,10 +1,12 @@
 ﻿using Darwin.Core.Entities;
 using Darwin.Core.RepositoryCore;
-using Darwin.Infrastructure;
+using Darwin.Core.UnitofWorkCore;
+using Darwin.Infrastructure.DbContexts;
 using Darwin.Infrastructure.Repository;
 using Darwin.Service.Localizations;
 using Darwin.Service.Musics.Commands.Create;
 using Darwin.Service.TokenOperations;
+using Darwin.Service.Uof;
 using FluentValidation.AspNetCore;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity;
@@ -91,6 +93,7 @@ builder.Services.AddScoped<ITokenService, TokenService>();
 
 builder.Services.Configure<AppTokenOptions>(builder.Configuration.GetSection("AppTokenOptions"));
 
+builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
 builder.Services.AddScoped(typeof(IGenericRepository<>), typeof(GenericRepository<>));
 
 //builder.Services.AddMediatR(cfg => cfg.RegisterServicesFromAssemblies(Assembly.GetExecutingAssembly()));
