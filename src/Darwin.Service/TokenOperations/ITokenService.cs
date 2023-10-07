@@ -4,5 +4,5 @@ namespace Darwin.Service.TokenOperations;
 
 public interface ITokenService
 {
-    TokenResponse CreateToken(AppUser appUser);
+    Task<TokenResponse> CreateTokenAsync(AppUser appUser);
 }

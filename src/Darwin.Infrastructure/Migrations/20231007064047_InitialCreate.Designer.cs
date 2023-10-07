@@ -12,8 +12,8 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace Darwin.Infrastructure.Migrations
 {
     [DbContext(typeof(DarwinDbContext))]
-    [Migration("20230826075619_navigationproperty")]
-    partial class navigationproperty
+    [Migration("20231007064047_InitialCreate")]
+    partial class InitialCreate
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -24,6 +24,21 @@ namespace Darwin.Infrastructure.Migrations
                 .HasAnnotation("Relational:MaxIdentifierLength", 63);
 
             NpgsqlModelBuilderExtensions.UseIdentityByDefaultColumns(modelBuilder);
+
+            modelBuilder.Entity("CategoryMusic", b =>
+                {
+                    b.Property<Guid>("CategoriesId")
+                        .HasColumnType("uuid");
+
+                    b.Property<Guid>("MusicsId")
+                        .HasColumnType("uuid");
+
+                    b.HasKey("CategoriesId", "MusicsId");
+
+                    b.HasIndex("MusicsId");
+
+                    b.ToTable("CategoryMusic");
+                });
 
             modelBuilder.Entity("Darwin.Core.Entities.AppRole", b =>
                 {
@@ -69,6 +84,9 @@ namespace Darwin.Infrastructure.Migrations
 
                     b.Property<bool>("EmailConfirmed")
                         .HasColumnType("boolean");
+
+                    b.Property<long?>("LastLogin")
+                        .HasColumnType("bigint");
 
                     b.Property<bool>("LockoutEnabled")
                         .HasColumnType("boolean");
@@ -161,6 +179,9 @@ namespace Darwin.Infrastructure.Migrations
                     b.Property<string>("ImageUrl")
                         .HasColumnType("text");
 
+                    b.Property<bool>("IsUsable")
+                        .HasColumnType("boolean");
+
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasMaxLength(64)
@@ -187,6 +208,7 @@ namespace Darwin.Infrastructure.Migrations
                         .HasColumnType("bigint");
 
                     b.Property<string>("ImageUrl")
+                        .IsRequired()
                         .HasColumnType("text");
 
                     b.Property<bool>("IsUsable")
@@ -197,11 +219,6 @@ namespace Darwin.Infrastructure.Migrations
                         .HasMaxLength(64)
                         .HasColumnType("character varying(64)");
 
-                    b.Property<string>("Publishers")
-                        .IsRequired()
-                        .HasMaxLength(100)
-                        .HasColumnType("character varying(100)");
-
                     b.Property<long?>("UpdatedAt")
                         .HasColumnType("bigint");
 
@@ -210,64 +227,26 @@ namespace Darwin.Infrastructure.Migrations
                     b.ToTable("Musics");
                 });
 
-            modelBuilder.Entity("Darwin.Core.Entities.MusicCategory", b =>
+            modelBuilder.Entity("Darwin.Core.Entities.UserRefreshToken", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uuid");
 
-                    b.Property<Guid>("CategoryId")
-                        .HasColumnType("uuid");
+                    b.Property<string>("Code")
+                        .IsRequired()
+                        .HasColumnType("text");
 
-                    b.Property<long>("CreatedAt")
-                        .HasColumnType("bigint");
+                    b.Property<DateTime>("Expiration")
+                        .HasColumnType("timestamp with time zone");
 
-                    b.Property<long?>("DeletedAt")
-                        .HasColumnType("bigint");
-
-                    b.Property<Guid>("MusicId")
-                        .HasColumnType("uuid");
-
-                    b.Property<long?>("UpdatedAt")
-                        .HasColumnType("bigint");
+                    b.Property<string>("UserId")
+                        .IsRequired()
+                        .HasColumnType("text");
 
                     b.HasKey("Id");
 
-                    b.HasIndex("CategoryId");
-
-                    b.HasIndex("MusicId");
-
-                    b.ToTable("MusicCategory");
-                });
-
-            modelBuilder.Entity("Darwin.Core.Entities.MusicMood", b =>
-                {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uuid");
-
-                    b.Property<long>("CreatedAt")
-                        .HasColumnType("bigint");
-
-                    b.Property<long?>("DeletedAt")
-                        .HasColumnType("bigint");
-
-                    b.Property<Guid>("MoodId")
-                        .HasColumnType("uuid");
-
-                    b.Property<Guid>("MusicId")
-                        .HasColumnType("uuid");
-
-                    b.Property<long?>("UpdatedAt")
-                        .HasColumnType("bigint");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("MoodId");
-
-                    b.HasIndex("MusicId");
-
-                    b.ToTable("MusicMood");
+                    b.ToTable("UserRefreshTokens");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
@@ -376,36 +355,32 @@ namespace Darwin.Infrastructure.Migrations
                     b.ToTable("AspNetUserTokens", (string)null);
                 });
 
-            modelBuilder.Entity("Darwin.Core.Entities.MusicCategory", b =>
+            modelBuilder.Entity("MoodMusic", b =>
                 {
-                    b.HasOne("Darwin.Core.Entities.Category", "Category")
-                        .WithMany("Musics")
-                        .HasForeignKey("CategoryId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                    b.Property<Guid>("MoodsId")
+                        .HasColumnType("uuid");
 
-                    b.HasOne("Darwin.Core.Entities.Music", "Music")
-                        .WithMany("Categories")
-                        .HasForeignKey("MusicId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                    b.Property<Guid>("MusicId")
+                        .HasColumnType("uuid");
 
-                    b.Navigation("Category");
+                    b.HasKey("MoodsId", "MusicId");
 
-                    b.Navigation("Music");
+                    b.HasIndex("MusicId");
+
+                    b.ToTable("MoodMusic");
                 });
 
-            modelBuilder.Entity("Darwin.Core.Entities.MusicMood", b =>
+            modelBuilder.Entity("CategoryMusic", b =>
                 {
-                    b.HasOne("Darwin.Core.Entities.Mood", null)
-                        .WithMany("Musics")
-                        .HasForeignKey("MoodId")
+                    b.HasOne("Darwin.Core.Entities.Category", null)
+                        .WithMany()
+                        .HasForeignKey("CategoriesId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.HasOne("Darwin.Core.Entities.Music", null)
-                        .WithMany("Moods")
-                        .HasForeignKey("MusicId")
+                        .WithMany()
+                        .HasForeignKey("MusicsId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
                 });
@@ -461,21 +436,19 @@ namespace Darwin.Infrastructure.Migrations
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("Darwin.Core.Entities.Category", b =>
+            modelBuilder.Entity("MoodMusic", b =>
                 {
-                    b.Navigation("Musics");
-                });
+                    b.HasOne("Darwin.Core.Entities.Mood", null)
+                        .WithMany()
+                        .HasForeignKey("MoodsId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
-            modelBuilder.Entity("Darwin.Core.Entities.Mood", b =>
-                {
-                    b.Navigation("Musics");
-                });
-
-            modelBuilder.Entity("Darwin.Core.Entities.Music", b =>
-                {
-                    b.Navigation("Categories");
-
-                    b.Navigation("Moods");
+                    b.HasOne("Darwin.Core.Entities.Music", null)
+                        .WithMany()
+                        .HasForeignKey("MusicId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
                 });
 #pragma warning restore 612, 618
         }

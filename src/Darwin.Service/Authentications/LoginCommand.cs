@@ -50,8 +50,7 @@ public class LoginCommand : ICommand<DarwinResponse<TokenResponse>>
             {
                 return DarwinResponse<TokenResponse>.Fail("Login cannot updated.", 500); //Refactor
             }
-            return DarwinResponse<TokenResponse>.Success(_tokenService.CreateToken(existUser), 200);
-                userRefreshToken.Expiration = token.RefreshTokenExpiration.Ticks;
+            return DarwinResponse<TokenResponse>.Success(await _tokenService.CreateTokenAsync(existUser), 200);
         }
     }
 }
