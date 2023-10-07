@@ -3,9 +3,8 @@ using Darwin.Core.RepositoryCore;
 using Darwin.Core.UnitofWorkCore;
 using Darwin.Model.Request.Musics;
 using Darwin.Model.Response.Musics;
-using Darwin.Service.Musics.Commands.Create;
-using Darwin.Service.Musics.Commands.Delete;
-using Darwin.Service.Musics.Queries;
+using Darwin.Service.Features.Musics.Commands;
+using Darwin.Service.Features.Musics.Queries;
 using Mapster;
 using Microsoft.AspNetCore.Http;
 using NSubstitute;
@@ -61,8 +60,8 @@ public class MusicTests
 
         _musicRepository.GetAllAsync().Returns(Task.FromResult(musicList));
         musicList.Adapt<List<GetMusicResponse>>();
-        var query= new GetMusicsQuery();
-        var queryHandler= new GetMusicsQuery.Handler(_musicRepository);
+        var query= new GetMusics.Query();
+        var queryHandler= new GetMusics.QueryHandler(_musicRepository);
         //Act
         var result= await queryHandler.Handle(query,CancellationToken.None);
 
@@ -89,8 +88,8 @@ public class MusicTests
         _musicRepository.GetAsync(Arg.Any<Expression<Func<Music, bool>>>()).Returns(music);
         _musicRepository.RemoveAsync(Arg.Any<Music>()).Returns(Task.FromResult(music));
 
-        var command= new DeleteMusicCommand(music.Id);
-        var commandHandler = new DeleteMusicCommand.Handler(_musicRepository,_unitOfWork);
+        var command= new DeleteMusic.Command(music.Id);
+        var commandHandler = new DeleteMusic.CommandHandler(_musicRepository,_unitOfWork);
     }
 
 
@@ -199,8 +198,8 @@ public class MusicTests
         string searchText="Still";
         _musicRepository.GetAllAsync(Arg.Any<Expression<Func<Music, bool>>>()).Returns(Task.FromResult(musicList));
         musicList.Adapt<List<GetMusicResponse>>();
-        var query= new SearchMusicsQuery(searchText);
-        var queryHandler= new SearchMusicsQuery.Handler(_musicRepository);
+        var query= new SearchMusics.Query(searchText);
+        var queryHandler= new SearchMusics.QueryHandler(_musicRepository);
         //Act
         var result= await queryHandler.Handle(query,CancellationToken.None);
 
@@ -280,8 +279,8 @@ public class MusicTests
         };
         music.Adapt<CreatedMusicResponse>();
         var request=new CreateMusicRequest(music.Name,music.ImageUrl,music.IsUsable,categoryIds,moodIds);
-        var command=new CreateMusicCommand(request);
-        var commandHandler=new CreateMusicCommand.Handler(_musicRepository,_categoryRepository,_moodRepository,_unitOfWork);
+        var command=new CreateMusic.Command(request);
+        var commandHandler=new CreateMusic.CommandHandler(_musicRepository,_categoryRepository,_moodRepository,_unitOfWork);
 
         //act
         var result=await commandHandler.Handle(command,CancellationToken.None);

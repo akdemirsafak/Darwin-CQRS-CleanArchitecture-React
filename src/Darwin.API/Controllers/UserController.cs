@@ -1,5 +1,5 @@
 ﻿using Darwin.Model.Request.Users;
-using Darwin.Service.Users.Commands.Create;
+using Darwin.Service.Features.Users.Commands;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 
@@ -16,6 +16,6 @@ public class UserController : CustomBaseController
     [HttpPost]
     public async Task<IActionResult> Create([FromBody] CreateUserRequest request)
     {
-        return CreateActionResult(await _mediator.Send(new CreateUserCommand(request)));
+        return CreateActionResult(await _mediator.Send(new CreateUser.Command(request)));
     }
 }

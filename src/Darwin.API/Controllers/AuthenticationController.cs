@@ -1,5 +1,5 @@
 ﻿using Darwin.Model.Request.Authentications;
-using Darwin.Service.Authentications;
+using Darwin.Service.Features.Authentications;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 
@@ -15,11 +15,11 @@ public class AuthenticationController : CustomBaseController
     [HttpPost("[action]")]
     public async Task<IActionResult> Login(LoginRequest request)
     {
-        return CreateActionResult(await _mediator.Send(new LoginCommand(request)));
+        return CreateActionResult(await _mediator.Send(new Login.Command(request)));
     }
     [HttpPost("[action]")]
     public async Task<IActionResult> Register(RegisterRequest request)
     {
-        return CreateActionResult(await _mediator.Send(new RegisterCommand(request)));
+        return CreateActionResult(await _mediator.Send(new Register.Command(request)));
     }
 }
