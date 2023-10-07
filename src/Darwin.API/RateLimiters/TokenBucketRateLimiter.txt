@@ -1,0 +1,29 @@
+﻿builder.Services.AddRateLimiter(options=>{
+    //Her bir periyotta işlenecek requeste karşılık token oluşturulur. Örneğin her periyotta 4 req/token olacak.
+    //Periyotların 4 er request kabul ettiğini varsayarsak ilk periyot 5 req alırsa 2. periyottan 1 token/req alınır ve işlenir. 2. periyotta ise 3 token kalmış olur.Bu periyotlar arası geçişte kalantoken+n tane (belirlenen token artış miktarı) belirlenir ve bu miktar tokenda kullanılabilecek token adedi olur.
+    //FAKAT BU MİKTAR belirtilen default token sayısından fazla olamaz.
+    options.AddTokenBucketLimiter("BucketLimiter", _options =>
+    {
+        _options.TokenLimit = 4;
+        _options.TokensPerPeriod = 3; //Her periyotta üretilecek token sayısı 4 den fazla desek bile max 4 tane üretilecek.
+        _options.QueueLimit = 5;
+        _options.QueueProcessingOrder = QueueProcessingOrder.OldestFirst;
+        _options.ReplenishmentPeriod=TimeSpan.FromSeconds(15);// Periyotları ne kadarlık süreye böleceğimizi belirliyoruz.
+    });
+
+});
+
+
+
+//builder.Services.AddRateLimiter(options =>
+//{
+//    options.AddTokenBucketLimiter("Token", _options =>
+//    {
+//        _options.TokenLimit = 6;
+//        _options.TokensPerPeriod = 2;
+//        _options.QueueProcessingOrder = QueueProcessingOrder.OldestFirst;
+//        _options.QueueLimit = 3;
+//        _options.ReplenishmentPeriod = TimeSpan.FromSeconds(30);
+//    });
+//    options.RejectionStatusCode = 429;
+//});

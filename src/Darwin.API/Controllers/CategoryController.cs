@@ -1,8 +1,6 @@
 ﻿using Darwin.Model.Request.Categories;
-using Darwin.Service.Categories.Commands.Create;
-using Darwin.Service.Categories.Commands.Delete;
-using Darwin.Service.Categories.Commands.Update;
-using Darwin.Service.Categories.Queries;
+using Darwin.Service.Features.Categories.Commands;
+using Darwin.Service.Features.Categories.Queries;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -21,27 +19,27 @@ public class CategoryController : CustomBaseController
     [HttpGet]
     public async Task<IActionResult> Get()
     {
-        return CreateActionResult(await _mediator.Send(new GetCategoriesQuery()));
+        return CreateActionResult(await _mediator.Send(new GetCategories.Query()));
     }
     [HttpGet("{id}")]
     public async Task<IActionResult> GetById(Guid id)
     {
-        return CreateActionResult(await _mediator.Send(new GetCategoryByIdQuery(id)));
+        return CreateActionResult(await _mediator.Send(new GetCategoryById.Query(id)));
     }
     [HttpPost]
     public async Task<IActionResult> Create([FromBody] CreateCategoryRequest request)
     {
 
-        return CreateActionResult(await _mediator.Send(new CreateCategoryCommand(request)));
+        return CreateActionResult(await _mediator.Send(new CreateCategory.Command(request)));
     }
     [HttpPut("{id}")]
     public async Task<IActionResult> Update(Guid id, [FromBody] UpdateCategoryRequest request)
     {
-        return CreateActionResult(await _mediator.Send(new UpdateCategoryCommand(id, request)));
+        return CreateActionResult(await _mediator.Send(new UpdateCategory.Command(id, request)));
     }
     [HttpDelete("{id}")]
     public async Task<IActionResult> Delete(Guid id)
     {
-        return CreateActionResult(await _mediator.Send(new DeleteCategoryCommand(id)));
+        return CreateActionResult(await _mediator.Send(new DeleteCategory.Command(id)));
     }
 }

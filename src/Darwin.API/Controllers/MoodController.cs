@@ -1,7 +1,6 @@
 ﻿using Darwin.Model.Request.Moods;
-using Darwin.Service.Moods.Commands.Create;
-using Darwin.Service.Moods.Commands.Update;
-using Darwin.Service.Moods.Queries;
+using Darwin.Service.Features.Moods.Commands;
+using Darwin.Service.Features.Moods.Queries;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 
@@ -17,17 +16,17 @@ public class MoodController : CustomBaseController
     [HttpGet]
     public async Task<IActionResult> Get()
     {
-        return CreateActionResult(await _mediator.Send(new GetMoodsQuery()));
+        return CreateActionResult(await _mediator.Send(new GetMoods.Query()));
     }
     [HttpPost]
     public async Task<IActionResult> Create([FromBody] CreateMoodRequest request)
     {
 
-        return CreateActionResult(await _mediator.Send(new CreateMoodCommand(request)));
+        return CreateActionResult(await _mediator.Send(new CreateMood.Command(request)));
     }
     [HttpPut("{id}")]
     public async Task<IActionResult> Update(Guid id, [FromBody] UpdateMoodRequest request)
     {
-        return CreateActionResult(await _mediator.Send(new UpdateMoodCommand(id, request)));
+        return CreateActionResult(await _mediator.Send(new UpdateMood.Command(id, request)));
     }
 }
