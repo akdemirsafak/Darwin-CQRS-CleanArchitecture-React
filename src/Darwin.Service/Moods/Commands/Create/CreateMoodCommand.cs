@@ -1,6 +1,7 @@
 ﻿using Darwin.Core.BaseDto;
 using Darwin.Core.Entities;
 using Darwin.Core.RepositoryCore;
+using Darwin.Core.UnitofWorkCore;
 using Darwin.Model.Request.Moods;
 using Darwin.Model.Response.Moods;
 using Darwin.Service.Common;
@@ -19,11 +20,12 @@ public class CreateMoodCommand : ICommand<DarwinResponse<CreatedMoodResponse>>
     public class Handler : ICommandHandler<CreateMoodCommand, DarwinResponse<CreatedMoodResponse>>
     {
         private readonly IGenericRepository<Mood> _repository;
+        private readonly IUnitOfWork _unitOfWork;
 
-
-        public Handler(IGenericRepository<Mood> repository)
+        public Handler(IGenericRepository<Mood> repository, IUnitOfWork unitOfWork)
         {
             _repository = repository;
+            _unitOfWork = unitOfWork;
         }
 
         public async Task<DarwinResponse<CreatedMoodResponse>> Handle(CreateMoodCommand request, CancellationToken cancellationToken)
@@ -35,6 +37,7 @@ public class CreateMoodCommand : ICommand<DarwinResponse<CreatedMoodResponse>>
             }
             Mood mood = request.Model.Adapt<Mood>();
             await _repository.CreateAsync(mood);
+            await _unitOfWork.CommitAsync();
             return DarwinResponse<CreatedMoodResponse>.Success(mood.Adapt<CreatedMoodResponse>(), 201);
         }
     }

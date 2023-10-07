@@ -1,5 +1,6 @@
 ﻿using Darwin.Core.Entities;
 using Darwin.Core.RepositoryCore;
+using Darwin.Core.UnitofWorkCore;
 using Darwin.Model.Request.Moods;
 using Darwin.Model.Response.Moods;
 using Darwin.Service.Moods.Commands.Create;
@@ -14,9 +15,11 @@ namespace Darwin.UnitTests;
 public class MoodTest
 {
     private readonly IGenericRepository<Mood> _moodRepository;
+    private readonly IUnitOfWork _unitOfWork;
     public MoodTest()
     {
         _moodRepository = Substitute.For<IGenericRepository<Mood>>();
+        _unitOfWork = Substitute.For<IUnitOfWork>();
     }
 
 
@@ -84,7 +87,7 @@ public class MoodTest
         };
         var request= new CreateMoodRequest(mood.Name,mood.ImageUrl,mood.IsUsable);
         var command= new CreateMoodCommand(request);
-        var commandHandler= new CreateMoodCommand.Handler(_moodRepository);
+        var commandHandler= new CreateMoodCommand.Handler(_moodRepository,_unitOfWork);
 
         //action
 
@@ -116,7 +119,7 @@ public class MoodTest
             ImageUrl="technology.image",
             IsUsable=true,
         };
-        _moodRepository.GetAsync(Arg.Any<Expression<Func<Mood,bool>>>()).Returns(Task.FromResult(mood));
+        _moodRepository.GetAsync(Arg.Any<Expression<Func<Mood, bool>>>()).Returns(Task.FromResult(mood));
         _moodRepository.UpdateAsync(Arg.Any<Mood>()).Returns(Task.FromResult(mood));
         mood.Adapt<UpdatedMoodResponse>();
 
@@ -128,7 +131,7 @@ public class MoodTest
         };
         var request= new UpdateMoodRequest(newValues.Name,newValues.ImageUrl,newValues.IsUsable);
         var command= new UpdateMoodCommand(mood.Id,request);
-        var commandHandler=new UpdateMoodCommand.Handler(_moodRepository);
+        var commandHandler=new UpdateMoodCommand.Handler(_moodRepository, _unitOfWork);
 
         // Action
         var result= await commandHandler.Handle(command,CancellationToken.None);

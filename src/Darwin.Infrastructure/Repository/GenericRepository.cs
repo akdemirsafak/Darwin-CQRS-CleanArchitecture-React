@@ -1,4 +1,5 @@
 ﻿using Darwin.Core.RepositoryCore;
+using Darwin.Infrastructure.DbContexts;
 using Microsoft.EntityFrameworkCore;
 using System.Linq.Expressions;
 
@@ -29,23 +30,20 @@ namespace Darwin.Infrastructure.Repository
         {
             var deletedEntity = _dbContext.Remove(entity);
             deletedEntity.State = EntityState.Deleted;
-            await _dbContext.SaveChangesAsync();
+
         }
 
         public async Task UpdateAsync(T entity)
         {
             var updatedEntity = _dbContext.Update(entity);
             updatedEntity.State = EntityState.Modified;
-            await _dbContext.SaveChangesAsync();
         }
 
         public async Task<T> CreateAsync(T entity)
         {
             var addedEntity = _dbContext.Add(entity);
             addedEntity.State = EntityState.Added;
-            await _dbContext.SaveChangesAsync();
             return entity;
-
         }
     }
 }

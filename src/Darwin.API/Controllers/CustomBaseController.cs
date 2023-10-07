@@ -1,11 +1,13 @@
 ﻿using Darwin.Core.BaseDto;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.RateLimiting;
 
 namespace Darwin.API.Controllers
 {
     [ApiController]
     [Route("[controller]")]
+    [EnableRateLimiting("TokenBucket")]
     public class CustomBaseController : ControllerBase
     {
         protected readonly IMediator _mediator;
