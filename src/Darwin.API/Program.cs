@@ -3,8 +3,8 @@ using Darwin.Core.RepositoryCore;
 using Darwin.Core.UnitofWorkCore;
 using Darwin.Infrastructure.DbContexts;
 using Darwin.Infrastructure.Repository;
+using Darwin.Service.Features.Moods.Commands;
 using Darwin.Service.Localizations;
-using Darwin.Service.Musics.Commands.Create;
 using Darwin.Service.TokenOperations;
 using Darwin.Service.Uof;
 using FluentValidation.AspNetCore;
@@ -98,7 +98,7 @@ builder.Services.AddScoped(typeof(IGenericRepository<>), typeof(GenericRepositor
 
 //builder.Services.AddMediatR(cfg => cfg.RegisterServicesFromAssemblies(Assembly.GetExecutingAssembly()));
 
-builder.Services.AddMediatR(cfg => cfg.RegisterServicesFromAssemblyContaining(typeof(CreateMusicCommand)));
+builder.Services.AddMediatR(cfg => cfg.RegisterServicesFromAssemblyContaining(typeof(CreateMood.Command)));
 
 builder.Services.AddCors(options =>
      options.AddDefaultPolicy(builder =>

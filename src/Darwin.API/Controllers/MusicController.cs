@@ -1,8 +1,6 @@
 ﻿using Darwin.Model.Request.Musics;
-using Darwin.Service.Musics.Commands.Create;
-using Darwin.Service.Musics.Commands.Delete;
-using Darwin.Service.Musics.Commands.Update;
-using Darwin.Service.Musics.Queries;
+using Darwin.Service.Features.Musics.Commands;
+using Darwin.Service.Features.Musics.Queries;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 
@@ -17,33 +15,33 @@ namespace Darwin.API.Controllers
         [HttpGet]
         public async Task<IActionResult> Get()
         {
-            return CreateActionResult(await _mediator.Send(new GetMusicsQuery()));
+            return CreateActionResult(await _mediator.Send(new GetMusics.Query()));
         }
         [HttpGet("{id}")]
         public async Task<IActionResult> GetById(Guid id)
         {
-            return CreateActionResult(await _mediator.Send(new GetMusicByIdQuery(id)));
+            return CreateActionResult(await _mediator.Send(new GetMusicById.Query(id)));
         }
-        [HttpGet("/Search{searchText}")]
-        public async Task<IActionResult> Search(string searchText)
+        [HttpGet("Search")]
+        public async Task<IActionResult> Search([FromQuery]string searchText)
         {
-            return CreateActionResult(await _mediator.Send(new SearchMusicsQuery(searchText)));
+            return CreateActionResult(await _mediator.Send(new SearchMusics.Query(searchText)));
         }
         [HttpPost]
         public async Task<IActionResult> Create([FromBody] CreateMusicRequest request)
         {
 
-            return CreateActionResult(await _mediator.Send(new CreateMusicCommand(request)));
+            return CreateActionResult(await _mediator.Send(new CreateMusic.Command(request)));
         }
         [HttpPut("{id}")]
         public async Task<IActionResult> Update(Guid id, [FromBody] UpdateMusicRequest request)
         {
-            return CreateActionResult(await _mediator.Send(new UpdateMusicCommand(id, request)));
+            return CreateActionResult(await _mediator.Send(new UpdateMusic.Command(id, request)));
         }
         [HttpDelete("{id}")]
         public async Task<IActionResult> Delete(Guid id)
         {
-            return CreateActionResult(await _mediator.Send(new DeleteMusicCommand(id)));
+            return CreateActionResult(await _mediator.Send(new DeleteMusic.Command(id)));
         }
     }
 }

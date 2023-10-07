@@ -3,10 +3,8 @@ using Darwin.Core.RepositoryCore;
 using Darwin.Core.UnitofWorkCore;
 using Darwin.Model.Request.Categories;
 using Darwin.Model.Response.Categories;
-using Darwin.Service.Categories.Commands.Create;
-using Darwin.Service.Categories.Commands.Delete;
-using Darwin.Service.Categories.Commands.Update;
-using Darwin.Service.Categories.Queries;
+using Darwin.Service.Features.Categories.Commands;
+using Darwin.Service.Features.Categories.Queries;
 using Mapster;
 using Microsoft.AspNetCore.Http;
 using NSubstitute;
@@ -53,11 +51,11 @@ public class CategoryTests
         _categoryRepository.GetAllAsync().Returns(Task.FromResult(categoryList));
         categoryList.Adapt<List<GetCategoryResponse>>();
 
-        var command= new GetCategoriesQuery();
-        var commandHandler= new GetCategoriesQuery.Handler(_categoryRepository);
+        var query= new GetCategories.Query();
+        var queryHandler= new GetCategories.QueryHandler(_categoryRepository);
 
         //Act
-        var result=await commandHandler.Handle(command, CancellationToken.None);
+        var result=await queryHandler.Handle(query, CancellationToken.None);
 
         //Assert
         Assert.NotNull(result.Data);
@@ -104,8 +102,8 @@ public class CategoryTests
             IsUsable=category1.IsUsable,
         };
 
-        var query= new GetCategoryByIdQuery(categoryId);
-        var queryHandler= new GetCategoryByIdQuery.Handler(_categoryRepository);
+        var query= new GetCategoryById.Query(categoryId);
+        var queryHandler= new GetCategoryById.QueryHandler(_categoryRepository);
 
         //Act
         var result=await queryHandler.Handle(query, CancellationToken.None);
@@ -143,8 +141,8 @@ public class CategoryTests
         };
 
         var request= new CreateCategoryRequest(category.Name,category.ImageUrl,category.IsUsable);
-        var command= new CreateCategoryCommand(request);
-        var commandHandler= new CreateCategoryCommand.Handler(_categoryRepository, _unitOfWork);
+        var command= new CreateCategory.Command(request);
+        var commandHandler= new CreateCategory.CommandHandler(_categoryRepository, _unitOfWork);
 
         //Act
         var result= await commandHandler.Handle(command,CancellationToken.None);
@@ -194,8 +192,8 @@ public class CategoryTests
         };
 
         var request= new UpdateCategoryRequest(newCategoryValues.Name,newCategoryValues.ImageUrl,newCategoryValues.IsUsable);
-        var command= new UpdateCategoryCommand(category.Id,request);
-        var commandHandler=new UpdateCategoryCommand.Handler(_categoryRepository, _unitOfWork);
+        var command= new UpdateCategory.Command(category.Id,request);
+        var commandHandler=new UpdateCategory.CommandHandler(_categoryRepository, _unitOfWork);
 
         //Act
         var result = await commandHandler.Handle(command,CancellationToken.None);
@@ -227,8 +225,8 @@ public class CategoryTests
         _categoryRepository.GetAsync(Arg.Any<Expression<Func<Category, bool>>>()).Returns(Task.FromResult(category));
         _categoryRepository.RemoveAsync(Arg.Any<Category>()).Returns(Task.FromResult(category));
 
-        var command=new DeleteCategoryCommand(category.Id);
-        var commandHandler=new DeleteCategoryCommand.Handler(_categoryRepository,_unitOfWork);
+        var command=new DeleteCategory.Command(category.Id);
+        var commandHandler=new DeleteCategory.CommandHandler(_categoryRepository,_unitOfWork);
         //Act
         var result= await commandHandler.Handle(command, CancellationToken.None);
         Assert.Null(result.Errors);

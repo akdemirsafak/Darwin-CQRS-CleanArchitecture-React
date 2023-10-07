@@ -1,4 +1,5 @@
 ﻿using Darwin.Core.Entities;
+using Darwin.Core.RepositoryCore;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
@@ -19,24 +20,26 @@ public class TokenService : ITokenService
         _tokenOptions = tokenOptions.Value;
         _userManager = userManager;
     }
-    public TokenResponse CreateToken(AppUser appUser)
+    public async Task<TokenResponse> CreateTokenAsync(AppUser appUser)
     {
-        var accessTokenExpiration = DateTime.Now.AddMinutes(_tokenOptions.AccessTokenExpiration);
-        var refreshTokenExpiration = DateTime.Now.AddMinutes(_tokenOptions.RefreshTokenExpiration);
+        var accessTokenExpiration = DateTime.UtcNow.AddMinutes(_tokenOptions.AccessTokenExpiration);
+        var refreshTokenExpiration = DateTime.UtcNow.AddMinutes(_tokenOptions.RefreshTokenExpiration);
 
         var securityKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_tokenOptions.SecurityKey));
         var signingCredentials = new SigningCredentials(securityKey, SecurityAlgorithms.HmacSha256Signature);
+
 
         var jwtSecurityToken = new JwtSecurityToken(
             issuer:_tokenOptions.Issuer,
             //audience: _tokenOptions.Audience,
             expires: accessTokenExpiration,
-            notBefore: DateTime.Now,
+            notBefore: DateTime.UtcNow,
             claims: GetClaims(appUser,_tokenOptions.Audience),
             signingCredentials: signingCredentials);
 
         var handler = new JwtSecurityTokenHandler();
         var token = handler.WriteToken(jwtSecurityToken);
+
         var tokenDto = new TokenResponse
         {
             AccessToken = token,
@@ -51,7 +54,8 @@ public class TokenService : ITokenService
         var numberByte = new byte[32];
         using var rnd = RandomNumberGenerator.Create();
         rnd.GetBytes(numberByte);
-        return Convert.ToBase64String(numberByte);
+
+        return Convert.ToBase64String(numberByte); 
     }
     private IEnumerable<Claim> GetClaims(AppUser appUser, List<String> audiences)
     {
