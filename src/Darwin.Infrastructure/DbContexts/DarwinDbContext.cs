@@ -2,7 +2,7 @@
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 
-namespace Darwin.Infrastructure;
+namespace Darwin.Infrastructure.DbContexts;
 
 public class DarwinDbContext : IdentityDbContext<AppUser, AppRole, string>
 {

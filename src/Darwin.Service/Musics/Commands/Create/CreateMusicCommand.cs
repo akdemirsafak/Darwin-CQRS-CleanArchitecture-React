@@ -1,6 +1,7 @@
 ﻿using Darwin.Core.BaseDto;
 using Darwin.Core.Entities;
 using Darwin.Core.RepositoryCore;
+using Darwin.Core.UnitofWorkCore;
 using Darwin.Model.Request.Musics;
 using Darwin.Model.Response.Musics;
 using Darwin.Service.Common;
@@ -22,12 +23,14 @@ public class CreateMusicCommand : ICommand<DarwinResponse<CreatedMusicResponse>>
         private readonly IGenericRepository<Music> _musicRepositoryAsync;
         private readonly IGenericRepository<Category> _categoryRepositoryAsync;
         private readonly IGenericRepository<Mood> _moodRepositoryAsync;
+        private readonly IUnitOfWork _unitOfWork;
 
-        public Handler(IGenericRepository<Music> musicRepositoryAsync, IGenericRepository<Category> categoryRepositoryAsync, IGenericRepository<Mood> moodRepositoryAsync)
+        public Handler(IGenericRepository<Music> musicRepositoryAsync, IGenericRepository<Category> categoryRepositoryAsync, IGenericRepository<Mood> moodRepositoryAsync, IUnitOfWork unitOfWork)
         {
             _musicRepositoryAsync = musicRepositoryAsync;
             _categoryRepositoryAsync = categoryRepositoryAsync;
             _moodRepositoryAsync = moodRepositoryAsync;
+            _unitOfWork = unitOfWork;
         }
 
         public async Task<DarwinResponse<CreatedMusicResponse>> Handle(CreateMusicCommand request, CancellationToken cancellationToken)
@@ -60,6 +63,7 @@ public class CreateMusicCommand : ICommand<DarwinResponse<CreatedMusicResponse>>
                 }
             }
             await _musicRepositoryAsync.CreateAsync(music);
+            await _unitOfWork.CommitAsync();
             return DarwinResponse<CreatedMusicResponse>.Success(music.Adapt<CreatedMusicResponse>(), 201);
         }
     }
