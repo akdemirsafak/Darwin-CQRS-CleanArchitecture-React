@@ -7,8 +7,8 @@ using Mapster;
 
 namespace Darwin.Service.Features.Moods.Queries;
 
-public static class GetMoods 
-{ 
+public static class GetMoods
+{
     public record Query() : IQuery<DarwinResponse<List<GetMoodResponse>>>;
 
     public class QueryHandler : IQueryHandler<Query, DarwinResponse<List<GetMoodResponse>>>

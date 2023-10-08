@@ -1,5 +1,4 @@
 ﻿using Darwin.Core.Entities;
-using Darwin.Core.RepositoryCore;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
@@ -55,7 +54,7 @@ public class TokenService : ITokenService
         using var rnd = RandomNumberGenerator.Create();
         rnd.GetBytes(numberByte);
 
-        return Convert.ToBase64String(numberByte); 
+        return Convert.ToBase64String(numberByte);
     }
     private IEnumerable<Claim> GetClaims(AppUser appUser, List<String> audiences)
     {
