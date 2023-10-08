@@ -8,6 +8,6 @@ public static class ServiceRegistration
 {
     public static void AddModels(this IServiceCollection serviceCollection)
     {
-        serviceCollection.AddFluentValidation(x => x.RegisterValidatorsFromAssembly(Assembly.GetExecutingAssembly()));
+        //serviceCollection.AddFluentValidation(x => x.RegisterValidatorsFromAssembly(Assembly.GetExecutingAssembly()));
     }
 }

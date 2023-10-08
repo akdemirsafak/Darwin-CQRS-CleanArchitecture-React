@@ -2,12 +2,16 @@
 using Darwin.Infrastructure.DbContexts;
 using Darwin.Service.Features.Moods.Commands;
 using Darwin.Service.Localizations;
+using Darwin.Service.PipelineBehaviors;
 using Darwin.Service.TokenOperations;
+using FluentValidation;
+using MediatR;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.IdentityModel.Tokens;
+using System.Reflection;
 using System.Text;
 
 namespace Darwin.Service;
@@ -17,7 +21,20 @@ public static class ServiceRegistration
     public static void AddService(this IServiceCollection serviceCollection, IConfiguration configuration)
     {
 
-        serviceCollection.AddMediatR(cfg => cfg.RegisterServicesFromAssemblyContaining(typeof(CreateMood.Command)));
+
+        serviceCollection.AddMediatR(cfg =>
+            cfg.RegisterServicesFromAssemblyContaining(typeof(CreateMood.Command))
+            //.AddBehavior<IPipelineBehavior<CreateMood.Command, DarwinResponse<CreatedMoodResponse>>>()
+            );
+
+        //serviceCollection.AddTransient(typeof(IPipelineBehavior<,>),typeof( ValidationBehavior<,>));
+
+        serviceCollection.AddTransient(typeof(IPipelineBehavior<,>), typeof(ValidationBehavior2<,>));
+
+        serviceCollection.AddValidatorsFromAssembly(Assembly.GetExecutingAssembly());
+
+ 
+
         var tokenOptions = configuration.GetSection("AppTokenOptions").Get<AppTokenOptions>();
 
         serviceCollection.AddIdentity<AppUser, AppRole>(x =>
