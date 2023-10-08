@@ -23,7 +23,7 @@ namespace Darwin.API.Controllers
             return CreateActionResult(await _mediator.Send(new GetMusicById.Query(id)));
         }
         [HttpGet("Search")]
-        public async Task<IActionResult> Search([FromQuery]string searchText)
+        public async Task<IActionResult> Search([FromQuery] string searchText)
         {
             return CreateActionResult(await _mediator.Send(new SearchMusics.Query(searchText)));
         }
