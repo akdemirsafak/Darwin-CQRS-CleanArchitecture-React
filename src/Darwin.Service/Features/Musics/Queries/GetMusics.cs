@@ -7,7 +7,8 @@ using Mapster;
 
 namespace Darwin.Service.Features.Musics.Queries;
 
-public static class GetMusics {
+public static class GetMusics
+{
     public record Query() : IQuery<DarwinResponse<List<GetMusicResponse>>>;
 
     public class QueryHandler : IQueryHandler<Query, DarwinResponse<List<GetMusicResponse>>>
