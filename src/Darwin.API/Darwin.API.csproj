@@ -8,9 +8,13 @@
 
   <ItemGroup>
     <Compile Remove="Helper\**" />
+    <Compile Remove="Middlewares\**" />
     <Content Remove="Helper\**" />
+    <Content Remove="Middlewares\**" />
     <EmbeddedResource Remove="Helper\**" />
+    <EmbeddedResource Remove="Middlewares\**" />
     <None Remove="Helper\**" />
+    <None Remove="Middlewares\**" />
   </ItemGroup>
 
   <ItemGroup>

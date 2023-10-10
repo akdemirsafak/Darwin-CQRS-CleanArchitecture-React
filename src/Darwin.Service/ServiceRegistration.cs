@@ -27,9 +27,7 @@ public static class ServiceRegistration
             //.AddBehavior<IPipelineBehavior<CreateMood.Command, DarwinResponse<CreatedMoodResponse>>>()
             );
 
-        //serviceCollection.AddTransient(typeof(IPipelineBehavior<,>),typeof( ValidationBehavior<,>));
-
-        serviceCollection.AddTransient(typeof(IPipelineBehavior<,>), typeof(ValidationBehavior2<,>));
+        serviceCollection.AddTransient(typeof(IPipelineBehavior<,>), typeof(ValidationBehavior<,>));
 
         serviceCollection.AddValidatorsFromAssembly(Assembly.GetExecutingAssembly());
 

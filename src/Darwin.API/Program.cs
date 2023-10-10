@@ -1,9 +1,6 @@
-﻿using Darwin.API.Filters;
-using Darwin.API.Middlewares;
-using Darwin.Infrastructure;
+﻿using Darwin.Infrastructure;
 using Darwin.Model;
 using Darwin.Service;
-using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.RateLimiting;
 using Sentry;
 using System.Threading.RateLimiting;
@@ -46,7 +43,6 @@ builder.Services.AddCors(options =>
 
 var app = builder.Build();
 
-app.UseCustomExceptionHandler();
 
 app.UseRateLimiter();
 
