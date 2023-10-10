@@ -1,4 +1,5 @@
-﻿using Darwin.Infrastructure;
+﻿using Darwin.API.Middlewares;
+using Darwin.Infrastructure;
 using Darwin.Model;
 using Darwin.Service;
 using Microsoft.AspNetCore.RateLimiting;
@@ -47,6 +48,7 @@ var app = builder.Build();
 
 app.UseRateLimiter();
 
+app.UseGlobalExceptionMiddleware();
 
 app.UseSentryTracing();
 

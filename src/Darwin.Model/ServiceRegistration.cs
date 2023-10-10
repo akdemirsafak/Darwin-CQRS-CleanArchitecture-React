@@ -1,4 +1,4 @@
-﻿using FluentValidation.AspNetCore;
+﻿using FluentValidation;
 using Microsoft.Extensions.DependencyInjection;
 using System.Reflection;
 
@@ -8,6 +8,6 @@ public static class ServiceRegistration
 {
     public static void AddModels(this IServiceCollection serviceCollection)
     {
-        serviceCollection.AddFluentValidation(x => x.RegisterValidatorsFromAssembly(Assembly.GetExecutingAssembly()));
+        serviceCollection.AddValidatorsFromAssembly(Assembly.GetExecutingAssembly());
     }
 }
