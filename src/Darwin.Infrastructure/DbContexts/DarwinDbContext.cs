@@ -11,6 +11,7 @@ public class DarwinDbContext : IdentityDbContext<AppUser, AppRole, string>
 
     }
     public DbSet<Music> Musics { get; set; }
+    public DbSet<ContentAgeRate> ContentAgeRates { get; set; }
     public DbSet<Mood> Moods { get; set; }
     public DbSet<Category> Categories { get; set; }
 
@@ -19,6 +20,7 @@ public class DarwinDbContext : IdentityDbContext<AppUser, AppRole, string>
     {
         builder.Entity<Mood>().Navigation(c => c.Music).AutoInclude();
         builder.Entity<Category>().Navigation(c => c.Musics).AutoInclude();
+        builder.Entity<Music>().Navigation(c => c.ContentAgeRate).AutoInclude();
         base.OnModelCreating(builder);
     }
 }

@@ -24,6 +24,7 @@ public static class CreateUser
         public async Task<DarwinResponse<CreatedUserResponse>> Handle(Command request, CancellationToken cancellationToken)
         {
             var appUser = request.Model.Adapt<AppUser>();
+            appUser.BirthDate = DateTime.UtcNow;
             var createUserResult = await _userManager.CreateAsync(appUser, request.Model.Password);
             if (!createUserResult.Succeeded)
             {
