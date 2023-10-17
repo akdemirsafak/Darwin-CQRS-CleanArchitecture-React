@@ -10,6 +10,7 @@ public class Music : BaseEntity
         Categories = new HashSet<Category>();
         AgeRate = new();
         Moods = new HashSet<Mood>();
+        AgeRate = new();
     }
     [Required, MinLength(3), MaxLength(64)]
     public string Name { get; set; }

@@ -16,6 +16,4 @@ public class AgeRate
     public string Name { get; set; }
     public bool IsActive { get; set; }
     public virtual ICollection<Music> Musics { get; set; }
-
-
 }

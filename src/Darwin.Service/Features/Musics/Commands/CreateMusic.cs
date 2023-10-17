@@ -30,27 +30,18 @@ public static class CreateMusic
             IGenericRepository<AgeRate> contentAgeRateRepositoryAsync,
             IUnitOfWork unitOfWork)
 
-        {
-            _musicRepositoryAsync = musicRepositoryAsync;
-            _categoryRepositoryAsync = categoryRepositoryAsync;
-            _moodRepositoryAsync = moodRepositoryAsync;
-            _unitOfWork = unitOfWork;
-            _contentAgeRateRepositoryAsync = contentAgeRateRepositoryAsync;
-        }
+
 
         public async Task<DarwinResponse<CreatedMusicResponse>> Handle(Command request, CancellationToken cancellationToken)
         {
 
             ////Age Rate
 
-            var contentAgeRate=await _contentAgeRateRepositoryAsync.GetAsync(x=>x.Id==request.Model.AgeRateId);
-            if (contentAgeRate is null)
+            var ageRate= await _ageRateRepositoryAsync.GetAsync(x=>x.Id==request.Model.AgeRateId);
+            if (ageRate is null)
             {
-                return DarwinResponse<CreatedMusicResponse>.Fail("Yaş sınırlaması belirlemelisiniz.");
+                return DarwinResponse<CreatedMusicResponse>.Fail("NotFound",404);
             }
-
-
-            //Moods
 
             HashSet<Mood> moodList=new();
             foreach (var moodId in request.Model.MoodIds)
@@ -78,7 +69,7 @@ public static class CreateMusic
                 Name = request.Model.Name,
                 ImageUrl = request.Model.ImageUrl,
                 IsUsable = request.Model.IsUsable,
-                AgeRate=contentAgeRate,
+                AgeRate=ageRate,
                 Categories =categoryList,
                 Moods =moodList
             };

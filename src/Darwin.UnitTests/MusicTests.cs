@@ -16,6 +16,7 @@ public class MusicTests
     private readonly IGenericRepository<Music> _musicRepository;
     private readonly IGenericRepository<Mood> _moodRepository;
     private readonly IGenericRepository<Category> _categoryRepository;
+    private readonly IGenericRepository<AgeRate> _ageRateRepository;
     private readonly IUnitOfWork _unitOfWork;
 
     public MusicTests()
@@ -23,6 +24,7 @@ public class MusicTests
         _musicRepository = Substitute.For<IGenericRepository<Music>>();
         _moodRepository = Substitute.For<IGenericRepository<Mood>>();
         _categoryRepository = Substitute.For<IGenericRepository<Category>>();
+        _ageRateRepository = Substitute.For<IGenericRepository<AgeRate>>();
         _unitOfWork = Substitute.For<IUnitOfWork>();
     }
 
@@ -146,111 +148,6 @@ public class MusicTests
         Assert.NotNull(result.Data);
     }
 
-
-
     //CreateMusic
-
-
-    //[Fact]
-    //public async Task CreateMusicCommand_Should_Success_WhenCreatedMusics()
-    //{
-    //    //Arrange
-    //    var categoryId=new Guid();
-    //    var category=new Category()
-    //    {
-    //        Id=categoryId,
-    //        Name="Category",
-    //        CreatedAt = DateTime.UtcNow.Ticks,
-    //        ImageUrl="dene.jpg",
-    //        IsUsable = true
-    //    };
-    //    var moodId=new Guid();
-    //    var mood=new Mood()
-    //    {
-    //        Id=moodId,
-    //        Name="Mood",
-    //        CreatedAt = DateTime.UtcNow.Ticks,
-    //        ImageUrl="mood.jpg",
-    //        IsUsable = true
-    //    };
-    //    var ageRateId=new Guid();
-    //    AgeRate ageRate = new()
-    //    {
-    //        Id=ageRateId,
-    //        IsActive = true,
-    //        Rate = 13,
-    //        Name = "Name"
-    //    };
-
-    //    var music= new Music()
-    //    {
-    //        Id=new Guid(),
-    //        Name="Hurt you",
-    //        Lyrics="Some Beatiful lyrics",
-    //        ImageUrl="hurtyou.img",
-    //        IsUsable=false,
-    //        CreatedAt=DateTime.UtcNow.Ticks,
-    //        Categories=new List<Category>()
-    //        {
-    //            new Category {
-    //                Id=categoryId,
-    //                Name="Category",
-    //                CreatedAt = DateTime.UtcNow.Ticks,
-    //                ImageUrl="dene.jpg",
-    //                IsUsable = true}
-    //        } ,
-    //        Moods=new List<Mood>()
-    //        {
-    //            new Mood(){
-    //                Id=moodId,
-    //                Name="Mood",
-    //                CreatedAt = DateTime.UtcNow.Ticks,
-    //                ImageUrl="mood.jpg",
-    //                IsUsable = true
-    //            }
-    //        },
-    //        AgeRate=new()
-    //        {
-    //            Id = ageRate.Id,
-    //            IsActive=ageRate.IsActive,
-    //            Rate=ageRate.Rate,
-    //            Name=ageRate.Name
-    //        }
-
-    //    };
-    //    var contentAgeRateId=new Guid();
-    //    var categoryIds=new List<Guid>();
-    //    categoryIds.Add(categoryId);
-    //    var moodIds=new List<Guid>();
-
-    //    moodIds.Add(moodId);
-
-
-    //    _musicRepository.CreateAsync(music).Returns(music);
-    //    var createdMusicResponse=new CreatedMusicResponse()
-    //    {
-    //        Id=music.Id,
-    //        ImageUrl=music.ImageUrl,
-    //        IsUsable=music.IsUsable,
-    //        Name=music.Name
-    //    };
-    //    music.Adapt<CreatedMusicResponse>();
-    //    var request=new CreateMusicRequest(music.Name,music.Lyrics,music.ImageUrl,music.IsUsable,categoryIds,moodIds,contentAgeRateId);
-    //    var command=new CreateMusic.Command(request);
-    //    var commandHandler=new CreateMusic.CommandHandler(_musicRepository,_categoryRepository,_moodRepository,_contentAgeRateRepository,_unitOfWork);
-
-    //    //act
-    //    var result=await commandHandler.Handle(command,CancellationToken.None);
-
-
-    //    //assert
-    //    Assert.True(result.StatusCode == StatusCodes.Status201Created);
-    //    Assert.Equal(result.Data.Name, createdMusicResponse.Name);
-    //    Assert.Equal(result.Data.Id, createdMusicResponse.Id);
-    //    Assert.Equal(result.Data.IsUsable, createdMusicResponse.IsUsable);
-    //    Assert.Equal(result.Data.ImageUrl, createdMusicResponse.ImageUrl);
-
-    //}
-
 
 }

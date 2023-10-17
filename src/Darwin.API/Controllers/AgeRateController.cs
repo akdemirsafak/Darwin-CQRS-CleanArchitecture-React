@@ -20,9 +20,14 @@ public class AgeRateController : CustomBaseController
     }
 
     [HttpPost]
-    public async Task<IActionResult> Create(CreateAgeRequest request)
+    public async Task<IActionResult> Create([FromBody] CreateAgeRateRequest request)
     {
         return CreateActionResult(await _mediator.Send(new CreateAgeRate.Command(request)));
+    }
+    [HttpPut("{id}")]
+    public async Task<IActionResult> Update(Guid id, [FromBody] UpdateAgeRateRequest request)
+    {
+        return CreateActionResult(await _mediator.Send(new UpdateAgeRate.Command(id, request)));
     }
     [HttpDelete("{id}")]
     public async Task<IActionResult> Delete(Guid id)
