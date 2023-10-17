@@ -3,6 +3,7 @@ using System;
 using Darwin.Infrastructure.DbContexts;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
@@ -11,9 +12,11 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace Darwin.Infrastructure.Migrations
 {
     [DbContext(typeof(DarwinDbContext))]
-    partial class DarwinDbContextModelSnapshot : ModelSnapshot
+    [Migration("20231017120536_asdas")]
+    partial class asdas
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -214,9 +217,6 @@ namespace Darwin.Infrastructure.Migrations
                     b.Property<bool>("IsUsable")
                         .HasColumnType("boolean");
 
-                    b.Property<string>("Lyrics")
-                        .HasColumnType("text");
-
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasMaxLength(64)
@@ -341,12 +341,12 @@ namespace Darwin.Infrastructure.Migrations
                     b.Property<Guid>("MoodsId")
                         .HasColumnType("uuid");
 
-                    b.Property<Guid>("MusicsId")
+                    b.Property<Guid>("MusicId")
                         .HasColumnType("uuid");
 
-                    b.HasKey("MoodsId", "MusicsId");
+                    b.HasKey("MoodsId", "MusicId");
 
-                    b.HasIndex("MusicsId");
+                    b.HasIndex("MusicId");
 
                     b.ToTable("MoodMusic");
                 });
@@ -427,7 +427,7 @@ namespace Darwin.Infrastructure.Migrations
 
                     b.HasOne("Darwin.Core.Entities.Music", null)
                         .WithMany()
-                        .HasForeignKey("MusicsId")
+                        .HasForeignKey("MusicId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
                 });
