@@ -27,7 +27,7 @@ public static class Register
         public async Task<DarwinResponse<TokenResponse>> Handle(Command request, CancellationToken cancellationToken)
         {
             var appUser = request.Model.Adapt<AppUser>();
-
+            appUser.BirthDate = DateTime.UtcNow.AddYears(-15);
             var registerResult = await _userManager.CreateAsync(appUser, request.Model.Password);
             if (!registerResult.Succeeded)
             {
