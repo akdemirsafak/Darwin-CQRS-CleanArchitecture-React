@@ -24,11 +24,6 @@ public class AgeRateController : CustomBaseController
     {
         return CreateActionResult(await _mediator.Send(new CreateAgeRate.Command(request)));
     }
-    [HttpPut("{id}")]
-    public async Task<IActionResult> Update(Guid id, [FromBody] UpdateAgeRateRequest request)
-    {
-        return CreateActionResult(await _mediator.Send(new UpdateAgeRate.Command(id, request)));
-    }
     [HttpDelete("{id}")]
     public async Task<IActionResult> Delete(Guid id)
     {

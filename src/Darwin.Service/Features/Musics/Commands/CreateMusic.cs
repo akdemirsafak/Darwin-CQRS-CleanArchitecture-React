@@ -19,18 +19,21 @@ public static class CreateMusic
         private readonly IGenericRepository<Music> _musicRepositoryAsync;
         private readonly IGenericRepository<Category> _categoryRepositoryAsync;
         private readonly IGenericRepository<Mood> _moodRepositoryAsync;
-        private readonly IGenericRepository<AgeRate> _contentAgeRateRepositoryAsync;
+        private readonly IGenericRepository<AgeRate> _ageRateRepositoryAsync;
         private readonly IUnitOfWork _unitOfWork;
 
-
-
-        public CommandHandler(IGenericRepository<Music> musicRepositoryAsync,
-            IGenericRepository<Category> categoryRepositoryAsync,
-            IGenericRepository<Mood> moodRepositoryAsync,
-            IGenericRepository<AgeRate> contentAgeRateRepositoryAsync,
+        public CommandHandler(IGenericRepository<Music> musicRepositoryAsync, 
+            IGenericRepository<Category> categoryRepositoryAsync, 
+            IGenericRepository<Mood> moodRepositoryAsync, 
+            IGenericRepository<AgeRate> ageRateRepositoryAsync, 
             IUnitOfWork unitOfWork)
-
-
+        {
+            _musicRepositoryAsync = musicRepositoryAsync;
+            _categoryRepositoryAsync = categoryRepositoryAsync;
+            _moodRepositoryAsync = moodRepositoryAsync;
+            _ageRateRepositoryAsync = ageRateRepositoryAsync;
+            _unitOfWork = unitOfWork;
+        }
 
         public async Task<DarwinResponse<CreatedMusicResponse>> Handle(Command request, CancellationToken cancellationToken)
         {
