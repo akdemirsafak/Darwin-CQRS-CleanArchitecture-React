@@ -27,7 +27,7 @@ public class TokenService : ITokenService
         var securityKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_tokenOptions.SecurityKey));
         var signingCredentials = new SigningCredentials(securityKey, SecurityAlgorithms.HmacSha256Signature);
 
-     
+
         var jwtSecurityToken = new JwtSecurityToken(
             issuer:_tokenOptions.Issuer,
             //audience: _tokenOptions.Audience,

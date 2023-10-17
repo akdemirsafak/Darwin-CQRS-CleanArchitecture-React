@@ -2,35 +2,35 @@
 using Darwin.Core.Entities;
 using Darwin.Core.RepositoryCore;
 using Darwin.Core.UnitofWorkCore;
-using Darwin.Model.Common;
 using Darwin.Model.Request.ContentAgeRates;
+using Darwin.Model.Response.AgeRates;
 using Darwin.Service.Common;
 using FluentValidation;
 using Mapster;
 
 namespace Darwin.Service.Features.AgeRates.Commands;
 
-public static class CreateContentAgeRate
+public static class CreateAgeRate
 {
-    public record Command(CreateContentAgeRequest Model):ICommand<DarwinResponse<NoContent>>;
+    public record Command(CreateAgeRequest Model) : ICommand<DarwinResponse<CreatedAgeRateResponse>>;
 
-    public class CommandHandler : ICommandHandler<Command, DarwinResponse<NoContent>>
+    public class CommandHandler : ICommandHandler<Command, DarwinResponse<CreatedAgeRateResponse>>
     {
-        private readonly IGenericRepository<ContentAgeRate> _repository;
+        private readonly IGenericRepository<AgeRate> _repository;
         private readonly IUnitOfWork _unitOfWork;
 
-        public CommandHandler(IGenericRepository<ContentAgeRate> repository, IUnitOfWork unitOfWork)
+        public CommandHandler(IGenericRepository<AgeRate> repository, IUnitOfWork unitOfWork)
         {
             _repository = repository;
             _unitOfWork = unitOfWork;
         }
 
-        public async Task<DarwinResponse<NoContent>> Handle(Command request, CancellationToken cancellationToken)
+        public async Task<DarwinResponse<CreatedAgeRateResponse>> Handle(Command request, CancellationToken cancellationToken)
         {
-            var entity = request.Model.Adapt<ContentAgeRate>();
+            var entity = request.Model.Adapt<AgeRate>();
             await _repository.CreateAsync(entity);
             await _unitOfWork.CommitAsync();
-            return DarwinResponse<NoContent>.Success(201);
+            return DarwinResponse<CreatedAgeRateResponse>.Success(entity.Adapt<CreatedAgeRateResponse>(), 201);
         }
     }
     public class CreateContentAgeRateValidator : AbstractValidator<Command>

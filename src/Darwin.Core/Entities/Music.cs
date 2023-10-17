@@ -16,7 +16,7 @@ public class Music : BaseEntity
     public string ImageUrl { get; set; }
     public string? Lyrics { get; set; }
     public bool IsUsable { get; set; }
-    public virtual ContentAgeRate AgeRate { get; set; }
+    public virtual AgeRate AgeRate { get; set; }
     public virtual ICollection<Category> Categories { get; set; }
     public virtual ICollection<Mood> Moods { get; set; }
 

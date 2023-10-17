@@ -3,7 +3,7 @@ using Darwin.Core.Entities;
 using Darwin.Core.RepositoryCore;
 using Darwin.Model.Response.Musics;
 using Darwin.Service.Common;
-using Darwin.Service.UserHelper;
+using Darwin.Service.Helper;
 using Mapster;
 
 namespace Darwin.Service.Features.Musics.Queries;

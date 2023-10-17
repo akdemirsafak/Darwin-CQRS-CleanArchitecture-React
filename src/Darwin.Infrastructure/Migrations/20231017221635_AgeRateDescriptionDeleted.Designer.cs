@@ -12,15 +12,15 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace Darwin.Infrastructure.Migrations
 {
     [DbContext(typeof(DarwinDbContext))]
-    [Migration("20231017120927_CollectionsAdded")]
-    partial class CollectionsAdded
+    [Migration("20231017221635_AgeRateDescriptionDeleted")]
+    partial class AgeRateDescriptionDeleted
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("ProductVersion", "7.0.10")
+                .HasAnnotation("ProductVersion", "7.0.12")
                 .HasAnnotation("Relational:MaxIdentifierLength", 63);
 
             NpgsqlModelBuilderExtensions.UseIdentityByDefaultColumns(modelBuilder);
@@ -38,6 +38,28 @@ namespace Darwin.Infrastructure.Migrations
                     b.HasIndex("MusicsId");
 
                     b.ToTable("CategoryMusic");
+                });
+
+            modelBuilder.Entity("Darwin.Core.Entities.AgeRate", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uuid");
+
+                    b.Property<bool>("IsActive")
+                        .HasColumnType("boolean");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasMaxLength(30)
+                        .HasColumnType("character varying(30)");
+
+                    b.Property<int>("Rate")
+                        .HasColumnType("integer");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("AgeRates");
                 });
 
             modelBuilder.Entity("Darwin.Core.Entities.AppRole", b =>
@@ -204,6 +226,9 @@ namespace Darwin.Infrastructure.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uuid");
 
+                    b.Property<Guid>("AgeRateId")
+                        .HasColumnType("uuid");
+
                     b.Property<long>("CreatedAt")
                         .HasColumnType("bigint");
 
@@ -229,6 +254,8 @@ namespace Darwin.Infrastructure.Migrations
                         .HasColumnType("bigint");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("AgeRateId");
 
                     b.ToTable("Musics");
                 });
@@ -369,6 +396,17 @@ namespace Darwin.Infrastructure.Migrations
                         .IsRequired();
                 });
 
+            modelBuilder.Entity("Darwin.Core.Entities.Music", b =>
+                {
+                    b.HasOne("Darwin.Core.Entities.AgeRate", "AgeRate")
+                        .WithMany("Musics")
+                        .HasForeignKey("AgeRateId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("AgeRate");
+                });
+
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
                 {
                     b.HasOne("Darwin.Core.Entities.AppRole", null)
@@ -433,6 +471,11 @@ namespace Darwin.Infrastructure.Migrations
                         .HasForeignKey("MusicsId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+                });
+
+            modelBuilder.Entity("Darwin.Core.Entities.AgeRate", b =>
+                {
+                    b.Navigation("Musics");
                 });
 #pragma warning restore 612, 618
         }

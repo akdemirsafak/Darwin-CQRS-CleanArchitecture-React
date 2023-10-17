@@ -2,7 +2,7 @@
 
 namespace Darwin.Service.Helper;
 
-public class CurrentUser:ICurrentUser
+public class CurrentUser : ICurrentUser
 {
     private IHttpContextAccessor _httpContextAccessor;
 

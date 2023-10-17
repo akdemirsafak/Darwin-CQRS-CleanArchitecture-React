@@ -19,7 +19,7 @@ public static class CreateMusic
         private readonly IGenericRepository<Music> _musicRepositoryAsync;
         private readonly IGenericRepository<Category> _categoryRepositoryAsync;
         private readonly IGenericRepository<Mood> _moodRepositoryAsync;
-        private readonly IGenericRepository<ContentAgeRate> _contentAgeRateRepositoryAsync;
+        private readonly IGenericRepository<AgeRate> _contentAgeRateRepositoryAsync;
         private readonly IUnitOfWork _unitOfWork;
 
 
@@ -27,7 +27,7 @@ public static class CreateMusic
         public CommandHandler(IGenericRepository<Music> musicRepositoryAsync,
             IGenericRepository<Category> categoryRepositoryAsync,
             IGenericRepository<Mood> moodRepositoryAsync,
-            IGenericRepository<ContentAgeRate> contentAgeRateRepositoryAsync,
+            IGenericRepository<AgeRate> contentAgeRateRepositoryAsync,
             IUnitOfWork unitOfWork)
 
         {
@@ -43,7 +43,7 @@ public static class CreateMusic
 
             ////Age Rate
 
-            var contentAgeRate=await _contentAgeRateRepositoryAsync.GetAsync(x=>x.Id==request.Model.ContentAgeRateId);
+            var contentAgeRate=await _contentAgeRateRepositoryAsync.GetAsync(x=>x.Id==request.Model.AgeRateId);
             if (contentAgeRate is null)
             {
                 return DarwinResponse<CreatedMusicResponse>.Fail("Yaş sınırlaması belirlemelisiniz.");
@@ -95,9 +95,7 @@ public static class CreateMusic
         public CreateMusicCommandValidator()
         {
             RuleFor(x => x.Model.Name).NotEmpty().NotNull().Length(3, 64);
-            RuleFor(x => x.Model.MoodIds).NotNull();
-            RuleFor(x => x.Model.CategoryIds).NotNull();
-            
+
         }
     }
 }

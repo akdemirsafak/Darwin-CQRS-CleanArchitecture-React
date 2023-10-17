@@ -8,16 +8,16 @@ using FluentValidation;
 
 namespace Darwin.Service.Features.AgeRates.Commands;
 
-public static class DeleteContentAgeRate
+public static class DeleteAgeRate
 {
     public record Command(Guid id) : ICommand<DarwinResponse<NoContent>>;
 
     public class CommandHandler : ICommandHandler<Command, DarwinResponse<NoContent>>
     {
-        private readonly IGenericRepository<ContentAgeRate> _repository;
+        private readonly IGenericRepository<AgeRate> _repository;
         private readonly IUnitOfWork _unitOfWork;
 
-        public CommandHandler(IGenericRepository<ContentAgeRate> repository, IUnitOfWork unitOfWork)
+        public CommandHandler(IGenericRepository<AgeRate> repository, IUnitOfWork unitOfWork)
         {
             _repository = repository;
             _unitOfWork = unitOfWork;
@@ -38,7 +38,7 @@ public static class DeleteContentAgeRate
         public DeleteContentAgeRateValidator()
         {
             RuleFor(x => x.id)
-                .NotNull();          
+                .NotNull();
         }
     }
 }
