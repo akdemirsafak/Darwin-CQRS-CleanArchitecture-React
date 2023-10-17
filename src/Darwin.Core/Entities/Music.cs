@@ -6,7 +6,9 @@ public class Music : BaseEntity
 {
     public Music()
     {
-        Categories=new HashSet<Category>();
+        //HashSet<> List'e göre daha az kaynak harcar ve unique bir yapılanmadır.
+        Categories = new HashSet<Category>();
+        AgeRate = new();
         Moods = new HashSet<Mood>();
         AgeRate = new();
     }
@@ -15,7 +17,8 @@ public class Music : BaseEntity
     public string ImageUrl { get; set; }
     public string? Lyrics { get; set; }
     public bool IsUsable { get; set; }
+    public virtual AgeRate AgeRate { get; set; }
     public virtual ICollection<Category> Categories { get; set; }
     public virtual ICollection<Mood> Moods { get; set; }
-    public virtual AgeRate AgeRate { get; set; }
+
 }

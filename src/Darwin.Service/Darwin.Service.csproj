@@ -7,10 +7,13 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="Features\ContentAgeRates\**" />
     <Compile Remove="Features\Moods\Commands\Create\**" />
     <Compile Remove="Helpers\**" />
+    <EmbeddedResource Remove="Features\ContentAgeRates\**" />
     <EmbeddedResource Remove="Features\Moods\Commands\Create\**" />
     <EmbeddedResource Remove="Helpers\**" />
+    <None Remove="Features\ContentAgeRates\**" />
     <None Remove="Features\Moods\Commands\Create\**" />
     <None Remove="Helpers\**" />
   </ItemGroup>

@@ -13,7 +13,7 @@ namespace Darwin.Infrastructure.Repository
         public GenericRepository(DarwinDbContext dbContext)
         {
             _dbContext = dbContext;
-            _dbSet = _dbContext.Set<T>();    
+            _dbSet = _dbContext.Set<T>();
         }
 
         public async Task<List<T>> GetAllAsync(Expression<Func<T, bool>> filter = null)

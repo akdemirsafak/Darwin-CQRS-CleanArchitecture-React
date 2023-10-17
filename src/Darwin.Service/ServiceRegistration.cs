@@ -47,8 +47,8 @@ public static class ServiceRegistration
             };
         });
 
-        serviceCollection.AddScoped<ITokenService, TokenService>();
         serviceCollection.AddScoped<ICurrentUser, CurrentUser>();
+        serviceCollection.AddScoped<ITokenService, TokenService>();
 
         serviceCollection.Configure<AppTokenOptions>(configuration.GetSection("AppTokenOptions"));
     }

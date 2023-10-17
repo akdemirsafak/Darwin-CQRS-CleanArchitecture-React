@@ -6,7 +6,7 @@ public class Mood : BaseEntity
 {
     public Mood()
     {
-        Musics=new HashSet<Music>();
+        Musics = new HashSet<Music>();
     }
 
     [Required, MinLength(3), MaxLength(64)]

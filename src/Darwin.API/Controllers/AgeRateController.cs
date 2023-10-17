@@ -1,15 +1,12 @@
-﻿
-// For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
-
-using Darwin.Model.Request.AgeRates;
-using Darwin.Service.Features.ContentAgeRates.Commands;
-using Darwin.Service.Features.Moods.Queries;
+﻿using Darwin.Model.Request.AgeRates;
+using Darwin.Service.Features.AgeRates.Commands;
+using Darwin.Service.Features.AgeRates.Queries;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Darwin.API.Controllers;
 
-//[Authorize]
+
 public class AgeRateController : CustomBaseController
 {
     public AgeRateController(IMediator mediator) : base(mediator)
@@ -21,10 +18,10 @@ public class AgeRateController : CustomBaseController
     {
         return CreateActionResult(await _mediator.Send(new GetAgeRates.Query()));
     }
+
     [HttpPost]
     public async Task<IActionResult> Create([FromBody] CreateAgeRateRequest request)
     {
-
         return CreateActionResult(await _mediator.Send(new CreateAgeRate.Command(request)));
     }
     [HttpPut("{id}")]
@@ -37,4 +34,5 @@ public class AgeRateController : CustomBaseController
     {
         return CreateActionResult(await _mediator.Send(new DeleteAgeRate.Command(id)));
     }
+
 }
