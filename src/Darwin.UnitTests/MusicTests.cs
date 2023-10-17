@@ -16,8 +16,6 @@ public class MusicTests
     private readonly IGenericRepository<Music> _musicRepository;
     private readonly IGenericRepository<Mood> _moodRepository;
     private readonly IGenericRepository<Category> _categoryRepository;
-    private readonly IGenericRepository<AgeRate> _contentAgeRateRepository;
-    private readonly ICurrentUser _currentUser;
     private readonly IUnitOfWork _unitOfWork;
 
     public MusicTests()
@@ -25,9 +23,7 @@ public class MusicTests
         _musicRepository = Substitute.For<IGenericRepository<Music>>();
         _moodRepository = Substitute.For<IGenericRepository<Mood>>();
         _categoryRepository = Substitute.For<IGenericRepository<Category>>();
-        _contentAgeRateRepository = Substitute.For<IGenericRepository<AgeRate>>();
         _unitOfWork = Substitute.For<IUnitOfWork>();
-        _currentUser = Substitute.For<ICurrentUser>();
     }
 
     //GetMusics
