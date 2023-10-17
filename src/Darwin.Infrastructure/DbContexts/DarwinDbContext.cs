@@ -14,7 +14,6 @@ public class DarwinDbContext : IdentityDbContext<AppUser, AppRole, string>
     public DbSet<AgeRate> AgeRates { get; set; }
     public DbSet<Mood> Moods { get; set; }
     public DbSet<Category> Categories { get; set; }
-    public DbSet<AgeRate> AgeRates { get; set; }
 
 
     protected override void OnModelCreating(ModelBuilder builder)

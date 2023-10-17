@@ -12,7 +12,7 @@ namespace Darwin.Service.Features.AgeRates.Commands;
 
 public static class CreateAgeRate
 {
-    public record Command(CreateAgeRequest Model) : ICommand<DarwinResponse<CreatedAgeRateResponse>>;
+    public record Command(CreateAgeRateRequest Model) : ICommand<DarwinResponse<CreatedAgeRateResponse>>;
 
     public class CommandHandler : ICommandHandler<Command, DarwinResponse<CreatedAgeRateResponse>>
     {
