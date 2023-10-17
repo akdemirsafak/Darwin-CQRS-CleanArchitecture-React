@@ -12,11 +12,5 @@ public class ContentAgeRate
     public string Name { get; set; }
     public string Description { get; set; }
     public bool IsActive { get; set; }
-    public virtual List<Music> Musics { get; set; }
-
-    public ContentAgeRate()
-    {
-        Id= Guid.NewGuid();
-    }
-
+    public virtual IList<Music> Musics { get; set; }
 }

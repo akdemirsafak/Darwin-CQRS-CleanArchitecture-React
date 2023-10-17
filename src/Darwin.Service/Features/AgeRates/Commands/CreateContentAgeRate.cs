@@ -41,10 +41,6 @@ public static class CreateContentAgeRate
                 .NotEmpty()
                 .NotNull()
                 .Length(3, 64);
-            RuleFor(x => x.Model.Country)
-                .NotEmpty()
-                .NotNull()
-                .Length(3, 64);
             RuleFor(x => x.Model.Rate)
                 .NotNull()
                 .GreaterThanOrEqualTo(1);

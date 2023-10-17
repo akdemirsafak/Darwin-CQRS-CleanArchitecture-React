@@ -17,10 +17,10 @@ public class DarwinDbContext : IdentityDbContext<AppUser, AppRole, string>
 
 
     protected override void OnModelCreating(ModelBuilder builder)
-    {
-        builder.Entity<Mood>().Navigation(c => c.Music).AutoInclude();
-        builder.Entity<Category>().Navigation(c => c.Musics).AutoInclude();
-        builder.Entity<Music>().Navigation(c => c.ContentAgeRate).AutoInclude();
+    {   
+        builder.Entity<Music>().Navigation(m => m.Moods).AutoInclude();
+        builder.Entity<Music>().Navigation(c=>c.Categories).AutoInclude();
+        builder.Entity<Music>().Navigation(c => c.AgeRate).AutoInclude();
         base.OnModelCreating(builder);
     }
 }
