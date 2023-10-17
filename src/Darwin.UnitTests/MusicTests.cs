@@ -17,6 +17,7 @@ public class MusicTests
     private readonly IGenericRepository<Music> _musicRepository;
     private readonly IGenericRepository<Mood> _moodRepository;
     private readonly IGenericRepository<Category> _categoryRepository;
+    private readonly IGenericRepository<AgeRate> _ageRateRepository;
     private readonly IUnitOfWork _unitOfWork;
 
     public MusicTests()
@@ -24,6 +25,7 @@ public class MusicTests
         _musicRepository = Substitute.For<IGenericRepository<Music>>();
         _moodRepository = Substitute.For<IGenericRepository<Mood>>();
         _categoryRepository = Substitute.For<IGenericRepository<Category>>();
+        _ageRateRepository = Substitute.For<IGenericRepository<AgeRate>>();
         _unitOfWork = Substitute.For<IUnitOfWork>();
     }
 
@@ -217,6 +219,7 @@ public class MusicTests
     {
         //Arrange
         var categoryId=new Guid();
+        var ageRateId=new Guid();
         var category=new Category()
         {
             Id=categoryId,
@@ -239,6 +242,7 @@ public class MusicTests
         {
             Id=new Guid(),
             Name="Hurt you",
+            Lyrics="MyLyrics",
             ImageUrl="hurtyou.img",
             IsUsable=false,
             CreatedAt=DateTime.UtcNow.Ticks,
@@ -275,12 +279,13 @@ public class MusicTests
             Id=music.Id,
             ImageUrl=music.ImageUrl,
             IsUsable=music.IsUsable,
-            Name=music.Name
+            Name=music.Name,
+            Lyrics=music.Lyrics
         };
         music.Adapt<CreatedMusicResponse>();
-        var request=new CreateMusicRequest(music.Name,music.ImageUrl,music.IsUsable,categoryIds,moodIds);
+        var request=new CreateMusicRequest(music.Name,music.Lyrics,music.ImageUrl,music.IsUsable,categoryIds,moodIds,ageRateId);
         var command=new CreateMusic.Command(request);
-        var commandHandler=new CreateMusic.CommandHandler(_musicRepository,_categoryRepository,_moodRepository,_unitOfWork);
+        var commandHandler=new CreateMusic.CommandHandler(_musicRepository,_categoryRepository,_moodRepository,_ageRateRepository,_unitOfWork);
 
         //act
         var result=await commandHandler.Handle(command,CancellationToken.None);
