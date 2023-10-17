@@ -49,6 +49,10 @@ namespace Darwin.Infrastructure.Migrations
                     b.Property<long?>("DeletedAt")
                         .HasColumnType("bigint");
 
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("text");
+
                     b.Property<int>("Rate")
                         .HasColumnType("integer");
 

@@ -13,6 +13,22 @@ namespace Darwin.Infrastructure.Migrations
         protected override void Up(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.CreateTable(
+                name: "AgeRates",
+                columns: table => new
+                {
+                    Id = table.Column<Guid>(type: "uuid", nullable: false),
+                    Rate = table.Column<int>(type: "integer", nullable: false),
+                    Name = table.Column<string>(type: "text", nullable: false),
+                    CreatedAt = table.Column<long>(type: "bigint", nullable: false),
+                    UpdatedAt = table.Column<long>(type: "bigint", nullable: true),
+                    DeletedAt = table.Column<long>(type: "bigint", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_AgeRates", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "AspNetRoles",
                 columns: table => new
                 {
@@ -94,7 +110,9 @@ namespace Darwin.Infrastructure.Migrations
                     Id = table.Column<Guid>(type: "uuid", nullable: false),
                     Name = table.Column<string>(type: "character varying(64)", maxLength: 64, nullable: false),
                     ImageUrl = table.Column<string>(type: "text", nullable: false),
+                    Lyrics = table.Column<string>(type: "text", nullable: true),
                     IsUsable = table.Column<bool>(type: "boolean", nullable: false),
+                    AgeRateId = table.Column<Guid>(type: "uuid", nullable: false),
                     CreatedAt = table.Column<long>(type: "bigint", nullable: false),
                     UpdatedAt = table.Column<long>(type: "bigint", nullable: true),
                     DeletedAt = table.Column<long>(type: "bigint", nullable: true)
@@ -102,6 +120,12 @@ namespace Darwin.Infrastructure.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Musics", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Musics_AgeRates_AgeRateId",
+                        column: x => x.AgeRateId,
+                        principalTable: "AgeRates",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
@@ -239,11 +263,11 @@ namespace Darwin.Infrastructure.Migrations
                 columns: table => new
                 {
                     MoodsId = table.Column<Guid>(type: "uuid", nullable: false),
-                    MusicId = table.Column<Guid>(type: "uuid", nullable: false)
+                    MusicsId = table.Column<Guid>(type: "uuid", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_MoodMusic", x => new { x.MoodsId, x.MusicId });
+                    table.PrimaryKey("PK_MoodMusic", x => new { x.MoodsId, x.MusicsId });
                     table.ForeignKey(
                         name: "FK_MoodMusic_Moods_MoodsId",
                         column: x => x.MoodsId,
@@ -251,8 +275,8 @@ namespace Darwin.Infrastructure.Migrations
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "FK_MoodMusic_Musics_MusicId",
-                        column: x => x.MusicId,
+                        name: "FK_MoodMusic_Musics_MusicsId",
+                        column: x => x.MusicsId,
                         principalTable: "Musics",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
@@ -301,9 +325,14 @@ namespace Darwin.Infrastructure.Migrations
                 column: "MusicsId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_MoodMusic_MusicId",
+                name: "IX_MoodMusic_MusicsId",
                 table: "MoodMusic",
-                column: "MusicId");
+                column: "MusicsId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Musics_AgeRateId",
+                table: "Musics",
+                column: "AgeRateId");
         }
 
         /// <inheritdoc />
@@ -344,6 +373,9 @@ namespace Darwin.Infrastructure.Migrations
 
             migrationBuilder.DropTable(
                 name: "Musics");
+
+            migrationBuilder.DropTable(
+                name: "AgeRates");
         }
     }
 }
