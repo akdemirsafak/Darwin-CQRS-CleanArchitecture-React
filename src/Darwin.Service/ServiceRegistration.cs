@@ -1,6 +1,7 @@
 ﻿using Darwin.Core.Entities;
 using Darwin.Infrastructure.DbContexts;
 using Darwin.Service.Features.Moods.Commands;
+using Darwin.Service.Helper;
 using Darwin.Service.Localizations;
 using Darwin.Service.TokenOperations;
 using Darwin.Service.UserHelper;
@@ -49,6 +50,7 @@ public static class ServiceRegistration
 
         serviceCollection.AddScoped<ICurrentUser, CurrentUser>();
         serviceCollection.AddScoped<ITokenService, TokenService>();
+        serviceCollection.AddScoped<ICurrentUser, CurrentUser>();
 
         serviceCollection.Configure<AppTokenOptions>(configuration.GetSection("AppTokenOptions"));
     }
