@@ -4,6 +4,7 @@ using Darwin.Service.Features.Moods.Commands;
 using Darwin.Service.Helper;
 using Darwin.Service.Localizations;
 using Darwin.Service.TokenOperations;
+using Darwin.Service.UserHelper;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Configuration;
@@ -47,6 +48,7 @@ public static class ServiceRegistration
             };
         });
 
+        serviceCollection.AddScoped<ICurrentUser, CurrentUser>();
         serviceCollection.AddScoped<ITokenService, TokenService>();
         serviceCollection.AddScoped<ICurrentUser, CurrentUser>();
 

@@ -27,7 +27,7 @@ public class TokenService : ITokenService
         var securityKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_tokenOptions.SecurityKey));
         var signingCredentials = new SigningCredentials(securityKey, SecurityAlgorithms.HmacSha256Signature);
 
-
+     
         var jwtSecurityToken = new JwtSecurityToken(
             issuer:_tokenOptions.Issuer,
             //audience: _tokenOptions.Audience,
@@ -63,14 +63,14 @@ public class TokenService : ITokenService
         var claims = new List<Claim>
         {
             new(ClaimTypes.NameIdentifier, appUser.Id),
-            //new(JwtRegisteredClaimNames.Email, appUser.Email),
+            new(JwtRegisteredClaimNames.Email, appUser.Email),
             new(ClaimTypes.Name, appUser.UserName),
             new(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()),
-            new Claim("birth-date",age)
+            new Claim("birth-date",age),
+
         };
         claims.AddRange(audiences.Select(x => new Claim(JwtRegisteredClaimNames.Aud, x)));
         claims.AddRange(roles.Select(x => new Claim(ClaimTypes.Role, x)));
-
 
         return claims;
     }

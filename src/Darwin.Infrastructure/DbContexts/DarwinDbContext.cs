@@ -11,14 +11,16 @@ public class DarwinDbContext : IdentityDbContext<AppUser, AppRole, string>
 
     }
     public DbSet<Music> Musics { get; set; }
+    public DbSet<ContentAgeRate> ContentAgeRates { get; set; }
     public DbSet<Mood> Moods { get; set; }
     public DbSet<Category> Categories { get; set; }
 
 
     protected override void OnModelCreating(ModelBuilder builder)
-    {
-        builder.Entity<Mood>().Navigation(c => c.Musics).AutoInclude();
-        builder.Entity<Category>().Navigation(c => c.Musics).AutoInclude();
+    {   
+        builder.Entity<Music>().Navigation(m => m.Moods).AutoInclude();
+        builder.Entity<Music>().Navigation(c=>c.Categories).AutoInclude();
+        builder.Entity<Music>().Navigation(c => c.AgeRate).AutoInclude();
         base.OnModelCreating(builder);
     }
 }
