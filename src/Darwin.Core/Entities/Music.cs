@@ -8,6 +8,7 @@ public class Music : BaseEntity
     {
         Categories=new HashSet<Category>();
         Moods = new HashSet<Mood>();
+        AgeRate = new();
     }
     [Required, MinLength(3), MaxLength(64)]
     public string Name { get; set; }
@@ -16,4 +17,5 @@ public class Music : BaseEntity
     public bool IsUsable { get; set; }
     public virtual ICollection<Category> Categories { get; set; }
     public virtual ICollection<Mood> Moods { get; set; }
+    public virtual AgeRate AgeRate { get; set; }
 }

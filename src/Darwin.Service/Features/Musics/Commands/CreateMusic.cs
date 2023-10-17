@@ -19,14 +19,16 @@ public static class CreateMusic
         private readonly IGenericRepository<Music> _musicRepositoryAsync;
         private readonly IGenericRepository<Category> _categoryRepositoryAsync;
         private readonly IGenericRepository<Mood> _moodRepositoryAsync;
+        public readonly IGenericRepository<AgeRate> _ageRateRepositoryAsync;
         private readonly IUnitOfWork _unitOfWork;
 
-        public CommandHandler(IGenericRepository<Music> musicRepositoryAsync, IGenericRepository<Category> categoryRepositoryAsync, IGenericRepository<Mood> moodRepositoryAsync, IUnitOfWork unitOfWork)
+        public CommandHandler(IGenericRepository<Music> musicRepositoryAsync, IGenericRepository<Category> categoryRepositoryAsync, IGenericRepository<Mood> moodRepositoryAsync, IGenericRepository<AgeRate> ageRateRepositoryAsync, IUnitOfWork unitOfWork)
         {
             _musicRepositoryAsync = musicRepositoryAsync;
             _categoryRepositoryAsync = categoryRepositoryAsync;
             _moodRepositoryAsync = moodRepositoryAsync;
             _unitOfWork = unitOfWork;
+            _ageRateRepositoryAsync = ageRateRepositoryAsync;
         }
 
         public async Task<DarwinResponse<CreatedMusicResponse>> Handle(Command request, CancellationToken cancellationToken)
@@ -36,11 +38,15 @@ public static class CreateMusic
                 Name = request.Model.Name,
                 ImageUrl = request.Model.ImageUrl,
                 IsUsable = request.Model.IsUsable,
-                Moods = new List<Mood>(),
-                Categories = new List<Category>(),
+                Lyrics=request.Model.Lyrics
             };
 
-
+            var ageRate= await _ageRateRepositoryAsync.GetAsync(x=>x.Id==request.Model.AgeRateId);
+            if (ageRate is null)
+            {
+                return DarwinResponse<CreatedMusicResponse>.Fail("NotFound",404);
+            }
+            music.AgeRate = ageRate;
 
             foreach (var moodId in request.Model.MoodIds)
             {
