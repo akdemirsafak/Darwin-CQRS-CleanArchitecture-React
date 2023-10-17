@@ -1,4 +1,4 @@
-﻿namespace Darwin.Model.Response.ContentAgeRates;
+﻿namespace Darwin.Model.Response.AgeRates;
 
 public class GetAgeRateResponse
 {

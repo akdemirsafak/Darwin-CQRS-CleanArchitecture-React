@@ -1,4 +1,4 @@
-﻿using Darwin.Model.Request.ContentAgeRates;
+﻿using Darwin.Model.Request.AgeRates;
 using Darwin.Service.Features.AgeRates.Commands;
 using Darwin.Service.Features.AgeRates.Queries;
 using MediatR;

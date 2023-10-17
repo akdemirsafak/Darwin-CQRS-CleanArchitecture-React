@@ -1,13 +1,11 @@
 ﻿using Darwin.Core.Entities;
 using Darwin.Core.RepositoryCore;
 using Darwin.Core.UnitofWorkCore;
-using Darwin.Model.Request.Musics;
 using Darwin.Model.Response.Musics;
 using Darwin.Service.Features.Musics.Commands;
 using Darwin.Service.Features.Musics.Queries;
 using Darwin.Service.Helper;
 using Mapster;
-using Microsoft.AspNetCore.Http;
 using NSubstitute;
 using System.Linq.Expressions;
 
@@ -100,7 +98,7 @@ public class MusicTests
 
     //GetMusicById
 
-   
+
 
     // SearchMusic
 

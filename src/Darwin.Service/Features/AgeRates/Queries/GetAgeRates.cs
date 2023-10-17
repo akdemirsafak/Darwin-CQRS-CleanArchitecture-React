@@ -1,7 +1,7 @@
 ﻿using Darwin.Core.BaseDto;
 using Darwin.Core.Entities;
 using Darwin.Core.RepositoryCore;
-using Darwin.Model.Response.ContentAgeRates;
+using Darwin.Model.Response.AgeRates;
 using Darwin.Service.Common;
 using Mapster;
 

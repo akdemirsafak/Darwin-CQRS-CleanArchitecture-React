@@ -2,7 +2,7 @@
 using Darwin.Core.Entities;
 using Darwin.Core.RepositoryCore;
 using Darwin.Core.UnitofWorkCore;
-using Darwin.Model.Request.ContentAgeRates;
+using Darwin.Model.Request.AgeRates;
 using Darwin.Model.Response.AgeRates;
 using Darwin.Service.Common;
 using FluentValidation;

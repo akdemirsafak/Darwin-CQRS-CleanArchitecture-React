@@ -1,5 +1,5 @@
-﻿using Darwin.Model.Response.Categories;
-using Darwin.Model.Response.ContentAgeRates;
+﻿using Darwin.Model.Response.AgeRates;
+using Darwin.Model.Response.Categories;
 using Darwin.Model.Response.Moods;
 
 namespace Darwin.Model.Response.Musics;
