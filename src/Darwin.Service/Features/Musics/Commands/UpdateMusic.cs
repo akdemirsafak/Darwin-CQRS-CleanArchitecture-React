@@ -34,6 +34,7 @@ public static class UpdateMusic
             }
             existMusic.ImageUrl = request.Model.ImageUrl;
             existMusic.Name = request.Model.Name != existMusic.Name ? request.Model.Name : existMusic.Name;
+            existMusic.Lyrics = request.Model.Lyrics != existMusic.Lyrics ? request.Model.Lyrics : existMusic.Lyrics;
             existMusic.IsUsable = request.Model.IsUsable;
             existMusic.UpdatedAt = DateTime.UtcNow.Ticks;
             await _repository.UpdateAsync(existMusic);

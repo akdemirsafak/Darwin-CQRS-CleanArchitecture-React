@@ -9,7 +9,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace Darwin.API.Controllers;
 
-[Authorize]
+//[Authorize]
 public class CategoryController : CustomBaseController
 {
     public CategoryController(IMediator mediator) : base(mediator)
