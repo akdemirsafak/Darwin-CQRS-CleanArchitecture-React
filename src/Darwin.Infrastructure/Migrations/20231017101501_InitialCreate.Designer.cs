@@ -12,15 +12,15 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace Darwin.Infrastructure.Migrations
 {
     [DbContext(typeof(DarwinDbContext))]
-    [Migration("20231012213710_initialMigration")]
-    partial class initialMigration
+    [Migration("20231017101501_InitialCreate")]
+    partial class InitialCreate
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("ProductVersion", "7.0.10")
+                .HasAnnotation("ProductVersion", "7.0.12")
                 .HasAnnotation("Relational:MaxIdentifierLength", 63);
 
             NpgsqlModelBuilderExtensions.UseIdentityByDefaultColumns(modelBuilder);
@@ -230,7 +230,7 @@ namespace Darwin.Infrastructure.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uuid");
 
-                    b.Property<Guid>("ContentAgeRateId")
+                    b.Property<Guid>("AgeRateId")
                         .HasColumnType("uuid");
 
                     b.Property<long>("CreatedAt")
@@ -256,7 +256,7 @@ namespace Darwin.Infrastructure.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("ContentAgeRateId");
+                    b.HasIndex("AgeRateId");
 
                     b.ToTable("Musics");
                 });
@@ -399,13 +399,13 @@ namespace Darwin.Infrastructure.Migrations
 
             modelBuilder.Entity("Darwin.Core.Entities.Music", b =>
                 {
-                    b.HasOne("Darwin.Core.Entities.ContentAgeRate", "ContentAgeRate")
-                        .WithMany()
-                        .HasForeignKey("ContentAgeRateId")
+                    b.HasOne("Darwin.Core.Entities.ContentAgeRate", "AgeRate")
+                        .WithMany("Musics")
+                        .HasForeignKey("AgeRateId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.Navigation("ContentAgeRate");
+                    b.Navigation("AgeRate");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
@@ -472,6 +472,11 @@ namespace Darwin.Infrastructure.Migrations
                         .HasForeignKey("MusicId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+                });
+
+            modelBuilder.Entity("Darwin.Core.Entities.ContentAgeRate", b =>
+                {
+                    b.Navigation("Musics");
                 });
 #pragma warning restore 612, 618
         }

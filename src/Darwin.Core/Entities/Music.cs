@@ -4,11 +4,19 @@ namespace Darwin.Core.Entities;
 
 public class Music : BaseEntity
 {
+    public Music()
+    {
+        //HashSet<> List'e göre daha az kaynak harcar ve unique bir yapılanmadır.
+        Categories = new HashSet<Category>();
+        AgeRate = new();
+        Moods = new HashSet<Mood>();
+    }
+
     [Required, MinLength(3), MaxLength(64)]
     public string Name { get; set; }
     public string ImageUrl { get; set; }
     public bool IsUsable { get; set; }
-    public virtual ContentAgeRate ContentAgeRate { get; set; }
-    public virtual IList<Category> Categories { get; set; }
-    public virtual IList<Mood> Moods { get; set; }
+    public virtual ContentAgeRate AgeRate { get; set; }
+    public virtual HashSet<Category> Categories { get; set; }
+    public virtual HashSet<Mood> Moods { get; set; }
 }

@@ -5,7 +5,7 @@
 namespace Darwin.Infrastructure.Migrations
 {
     /// <inheritdoc />
-    public partial class virtualContentAgeRateInMusicEntity : Migration
+    public partial class IListToHashSet : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)

@@ -7,7 +7,7 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace Darwin.Infrastructure.Migrations
 {
     /// <inheritdoc />
-    public partial class initialMigration : Migration
+    public partial class InitialCreate : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -216,7 +216,7 @@ namespace Darwin.Infrastructure.Migrations
                     Name = table.Column<string>(type: "character varying(64)", maxLength: 64, nullable: false),
                     ImageUrl = table.Column<string>(type: "text", nullable: false),
                     IsUsable = table.Column<bool>(type: "boolean", nullable: false),
-                    ContentAgeRateId = table.Column<Guid>(type: "uuid", nullable: false),
+                    AgeRateId = table.Column<Guid>(type: "uuid", nullable: false),
                     CreatedAt = table.Column<long>(type: "bigint", nullable: false),
                     UpdatedAt = table.Column<long>(type: "bigint", nullable: true),
                     DeletedAt = table.Column<long>(type: "bigint", nullable: true)
@@ -225,8 +225,8 @@ namespace Darwin.Infrastructure.Migrations
                 {
                     table.PrimaryKey("PK_Musics", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_Musics_ContentAgeRates_ContentAgeRateId",
-                        column: x => x.ContentAgeRateId,
+                        name: "FK_Musics_ContentAgeRates_AgeRateId",
+                        column: x => x.AgeRateId,
                         principalTable: "ContentAgeRates",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
@@ -328,9 +328,9 @@ namespace Darwin.Infrastructure.Migrations
                 column: "MusicId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Musics_ContentAgeRateId",
+                name: "IX_Musics_AgeRateId",
                 table: "Musics",
-                column: "ContentAgeRateId");
+                column: "AgeRateId");
         }
 
         /// <inheritdoc />

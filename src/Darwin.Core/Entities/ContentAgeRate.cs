@@ -12,5 +12,5 @@ public class ContentAgeRate
     public string Name { get; set; }
     public string Description { get; set; }
     public bool IsActive { get; set; }
-    public virtual IList<Music> Musics { get; set; }
+    public virtual HashSet<Music> Musics { get; set; }
 }
