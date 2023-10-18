@@ -1,4 +1,5 @@
-﻿using Darwin.Infrastructure;
+﻿using Darwin.API.Middlewares;
+using Darwin.Infrastructure;
 using Darwin.Model;
 using Darwin.Service;
 using Microsoft.AspNetCore.RateLimiting;
@@ -13,10 +14,7 @@ builder.WebHost.UseSentry(options =>
         scope.Level = SentryLevel.Debug;
     }));
 
-
 builder.Services.AddControllers();
-
-
 builder.Services.AddRateLimiter(options =>
 {
     options.AddTokenBucketLimiter("TokenBucket", _options =>
@@ -47,6 +45,7 @@ var app = builder.Build();
 
 app.UseRateLimiter();
 
+app.UseGlobalExceptionMiddleware();
 
 app.UseSentryTracing();
 

@@ -1,14 +1,18 @@
 ﻿using Darwin.Core.Entities;
 using Darwin.Infrastructure.DbContexts;
+using Darwin.Service.Behaviors;
 using Darwin.Service.Features.Moods.Commands;
 using Darwin.Service.Helper;
 using Darwin.Service.Localizations;
 using Darwin.Service.TokenOperations;
+using FluentValidation;
+using MediatR;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.IdentityModel.Tokens;
+using System.Reflection;
 using System.Text;
 
 namespace Darwin.Service;
@@ -19,6 +23,10 @@ public static class ServiceRegistration
     {
 
         serviceCollection.AddMediatR(cfg => cfg.RegisterServicesFromAssemblyContaining(typeof(CreateMood.Command)));
+        serviceCollection.AddValidatorsFromAssembly(Assembly.GetExecutingAssembly());
+
+        serviceCollection.AddTransient(typeof(IPipelineBehavior<,>), typeof(ValidationBehavior<,>));
+
         var tokenOptions = configuration.GetSection("AppTokenOptions").Get<AppTokenOptions>();
 
         serviceCollection.AddIdentity<AppUser, AppRole>(x =>
