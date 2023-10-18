@@ -33,7 +33,6 @@ builder.Services.AddSwaggerGen();
 
 
 builder.Services.AddService(builder.Configuration);
-builder.Services.AddModels();
 builder.Services.AddInfrastructure(builder.Configuration);
 builder.Services.AddCors(options =>
      options.AddDefaultPolicy(builder =>
