@@ -24,7 +24,6 @@ public static class ServiceRegistration
 
         serviceCollection.AddMediatR(cfg => cfg.RegisterServicesFromAssemblyContaining(typeof(CreateMood.Command)));
         serviceCollection.AddValidatorsFromAssembly(Assembly.GetExecutingAssembly());
-
         serviceCollection.AddTransient(typeof(IPipelineBehavior<,>), typeof(ValidationBehavior<,>));
 
         var tokenOptions = configuration.GetSection("AppTokenOptions").Get<AppTokenOptions>();
