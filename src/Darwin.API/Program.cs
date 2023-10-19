@@ -1,6 +1,5 @@
 ﻿using Darwin.API.Middlewares;
 using Darwin.Infrastructure;
-using Darwin.Model;
 using Darwin.Service;
 using Microsoft.AspNetCore.RateLimiting;
 using Sentry;

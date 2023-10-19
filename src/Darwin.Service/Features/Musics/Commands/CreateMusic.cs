@@ -22,10 +22,10 @@ public static class CreateMusic
         private readonly IGenericRepository<AgeRate> _ageRateRepositoryAsync;
         private readonly IUnitOfWork _unitOfWork;
 
-        public CommandHandler(IGenericRepository<Music> musicRepositoryAsync, 
-            IGenericRepository<Category> categoryRepositoryAsync, 
-            IGenericRepository<Mood> moodRepositoryAsync, 
-            IGenericRepository<AgeRate> ageRateRepositoryAsync, 
+        public CommandHandler(IGenericRepository<Music> musicRepositoryAsync,
+            IGenericRepository<Category> categoryRepositoryAsync,
+            IGenericRepository<Mood> moodRepositoryAsync,
+            IGenericRepository<AgeRate> ageRateRepositoryAsync,
             IUnitOfWork unitOfWork)
         {
             _musicRepositoryAsync = musicRepositoryAsync;
@@ -43,7 +43,7 @@ public static class CreateMusic
             var ageRate= await _ageRateRepositoryAsync.GetAsync(x=>x.Id==request.Model.AgeRateId);
             if (ageRate is null)
             {
-                return DarwinResponse<CreatedMusicResponse>.Fail("NotFound",404);
+                return DarwinResponse<CreatedMusicResponse>.Fail("NotFound", 404);
             }
 
             HashSet<Mood> moodList=new();
