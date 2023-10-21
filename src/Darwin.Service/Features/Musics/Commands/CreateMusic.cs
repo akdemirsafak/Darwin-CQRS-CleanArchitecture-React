@@ -70,6 +70,7 @@ public static class CreateMusic
             var music = new Music()
             {
                 Name = request.Model.Name,
+                Lyrics= request.Model.Lyrics,
                 ImageUrl = request.Model.ImageUrl,
                 IsUsable = request.Model.IsUsable,
                 AgeRate=ageRate,
