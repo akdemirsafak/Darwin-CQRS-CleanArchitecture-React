@@ -20,12 +20,12 @@ namespace Darwin.Infrastructure.Repository
         {
             return await (filter == null ?
                     _dbSet.ToListAsync() :
-                    _dbSet.Where(filter).AsNoTracking().ToListAsync());
+                    _dbSet.Where(filter).ToListAsync());
         }
 
         public async Task<T> GetAsync(Expression<Func<T, bool>> filter)
         {
-            return await _dbSet.AsNoTracking().SingleOrDefaultAsync(filter);
+            return await _dbSet.SingleOrDefaultAsync(filter);
         }
 
         public async Task RemoveAsync(T entity)

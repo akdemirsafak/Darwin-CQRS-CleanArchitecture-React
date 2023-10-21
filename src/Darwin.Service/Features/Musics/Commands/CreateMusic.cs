@@ -22,10 +22,10 @@ public static class CreateMusic
         private readonly IGenericRepository<AgeRate> _ageRateRepositoryAsync;
         private readonly IUnitOfWork _unitOfWork;
 
-        public CommandHandler(IGenericRepository<Music> musicRepositoryAsync, 
-            IGenericRepository<Category> categoryRepositoryAsync, 
-            IGenericRepository<Mood> moodRepositoryAsync, 
-            IGenericRepository<AgeRate> ageRateRepositoryAsync, 
+        public CommandHandler(IGenericRepository<Music> musicRepositoryAsync,
+            IGenericRepository<Category> categoryRepositoryAsync,
+            IGenericRepository<Mood> moodRepositoryAsync,
+            IGenericRepository<AgeRate> ageRateRepositoryAsync,
             IUnitOfWork unitOfWork)
         {
             _musicRepositoryAsync = musicRepositoryAsync;
@@ -43,10 +43,10 @@ public static class CreateMusic
             var ageRate= await _ageRateRepositoryAsync.GetAsync(x=>x.Id==request.Model.AgeRateId);
             if (ageRate is null)
             {
-                return DarwinResponse<CreatedMusicResponse>.Fail("NotFound",404);
+                return DarwinResponse<CreatedMusicResponse>.Fail("NotFound", 404);
             }
 
-            HashSet<Mood> moodList=new();
+            List<Mood> moodList=new();
             foreach (var moodId in request.Model.MoodIds)
             {
                 Mood existMood = await _moodRepositoryAsync.GetAsync(x => x.Id == moodId);
@@ -57,7 +57,7 @@ public static class CreateMusic
             }
 
             //Categories
-            HashSet<Category> categoryList=new();
+            List<Category> categoryList=new();
             foreach (var categoryId in request.Model.CategoryIds)
             {
                 Category existCategory = await _categoryRepositoryAsync.GetAsync(x => x.Id == categoryId);
@@ -70,6 +70,7 @@ public static class CreateMusic
             var music = new Music()
             {
                 Name = request.Model.Name,
+                Lyrics= request.Model.Lyrics,
                 ImageUrl = request.Model.ImageUrl,
                 IsUsable = request.Model.IsUsable,
                 AgeRate=ageRate,
@@ -89,7 +90,9 @@ public static class CreateMusic
         public CreateMusicCommandValidator()
         {
             RuleFor(x => x.Model.Name).NotEmpty().NotNull().Length(3, 64);
-
+            RuleFor(x => x.Model.AgeRateId).NotNull();
+            RuleFor(x => x.Model.MoodIds).NotNull();
+            RuleFor(x => x.Model.CategoryIds).NotNull();
         }
     }
 }
