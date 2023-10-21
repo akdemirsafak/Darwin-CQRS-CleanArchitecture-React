@@ -46,7 +46,7 @@ public static class CreateMusic
                 return DarwinResponse<CreatedMusicResponse>.Fail("NotFound", 404);
             }
 
-            HashSet<Mood> moodList=new();
+            List<Mood> moodList=new();
             foreach (var moodId in request.Model.MoodIds)
             {
                 Mood existMood = await _moodRepositoryAsync.GetAsync(x => x.Id == moodId);
@@ -57,7 +57,7 @@ public static class CreateMusic
             }
 
             //Categories
-            HashSet<Category> categoryList=new();
+            List<Category> categoryList=new();
             foreach (var categoryId in request.Model.CategoryIds)
             {
                 Category existCategory = await _categoryRepositoryAsync.GetAsync(x => x.Id == categoryId);
@@ -89,7 +89,9 @@ public static class CreateMusic
         public CreateMusicCommandValidator()
         {
             RuleFor(x => x.Model.Name).NotEmpty().NotNull().Length(3, 64);
-
+            RuleFor(x => x.Model.AgeRateId).NotNull();
+            RuleFor(x => x.Model.MoodIds).NotNull();
+            RuleFor(x => x.Model.CategoryIds).NotNull();
         }
     }
 }
