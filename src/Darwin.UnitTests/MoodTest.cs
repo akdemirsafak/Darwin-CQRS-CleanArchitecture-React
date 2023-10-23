@@ -6,6 +6,7 @@ using Darwin.Model.Response.Moods;
 using Darwin.Service.Features.Moods.Commands;
 using Darwin.Service.Features.Moods.Queries;
 using Mapster;
+using Microsoft.AspNetCore.Http;
 using NSubstitute;
 using System.Linq.Expressions;
 
@@ -47,7 +48,7 @@ public class MoodTest
         };
 
         _moodRepository.GetAllAsync().Returns(Task.FromResult(moodList));
-        moodList.Adapt<List<GetMoodResponse>>();
+        var moodListResponse=moodList.Adapt<List<GetMoodResponse>>();
 
         var command= new GetMoods.Query();
         var commandHandler= new GetMoods.QueryHandler(_moodRepository);
@@ -58,6 +59,8 @@ public class MoodTest
 
         //Assert
         Assert.NotNull(result.Data);
+        Assert.True(result.StatusCode == StatusCodes.Status200OK);
+        Assert.Equivalent(moodListResponse, result.Data);
 
     }
 
@@ -76,14 +79,8 @@ public class MoodTest
         };
 
         _moodRepository.CreateAsync(Arg.Any<Mood>()).Returns(Task.FromResult(mood));
-        mood.Adapt<CreatedMoodResponse>();
+        var createdMoodResponse=mood.Adapt<CreatedMoodResponse>();
 
-        CreatedMoodResponse createdMoodResponse=new CreatedMoodResponse()
-        {
-            Id=mood.Id,
-            IsUsable=mood.IsUsable,
-            Name=mood.Name
-        };
         var request= new CreateMoodRequest(mood.Name,mood.ImageUrl,mood.IsUsable);
         var command= new CreateMood.Command(request);
         var commandHandler= new CreateMood.CommandHandler(_moodRepository,_unitOfWork);
@@ -94,7 +91,8 @@ public class MoodTest
         //Assert
 
         Assert.NotNull(result.Data);
-        Assert.True(result.StatusCode == 201);
+        Assert.True(result.StatusCode == StatusCodes.Status201Created);
+        Assert.Equivalent(result.Data, createdMoodResponse);
     }
 
 
@@ -106,7 +104,7 @@ public class MoodTest
         var mood=new Mood()
         {
             Id=new Guid(),
-            Name="Belirsiz",
+            Name="Hadi",
             ImageUrl="nothing.jpg",
             CreatedAt = DateTime.UtcNow.Ticks,
             IsUsable=false
@@ -114,20 +112,14 @@ public class MoodTest
         var newValues=new Mood()
         {
             Id=mood.Id,
-            Name="New Value",
+            Name="Yeni deger",
             ImageUrl="technology.image",
             IsUsable=true,
         };
         _moodRepository.GetAsync(Arg.Any<Expression<Func<Mood, bool>>>()).Returns(Task.FromResult(mood));
         _moodRepository.UpdateAsync(Arg.Any<Mood>()).Returns(Task.FromResult(mood));
-        mood.Adapt<UpdatedMoodResponse>();
+        var updatedMoodResponse=newValues.Adapt<UpdatedMoodResponse>();
 
-        UpdatedMoodResponse updatedMoodResponse=new UpdatedMoodResponse()
-        {
-            Id=newValues.Id,
-            IsUsable=newValues.IsUsable,
-            Name=newValues.Name
-        };
         var request= new UpdateMoodRequest(newValues.Name,newValues.ImageUrl,newValues.IsUsable);
         var command= new UpdateMood.Command(mood.Id,request);
         var commandHandler=new UpdateMood.CommandHandler(_moodRepository, _unitOfWork);
@@ -136,9 +128,9 @@ public class MoodTest
         var result= await commandHandler.Handle(command,CancellationToken.None);
 
         // Assert
-        Assert.True(result.StatusCode == 204);
+        Assert.True(result.StatusCode == StatusCodes.Status204NoContent);
         Assert.NotNull(result.Data);
-        //Assert.Equal(result.Data, updatedMoodResponse);
+        Assert.Equivalent(result.Data, updatedMoodResponse);
     }
 
 
