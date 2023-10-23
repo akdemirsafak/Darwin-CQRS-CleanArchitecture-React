@@ -4,7 +4,9 @@ using Darwin.Core.UnitofWorkCore;
 using Darwin.Model.Response.Musics;
 using Darwin.Service.Features.Musics.Commands;
 using Darwin.Service.Features.Musics.Queries;
+using Darwin.Service.Helper;
 using Mapster;
+using Microsoft.AspNetCore.Http;
 using NSubstitute;
 using System.Linq.Expressions;
 
@@ -17,6 +19,7 @@ public class MusicTests
     private readonly IGenericRepository<Category> _categoryRepository;
     private readonly IGenericRepository<AgeRate> _ageRateRepository;
     private readonly IUnitOfWork _unitOfWork;
+    private readonly ICurrentUser _currentUser;
 
     public MusicTests()
     {
@@ -25,32 +28,33 @@ public class MusicTests
         _categoryRepository = Substitute.For<IGenericRepository<Category>>();
         _ageRateRepository = Substitute.For<IGenericRepository<AgeRate>>();
         _unitOfWork = Substitute.For<IUnitOfWork>();
+        _currentUser=Substitute.For<ICurrentUser>();
     }
 
     //GetMusics
+
     //[Fact]
     //public async Task GetMusicQuery_Should_Success_WhenFoundMusics()
     //{
     //    //Arrange
-
     //    var musicList=new List<Music>(){
 
     //        new Music(){
-    //            Id=new Guid(),
+    //            Id=Guid.NewGuid(),
     //            Name="Hurt you",
     //            ImageUrl="hurtyou.img",
     //            IsUsable=false,
     //            CreatedAt=DateTime.UtcNow.Ticks,
     //        },
     //        new Music(){
-    //            Id=new Guid(),
+    //            Id=Guid.NewGuid(),
     //            Name="Is There Someone Else?",
     //            ImageUrl="tryMaybeThere.png",
     //            IsUsable=true,
     //            CreatedAt=DateTime.UtcNow.Ticks,
     //        },
     //        new Music(){
-    //            Id=new Guid(),
+    //            Id=Guid.NewGuid(),
     //            Name="Still Loving you",
     //            ImageUrl="Scorpions.jpeg",
     //            IsUsable=false,
@@ -59,13 +63,14 @@ public class MusicTests
     //    };
 
     //    _musicRepository.GetAllAsync().Returns(Task.FromResult(musicList));
-    //    musicList.Adapt<List<GetMusicResponse>>();
+    //    var musicListResponse=musicList.Adapt<List<GetMusicResponse>>();
     //    var query= new GetMusics.Query();
     //    var queryHandler= new GetMusics.QueryHandler(_musicRepository,_currentUser);
     //    //Act
     //    var result= await queryHandler.Handle(query,CancellationToken.None);
 
     //    //Assert
+    //    Assert.True(result.StatusCode == StatusCodes.Status200OK);
     //    Assert.NotNull(result.Data);
     //}
 
@@ -76,6 +81,7 @@ public class MusicTests
     [Fact]
     public async Task DeleteMusic_Should_Success_WhenExecuteSuccess()
     {
+        //Assert
         var music=new Music()
         {
             Id=new Guid(),
@@ -90,6 +96,13 @@ public class MusicTests
 
         var command= new DeleteMusic.Command(music.Id);
         var commandHandler = new DeleteMusic.CommandHandler(_musicRepository,_unitOfWork);
+
+        //Act
+        var result= await commandHandler.Handle(command,CancellationToken.None);
+
+        //Assert
+        Assert.True(result.StatusCode == StatusCodes.Status204NoContent);
+
     }
 
 
@@ -137,16 +150,17 @@ public class MusicTests
         };
         string searchText="Still";
         _musicRepository.GetAllAsync(Arg.Any<Expression<Func<Music, bool>>>()).Returns(Task.FromResult(musicList));
-        musicList.Adapt<List<GetMusicResponse>>();
+        var getMusicListResponse=musicList.Adapt<List<GetMusicResponse>>();
         var query= new SearchMusics.Query(searchText);
         var queryHandler= new SearchMusics.QueryHandler(_musicRepository);
         //Act
         var result= await queryHandler.Handle(query,CancellationToken.None);
 
         //Assert
+        Assert.True(result.StatusCode == StatusCodes.Status200OK);
         Assert.NotNull(result.Data);
+        Assert.Equivalent(result.Data, getMusicListResponse);
     }
 
-    //CreateMusic
 
 }
