@@ -49,7 +49,7 @@ public class CategoryTests
 
 
         _categoryRepository.GetAllAsync().Returns(Task.FromResult(categoryList));
-        categoryList.Adapt<List<GetCategoryResponse>>();
+        var categoryListResponse=categoryList.Adapt<List<GetCategoryResponse>>();
 
         var query= new GetCategories.Query();
         var queryHandler= new GetCategories.QueryHandler(_categoryRepository);
@@ -58,7 +58,9 @@ public class CategoryTests
         var result=await queryHandler.Handle(query, CancellationToken.None);
 
         //Assert
+        Assert.True(result.StatusCode == StatusCodes.Status200OK);
         Assert.NotNull(result.Data);
+        Assert.Equivalent(result.Data, categoryListResponse);
 
     }
 
@@ -124,14 +126,12 @@ public class CategoryTests
 
         var category= new Category()
         {
-            Id=new Guid(),
             Name="CategoryTest",
             ImageUrl="categorytest.png",
             IsUsable=true
         };
         _categoryRepository.CreateAsync(Arg.Any<Category>()).Returns(Task.FromResult(category));
         category.Adapt<CreatedCategoryResponse>();
-
         var createdCategoryResponse=new CreatedCategoryResponse()
         {
             Id=category.Id,
@@ -150,22 +150,19 @@ public class CategoryTests
         //Assert
         Assert.NotNull(result.Data);
         Assert.Null(result.Errors);
-        Assert.True(result.StatusCode == 201);
-        //Assert.Equal(result.Data.Id, createdCategoryResponse.Id);
-        //Assert.Equal(result.Data.Name, createdCategoryResponse.Name);
-        //Assert.Equal(result.Data.IsUsable, createdCategoryResponse.IsUsable);
-        //Assert.Equal(result.Data.ImageUrl, createdCategoryResponse.ImageUrl);
+        Assert.True(result.StatusCode == StatusCodes.Status201Created);
+        Assert.Equivalent(result.Data, createdCategoryResponse);
+
     }
 
 
     [Fact]
     public async Task UpdateCategory_Should_Return_UpdateCategoryResponse_WhenSuccess()
     {
-
+        var categoryId = Guid.NewGuid();
         var category= new Category()
         {
-
-            Id = new Guid(),
+            Id=categoryId,
             CreatedAt = DateTime.UtcNow.Ticks,
             Name= "Test",
             IsUsable = false,
@@ -179,17 +176,16 @@ public class CategoryTests
         };
 
         _categoryRepository.GetAsync(Arg.Any<Expression<Func<Category, bool>>>()).Returns(Task.FromResult(category));
-        _categoryRepository.UpdateAsync(Arg.Any<Category>()).Returns(Task.FromResult(category));
-        category.Adapt<UpdatedCategoryResponse>();
-
-        var updatedCategory= new UpdatedCategoryResponse()
+        _categoryRepository.UpdateAsync(Arg.Any<Category>()).Returns(Task.FromResult(newCategoryValues));
+        var updatedCategoryResponse=new UpdatedCategoryResponse
         {
-            Id=category.Id,
-            Name=newCategoryValues.Name,
-            ImageUrl = newCategoryValues.ImageUrl,
+            Id = categoryId,
+            ImageUrl=newCategoryValues.ImageUrl,
             IsUsable=newCategoryValues.IsUsable,
-
+            Name = newCategoryValues.Name
         };
+
+
 
         var request= new UpdateCategoryRequest(newCategoryValues.Name,newCategoryValues.ImageUrl,newCategoryValues.IsUsable);
         var command= new UpdateCategory.Command(category.Id,request);
@@ -200,12 +196,9 @@ public class CategoryTests
 
         //Assert
         Assert.Null(result.Errors);
-        Assert.True(result.StatusCode == 204);
+        Assert.True(result.StatusCode == StatusCodes.Status204NoContent);
         Assert.NotNull(result.Data);
-        Assert.Equal(result.Data.Id, updatedCategory.Id);
-        Assert.Equal(result.Data.Name, updatedCategory.Name);
-        Assert.Equal(result.Data.ImageUrl, updatedCategory.ImageUrl);
-        Assert.Equal(result.Data.IsUsable, updatedCategory.IsUsable);
+        Assert.Equivalent(updatedCategoryResponse, result.Data);
 
     }
 
@@ -230,7 +223,7 @@ public class CategoryTests
         //Act
         var result= await commandHandler.Handle(command, CancellationToken.None);
         Assert.Null(result.Errors);
-        Assert.True(result.StatusCode == 204);
+        Assert.True(result.StatusCode == StatusCodes.Status204NoContent);
     }
 
 }

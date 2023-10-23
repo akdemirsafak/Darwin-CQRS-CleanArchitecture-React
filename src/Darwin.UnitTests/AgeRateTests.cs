@@ -47,7 +47,7 @@ public class AgeRateTests
 
 
         _ageRateRepository.GetAllAsync().Returns(Task.FromResult(ageRateList));
-        ageRateList.Adapt<List<GetAgeRateResponse>>();
+        var ageRateListResponse=ageRateList.Adapt<List<GetAgeRateResponse>>();
 
         var query=new GetAgeRates.Query();
         var queryHandler=new GetAgeRates.QueryHandler(_ageRateRepository);
@@ -58,10 +58,10 @@ public class AgeRateTests
         var result=await queryHandler.Handle(query,CancellationToken.None);
 
         //Assert
-        
-        Assert.NotNull(result.Data);
         Assert.True(result.StatusCode == StatusCodes.Status200OK);
-
+        Assert.NotNull(result.Data);
+        Assert.Equivalent(result.Data, ageRateListResponse);
+       
 
     }
 
@@ -88,7 +88,7 @@ public class AgeRateTests
         var result= await commandHandler.Handle(command,CancellationToken.None);
         //Assert
 
-        Assert.True(result.StatusCode == (int)HttpStatusCode.Created); //CreateAgeRate returning NoContent
+        Assert.True(result.StatusCode == StatusCodes.Status201Created);
     }
 
     [Fact]
@@ -105,9 +105,7 @@ public class AgeRateTests
             Name="Adult",
             Rate= 18
         };
-        ageRate.IsActive = false;
-      
-
+ 
         _ageRateRepository.GetAsync(Arg.Any<Expression<Func<AgeRate, bool>>>()).Returns(Task.FromResult(ageRate));
         ageRate.IsActive = false;
         _ageRateRepository.UpdateAsync(Arg.Any<AgeRate>()).Returns(Task.FromResult(ageRate));
@@ -122,7 +120,7 @@ public class AgeRateTests
         var result= await commandHandler.Handle(command,CancellationToken.None);
 
         //Assert
-        Assert.True(result.StatusCode == 204); //DeleteAgeRate returning DeletedAgeRateResponse
+        Assert.True(result.StatusCode == StatusCodes.Status204NoContent); //DeleteAgeRate returning DeletedAgeRateResponse
     }
 
 }
