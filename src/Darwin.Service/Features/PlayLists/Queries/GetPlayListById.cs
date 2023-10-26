@@ -20,7 +20,7 @@ public static class GetPlayListById
 
         public async Task<DarwinResponse<GetPlayListByIdResponse>> Handle(Query request, CancellationToken cancellationToken)
         {
-            var playList=await _playListRepository.GetPlayListByIdWithMusicsAsync(request.id);
+            var playList=await _playListRepository.GetPlayListByIdWithContentsAsync(request.id);
             if (playList is null)
                 return DarwinResponse<GetPlayListByIdResponse>.Fail("Çalma listesi bulunamadı.", 404);
 

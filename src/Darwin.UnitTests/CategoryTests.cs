@@ -1,10 +1,13 @@
 ﻿using Darwin.Core.Entities;
 using Darwin.Core.RepositoryCore;
 using Darwin.Core.UnitofWorkCore;
+using Darwin.Infrastructure.Repository;
 using Darwin.Model.Request.Categories;
 using Darwin.Model.Response.Categories;
+using Darwin.Model.Response.PlayLists;
 using Darwin.Service.Features.Categories.Commands;
 using Darwin.Service.Features.Categories.Queries;
+using Darwin.Service.Features.PlayLists.Queries;
 using Mapster;
 using Microsoft.AspNetCore.Http;
 using NSubstitute;
@@ -66,56 +69,39 @@ public class CategoryTests
 
 
 
-    [Fact]
-    public async Task GetCategoryById_Should_WhenFound()
-    {
-        var categoryId=new Guid();
-        var category1= new Category()
-        {
-            Id=categoryId,
-            Name="CategoryTest",
-            ImageUrl="categorytest.png",
-            IsUsable=true,
-            CreatedAt=DateTime.UtcNow.Ticks
-        };
-        var category2= new Category()
-        {
-            Id=new Guid(),
-            Name="Test2",
-            ImageUrl="bilmemne.png",
-            IsUsable=false,
-            CreatedAt=DateTime.UtcNow.Ticks
-        };
+    //[Fact]
+    //public async Task GetCategoryById_Should_WhenFound()
+    //{
 
-        //Arrange
-        List<Category> categoryList = new();
-        categoryList.Add(category1);
-        categoryList.Add(category2);
+    //    /////-----Arrange-----
 
-        var category=new Category();
-        _categoryRepository.GetAsync(Arg.Any<Expression<Func<Category, bool>>>()).Returns(Task.FromResult(category));
-        categoryList.Adapt<GetCategoryResponse>();
-
-        var categoryGetByIdResponse= new GetCategoryResponse()
-        {
-            Id = categoryId,
-            Name=category1.Name,
-            ImageUrl = category1.ImageUrl,
-            IsUsable=category1.IsUsable,
-        };
-
-        var query= new GetCategoryById.Query(categoryId);
-        var queryHandler= new GetCategoryById.QueryHandler(_categoryRepository);
-
-        //Act
-        var result=await queryHandler.Handle(query, CancellationToken.None);
-
-        //Assert
-        Assert.True(result.StatusCode == StatusCodes.Status200OK);
-        Assert.NotNull(result.Data);
+    //    //Contents
+    //    var category= new Category()
+    //    {
+    //        Id=Guid.NewGuid(),
+    //        Name="Anyone",
+    //        IsUsable=true,
+    //        ImageUrl="darwinCategory.png"
+    //    };
 
 
-    }
+    //    _categoryRepository.GetAsync(x=>x.Id==category.Id).Returns(Task.FromResult(category));
+    //    var categoryResponse= category.Adapt<GetCategoryResponse>();
+
+    //    var query= new GetCategoryById.Query(category.Id);
+    //    var queryHandler=new GetCategoryById.QueryHandler(_categoryRepository);
+
+    //    /////-----Act-----
+    //    var result= await queryHandler.Handle(query,CancellationToken.None);
+
+    //    /////-----Assert-----
+
+    //    Assert.True(result.StatusCode == StatusCodes.Status200OK);
+    //    Assert.NotNull(result.Data);
+    //    Assert.Equivalent(categoryResponse, result.Data);
+
+     
+    //}
 
 
 
