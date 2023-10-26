@@ -6,7 +6,7 @@ public class PlayList : BaseEntity
 {
     public PlayList()
     {
-        Musics = new HashSet<Music>();
+        Contents = new HashSet<Content>();
     }
     [Required]
     [MinLength(3), MaxLength(64)]
@@ -14,5 +14,5 @@ public class PlayList : BaseEntity
     public string? Description { get; set; }
     public bool IsPublic { get; set; }
     public bool IsUsable { get; set; }
-    public virtual ICollection<Music> Musics { get; set; }
+    public virtual ICollection<Content> Contents { get; set; }
 }

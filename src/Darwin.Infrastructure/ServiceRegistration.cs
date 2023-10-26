@@ -20,9 +20,10 @@ public static class ServiceRegistration
             option => { option.MigrationsAssembly(Assembly.GetAssembly(typeof(DarwinDbContext))!.GetName().Name); });
         });
         serviceCollection.AddScoped<IUnitOfWork, UnitOfWork>();
-        
+
         serviceCollection.AddScoped(typeof(IGenericRepository<>), typeof(GenericRepository<>));
         serviceCollection.AddScoped<IPlayListRepository, PlayListRepository>();
+        serviceCollection.AddScoped<IContentRepository, ContentRepository>();
 
     }
 }

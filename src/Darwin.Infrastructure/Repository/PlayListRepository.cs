@@ -11,8 +11,8 @@ public class PlayListRepository : GenericRepository<PlayList>, IPlayListReposito
     {
     }
 
-    public async Task<PlayList> GetPlayListByIdWithMusicsAsync(Guid id)
+    public async Task<PlayList> GetPlayListByIdWithContentsAsync(Guid id)
     {
-        return await _dbContext.PlayLists.Include(x => x.Musics).SingleOrDefaultAsync(x => x.Id == id);
+        return await _dbContext.PlayLists.Include(x => x.Contents).SingleOrDefaultAsync(x => x.Id == id);
     }
 }

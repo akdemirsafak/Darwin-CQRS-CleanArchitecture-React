@@ -1,4 +1,4 @@
-﻿using Darwin.Model.Response.Musics;
+﻿using Darwin.Model.Response.Contents;
 
 namespace Darwin.Model.Response.PlayLists;
 
@@ -9,5 +9,5 @@ public class GetPlayListByIdResponse
     public string Description { get; set; }
     public bool IsUsable { get; set; }
     public bool IsPublic { get; set; }
-    public virtual IList<GetMusicResponse> Musics { get; set; }
+    public virtual IList<GetContentResponse> Contents { get; set; }
 }

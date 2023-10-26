@@ -10,7 +10,7 @@ public class DarwinDbContext : IdentityDbContext<AppUser, AppRole, string>
     {
 
     }
-    public DbSet<Music> Musics { get; set; }
+    public DbSet<Content> Contents { get; set; }
     public DbSet<PlayList> PlayLists { get; set; }
     public DbSet<AgeRate> AgeRates { get; set; }
     public DbSet<Mood> Moods { get; set; }
@@ -19,8 +19,8 @@ public class DarwinDbContext : IdentityDbContext<AppUser, AppRole, string>
 
     protected override void OnModelCreating(ModelBuilder builder)
     {
-        builder.Entity<Music>().Navigation(m => m.AgeRate).AutoInclude();
-        builder.Entity<Music>().Navigation(m => m.PlayLists).AutoInclude();
+        builder.Entity<Content>().Navigation(c => c.AgeRate).AutoInclude();
+        builder.Entity<Content>().Navigation(c => c.PlayLists).AutoInclude();
         base.OnModelCreating(builder);
     }
 }

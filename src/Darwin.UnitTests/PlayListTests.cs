@@ -15,12 +15,12 @@ namespace Darwin.UnitTests;
 public class PlayListTests
 {
     private readonly IPlayListRepository _playListRepository;
-    private readonly IGenericRepository<Music> _musicRepository;
+    private readonly IGenericRepository<Content> _contentRepository;
     private readonly IUnitOfWork _unitOfWork;
     public PlayListTests()
     {
         _playListRepository = Substitute.For<IPlayListRepository>();
-        _musicRepository = Substitute.For<IGenericRepository<Music>>();
+        _contentRepository = Substitute.For<IGenericRepository<Content>>();
         _unitOfWork = Substitute.For<IUnitOfWork>();
 
     }
@@ -77,8 +77,8 @@ public class PlayListTests
 
         /////-----Arrange-----
 
-        //Musics
-        var music= new Music()
+        //Contents
+        var content= new Content()
         {
             Id=Guid.NewGuid(),
             Name="Six feet under",
@@ -86,7 +86,7 @@ public class PlayListTests
             IsUsable=true,
             ImageUrl="darwinimg.png"
         };
-        var music2= new Music()
+        var content2= new Content()
         {
             Id=Guid.NewGuid(),
             Name="Still loving you",
@@ -94,7 +94,7 @@ public class PlayListTests
             IsUsable=false,
             ImageUrl="scorpions.png"
         };
-        var music3= new Music()
+        var content3= new Content()
         {
             Id=Guid.NewGuid(),
             Name="Back to Black",
@@ -111,7 +111,7 @@ public class PlayListTests
             IsUsable = true,
             IsPublic=true,
             Description="description",
-            Musics=new List<Music>{music,music3 }
+            Contents=new List<Content>{ content, content3 }
         };
         var playList2=new PlayList()
         {
@@ -120,7 +120,7 @@ public class PlayListTests
             IsUsable = true,
             IsPublic=false,
             Description="description",
-            Musics=new List<Music>{music }
+            Contents=new List<Content>{content }
         };
 
         var playLists=new List<PlayList>()
@@ -128,7 +128,7 @@ public class PlayListTests
             playList,playList2
         };
 
-        _playListRepository.GetPlayListByIdWithMusicsAsync(playList.Id).Returns(Task.FromResult(playList));
+        _playListRepository.GetPlayListByIdWithContentsAsync(playList.Id).Returns(Task.FromResult(playList));
         var playListResponse= playList.Adapt<GetPlayListByIdResponse>();
 
         var query= new GetPlayListById.Query(playList.Id);
