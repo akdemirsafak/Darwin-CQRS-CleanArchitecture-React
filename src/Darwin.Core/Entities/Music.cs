@@ -20,5 +20,6 @@ public class Music : BaseEntity
     public virtual AgeRate AgeRate { get; set; }
     public virtual ICollection<Category> Categories { get; set; }
     public virtual ICollection<Mood> Moods { get; set; }
+    public virtual ICollection<PlayList> PlayLists { get; set; }
 
 }
