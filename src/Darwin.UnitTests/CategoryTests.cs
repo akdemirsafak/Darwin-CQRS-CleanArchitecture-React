@@ -1,13 +1,10 @@
 ﻿using Darwin.Core.Entities;
 using Darwin.Core.RepositoryCore;
 using Darwin.Core.UnitofWorkCore;
-using Darwin.Infrastructure.Repository;
 using Darwin.Model.Request.Categories;
 using Darwin.Model.Response.Categories;
-using Darwin.Model.Response.PlayLists;
 using Darwin.Service.Features.Categories.Commands;
 using Darwin.Service.Features.Categories.Queries;
-using Darwin.Service.Features.PlayLists.Queries;
 using Mapster;
 using Microsoft.AspNetCore.Http;
 using NSubstitute;
@@ -100,7 +97,7 @@ public class CategoryTests
     //    Assert.NotNull(result.Data);
     //    Assert.Equivalent(categoryResponse, result.Data);
 
-     
+
     //}
 
 
