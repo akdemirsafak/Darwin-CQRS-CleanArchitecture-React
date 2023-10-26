@@ -7,7 +7,7 @@ namespace Darwin.Infrastructure.Repository
 {
     public class GenericRepository<T> : IGenericRepository<T> where T : class
     {
-        private readonly DarwinDbContext _dbContext;
+        protected readonly DarwinDbContext _dbContext;
         private readonly DbSet<T> _dbSet;
 
         public GenericRepository(DarwinDbContext dbContext)
