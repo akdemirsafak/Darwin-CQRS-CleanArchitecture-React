@@ -31,38 +31,38 @@ public class PlayListTests
 
         //Arrange
 
-        var playList=new PlayList()
-        {
-            Id=Guid.NewGuid(),
-            Name ="FirstPlayList",
-            IsUsable = true,
-            IsPublic=true,
-            Description="description"
-        };
-        var playList2=new PlayList()
+        var playList = new PlayList()
         {
             Id = Guid.NewGuid(),
-            Name="SecondPlayList",
+            Name = "FirstPlayList",
             IsUsable = true,
-            IsPublic=false,
-            Description="description"
+            IsPublic = true,
+            Description = "description"
+        };
+        var playList2 = new PlayList()
+        {
+            Id = Guid.NewGuid(),
+            Name = "SecondPlayList",
+            IsUsable = true,
+            IsPublic = false,
+            Description = "description"
         };
 
-        var playLists=new List<PlayList>()
+        var playLists = new List<PlayList>()
         {
             playList,playList2
         };
         _playListRepository.GetAllAsync().Returns(Task.FromResult(playLists));
-        var playListsResponse= playLists.Adapt<List<GetPlayListResponse>>();
+        var playListsResponse = playLists.Adapt<List<GetPlayListResponse>>();
 
-        var query=new GetPlayLists.Query();
-        var queryHandler=new GetPlayLists.QueryHandler(_playListRepository);
+        var query = new GetPlayLists.Query();
+        var queryHandler = new GetPlayLists.QueryHandler(_playListRepository);
 
 
 
         //Act
 
-        var result= await queryHandler.Handle(query,CancellationToken.None);
+        var result = await queryHandler.Handle(query, CancellationToken.None);
 
         //Assert
 
@@ -78,64 +78,64 @@ public class PlayListTests
         /////-----Arrange-----
 
         //Contents
-        var content= new Content()
+        var content = new Content()
         {
-            Id=Guid.NewGuid(),
-            Name="Six feet under",
-            Lyrics="weeknd",
-            IsUsable=true,
-            ImageUrl="darwinimg.png"
+            Id = Guid.NewGuid(),
+            Name = "Six feet under",
+            Lyrics = "weeknd",
+            IsUsable = true,
+            ImageUrl = "darwinimg.png"
         };
-        var content2= new Content()
+        var content2 = new Content()
         {
-            Id=Guid.NewGuid(),
-            Name="Still loving you",
-            Lyrics="deneme1234",
-            IsUsable=false,
-            ImageUrl="scorpions.png"
+            Id = Guid.NewGuid(),
+            Name = "Still loving you",
+            Lyrics = "deneme1234",
+            IsUsable = false,
+            ImageUrl = "scorpions.png"
         };
-        var content3= new Content()
+        var content3 = new Content()
         {
-            Id=Guid.NewGuid(),
-            Name="Back to Black",
-            Lyrics="and my tears dry",
-            IsUsable=true,
-            ImageUrl="darwinimg.png"
+            Id = Guid.NewGuid(),
+            Name = "Back to Black",
+            Lyrics = "and my tears dry",
+            IsUsable = true,
+            ImageUrl = "darwinimg.png"
         };
 
         //PlayLists
-        var playList=new PlayList()
-        {
-            Id=Guid.NewGuid(),
-            Name="FirstPlayList",
-            IsUsable = true,
-            IsPublic=true,
-            Description="description",
-            Contents=new List<Content>{ content, content3 }
-        };
-        var playList2=new PlayList()
+        var playList = new PlayList()
         {
             Id = Guid.NewGuid(),
-            Name="SecondPlayList",
+            Name = "FirstPlayList",
             IsUsable = true,
-            IsPublic=false,
-            Description="description",
-            Contents=new List<Content>{content }
+            IsPublic = true,
+            Description = "description",
+            Contents = new List<Content> { content, content3 }
+        };
+        var playList2 = new PlayList()
+        {
+            Id = Guid.NewGuid(),
+            Name = "SecondPlayList",
+            IsUsable = true,
+            IsPublic = false,
+            Description = "description",
+            Contents = new List<Content> { content }
         };
 
-        var playLists=new List<PlayList>()
+        var playLists = new List<PlayList>()
         {
             playList,playList2
         };
 
         _playListRepository.GetPlayListByIdWithContentsAsync(playList.Id).Returns(Task.FromResult(playList));
-        var playListResponse= playList.Adapt<GetPlayListByIdResponse>();
+        var playListResponse = playList.Adapt<GetPlayListByIdResponse>();
 
-        var query= new GetPlayListById.Query(playList.Id);
-        var queryHandler=new GetPlayListById.QueryHandler(_playListRepository);
+        var query = new GetPlayListById.Query(playList.Id);
+        var queryHandler = new GetPlayListById.QueryHandler(_playListRepository);
 
         /////-----Act-----
-        var result= await queryHandler.Handle(query,CancellationToken.None);
+        var result = await queryHandler.Handle(query, CancellationToken.None);
 
         /////-----Assert-----
 
@@ -147,19 +147,19 @@ public class PlayListTests
     }
 
     [Fact]
-    public async Task CreatePlayList_Should_Return_200WithCreatedPlayList()
+    public async Task CreatePlayList_Should_Return_201WithCreatedPlayList()
     {
-        var playList=new CreatePlayListRequest("PlayListName","Açıklama",true,true);
-        var entity=playList.Adapt<PlayList>();
+        var playList = new CreatePlayListRequest("PlayListName", "Açıklama", true, true);
+        var entity = playList.Adapt<PlayList>();
         _playListRepository.CreateAsync(entity).Returns(Task.FromResult(entity));
         await _unitOfWork.CommitAsync();
-        var createdPlayListResponse= entity.Adapt<CreatedPlayListResponse>();
+        var createdPlayListResponse = entity.Adapt<CreatedPlayListResponse>();
 
         var command = new CreatePlayList.Command(playList);
-        var commandHandler=new CreatePlayList.CommandHandler(_playListRepository,_unitOfWork);
+        var commandHandler = new CreatePlayList.CommandHandler(_playListRepository, _unitOfWork);
 
         //Act
-        var result= await commandHandler.Handle(command,CancellationToken.None);
+        var result = await commandHandler.Handle(command, CancellationToken.None);
 
         //Assert
 
@@ -173,21 +173,21 @@ public class PlayListTests
     [Fact]
     public async Task UpdatePlayList_Should_Return_200WithUpdatedPlayList()
     {
-        var playList=new PlayList()
+        var playList = new PlayList()
         {
-            Id=Guid.NewGuid(),
-            Name="MyPlayList",
-            Description="Old Description",
-            IsPublic=true,
-            IsUsable=false
+            Id = Guid.NewGuid(),
+            Name = "MyPlayList",
+            Description = "Old Description",
+            IsPublic = true,
+            IsUsable = false
         };
-        var playListNewValues=new PlayList()
+        var playListNewValues = new PlayList()
         {
-            Id=playList.Id,
-            Name="Yeni playList Adı",
-            Description="Yeni bir açıklama",
-            IsPublic=true,
-            IsUsable=true
+            Id = playList.Id,
+            Name = "Yeni playList Adı",
+            Description = "Yeni bir açıklama",
+            IsPublic = true,
+            IsUsable = true
         };
 
 
@@ -196,14 +196,14 @@ public class PlayListTests
         _playListRepository.UpdateAsync(Arg.Any<PlayList>()).Returns(Task.FromResult(playList));
         await _unitOfWork.CommitAsync();
 
-        var updatedPlayListResponse= playListNewValues.Adapt<UpdatedPlayListResponse>();
+        var updatedPlayListResponse = playListNewValues.Adapt<UpdatedPlayListResponse>();
 
-        var playListRequest=new UpdatePlayListRequest(playListNewValues.Name,playListNewValues.Description,playListNewValues.IsPublic,playListNewValues.IsUsable);
-        var command = new UpdatePlayList.Command(playList.Id,playListRequest);
-        var commandHandler=new UpdatePlayList.CommandHandler(_playListRepository,_unitOfWork);
+        var playListRequest = new UpdatePlayListRequest(playListNewValues.Name, playListNewValues.Description, playListNewValues.IsPublic, playListNewValues.IsUsable);
+        var command = new UpdatePlayList.Command(playList.Id, playListRequest);
+        var commandHandler = new UpdatePlayList.CommandHandler(_playListRepository, _unitOfWork);
 
         //Act
-        var result= await commandHandler.Handle(command,CancellationToken.None);
+        var result = await commandHandler.Handle(command, CancellationToken.None);
 
         //Assert
 
@@ -217,13 +217,13 @@ public class PlayListTests
     [Fact]
     public async Task DeletePlayList_Should_Return_204WithNoContent()
     {
-        var playList= new PlayList()
+        var playList = new PlayList()
         {
-            Id=Guid.NewGuid(),
-            Name="PlayList1",
-            Description="description",
-            IsPublic=true,
-            IsUsable=true
+            Id = Guid.NewGuid(),
+            Name = "PlayList1",
+            Description = "description",
+            IsPublic = true,
+            IsUsable = true
         };
 
         _playListRepository.GetAsync(Arg.Any<Expression<Func<PlayList, bool>>>()).Returns(Task.FromResult(playList));
@@ -232,12 +232,12 @@ public class PlayListTests
         _playListRepository.UpdateAsync(Arg.Any<PlayList>()).Returns(Task.FromResult(playList));
         await _unitOfWork.CommitAsync();
 
-        var command= new DeletePlayList.Command(playList.Id);
-        var commandHandler= new DeletePlayList.CommandHandler(_playListRepository,_unitOfWork);
+        var command = new DeletePlayList.Command(playList.Id);
+        var commandHandler = new DeletePlayList.CommandHandler(_playListRepository, _unitOfWork);
 
         //Act
 
-        var result= await commandHandler.Handle(command,CancellationToken.None);
+        var result = await commandHandler.Handle(command, CancellationToken.None);
 
         //Assert
         Assert.True(result.StatusCode == StatusCodes.Status204NoContent);

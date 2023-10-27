@@ -48,14 +48,14 @@ public class MoodTest
         };
 
         _moodRepository.GetAllAsync().Returns(Task.FromResult(moodList));
-        var moodListResponse=moodList.Adapt<List<GetMoodResponse>>();
+        var moodListResponse = moodList.Adapt<List<GetMoodResponse>>();
 
-        var command= new GetMoods.Query();
-        var commandHandler= new GetMoods.QueryHandler(_moodRepository);
+        var command = new GetMoods.Query();
+        var commandHandler = new GetMoods.QueryHandler(_moodRepository);
 
         //Act
 
-        var result=await commandHandler.Handle(command, CancellationToken.None);
+        var result = await commandHandler.Handle(command, CancellationToken.None);
 
         //Assert
         Assert.NotNull(result.Data);
@@ -65,70 +65,69 @@ public class MoodTest
     }
 
     [Fact]
-    public async Task CreateMood_Should_Success_WhenCreated()
+    public async Task CreateMood_Should_SuccessWith201StatusCode_WhenCreated()
     {
         //arrange
 
-        var mood=new Mood()
+        var mood = new Mood()
         {
-            Id=new Guid(),
-            Name="Belirsiz",
-            ImageUrl="nothing.jpg",
+            Id = new Guid(),
+            Name = "Belirsiz",
+            ImageUrl = "nothing.jpg",
             CreatedAt = DateTime.UtcNow.Ticks,
-            IsUsable=false
+            IsUsable = false
         };
 
         _moodRepository.CreateAsync(Arg.Any<Mood>()).Returns(Task.FromResult(mood));
-        var createdMoodResponse=mood.Adapt<CreatedMoodResponse>();
+        var createdMoodResponse = mood.Adapt<CreatedMoodResponse>();
 
-        var request= new CreateMoodRequest(mood.Name,mood.ImageUrl,mood.IsUsable);
-        var command= new CreateMood.Command(request);
-        var commandHandler= new CreateMood.CommandHandler(_moodRepository,_unitOfWork);
+        var request = new CreateMoodRequest(mood.Name, mood.ImageUrl, mood.IsUsable);
+        var command = new CreateMood.Command(request);
+        var commandHandler = new CreateMood.CommandHandler(_moodRepository, _unitOfWork);
 
         //action
 
-        var result= await commandHandler.Handle(command, CancellationToken.None);
+        var result = await commandHandler.Handle(command, CancellationToken.None);
         //Assert
-
-        Assert.NotNull(result.Data);
         Assert.True(result.StatusCode == StatusCodes.Status201Created);
+        Assert.NotNull(result.Data);
         Assert.Equivalent(result.Data, createdMoodResponse);
     }
 
 
     [Fact]
-    public async Task UpdateMood_Should_Success_WhenUpdated()
+    public async Task UpdateMood_Should_SuccessWith200StatusCode_AndUpdatedMoodResponse_WhenUpdated()
     {
         // Arrange
 
-        var mood=new Mood()
+        var mood = new Mood()
         {
-            Id=new Guid(),
-            Name="Hadi",
-            ImageUrl="nothing.jpg",
+            Id = new Guid(),
+            Name = "Hadi",
+            ImageUrl = "nothing.jpg",
             CreatedAt = DateTime.UtcNow.Ticks,
-            IsUsable=false
+            IsUsable = false
         };
-        var newValues=new Mood()
+        var newValues = new Mood()
         {
-            Id=mood.Id,
-            Name="Yeni deger",
-            ImageUrl="technology.image",
-            IsUsable=true,
+            Id = mood.Id,
+            Name = "Yeni deger",
+            ImageUrl = "technology.image",
+            IsUsable = true,
         };
         _moodRepository.GetAsync(Arg.Any<Expression<Func<Mood, bool>>>()).Returns(Task.FromResult(mood));
         _moodRepository.UpdateAsync(Arg.Any<Mood>()).Returns(Task.FromResult(mood));
-        var updatedMoodResponse=newValues.Adapt<UpdatedMoodResponse>();
+        var updatedMoodResponse = newValues.Adapt<UpdatedMoodResponse>();
 
-        var request= new UpdateMoodRequest(newValues.Name,newValues.ImageUrl,newValues.IsUsable);
-        var command= new UpdateMood.Command(mood.Id,request);
-        var commandHandler=new UpdateMood.CommandHandler(_moodRepository, _unitOfWork);
+        var request = new UpdateMoodRequest(newValues.Name, newValues.ImageUrl, newValues.IsUsable);
+        var command = new UpdateMood.Command(mood.Id, request);
+        var commandHandler = new UpdateMood.CommandHandler(_moodRepository, _unitOfWork);
 
         // Action
-        var result= await commandHandler.Handle(command,CancellationToken.None);
+        var result = await commandHandler.Handle(command, CancellationToken.None);
 
         // Assert
-        Assert.True(result.StatusCode == StatusCodes.Status204NoContent);
+        Assert.True(result.StatusCode == StatusCodes.Status200OK);
         Assert.NotNull(result.Data);
         Assert.Equivalent(result.Data, updatedMoodResponse);
     }

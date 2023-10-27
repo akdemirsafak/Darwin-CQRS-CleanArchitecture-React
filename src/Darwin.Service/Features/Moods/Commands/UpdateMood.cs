@@ -39,7 +39,7 @@ public static class UpdateMood
             existMood.UpdatedAt = DateTime.UtcNow.Ticks;
             await _repository.UpdateAsync(existMood);
             await _unitOfWork.CommitAsync();
-            return DarwinResponse<UpdatedMoodResponse>.Success(existMood.Adapt<UpdatedMoodResponse>(), 204);
+            return DarwinResponse<UpdatedMoodResponse>.Success(existMood.Adapt<UpdatedMoodResponse>());
         }
     }
     public class UpdateMoodCommandValidator : AbstractValidator<Command>
