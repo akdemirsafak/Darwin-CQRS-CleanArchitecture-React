@@ -1,5 +1,4 @@
-﻿using Darwin.API.Middlewares;
-using Darwin.Infrastructure;
+﻿using Darwin.Infrastructure;
 using Darwin.Service;
 using Microsoft.AspNetCore.RateLimiting;
 using Sentry;
@@ -37,13 +36,11 @@ builder.Services.AddCors(options =>
      options.AddDefaultPolicy(builder =>
      builder.AllowAnyHeader().AllowAnyMethod().AllowAnyOrigin()));
 
-
-
 var app = builder.Build();
 
 app.UseRateLimiter();
 
-app.UseGlobalExceptionMiddleware();
+//app.UseGlobalExceptionMiddleware();
 
 app.UseSentryTracing();
 

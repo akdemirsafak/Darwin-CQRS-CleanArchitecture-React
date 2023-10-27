@@ -9,7 +9,6 @@ using Mapster;
 using Microsoft.AspNetCore.Http;
 using NSubstitute;
 using System.Linq.Expressions;
-using System.Net;
 
 namespace Darwin.UnitTests;
 
@@ -21,7 +20,7 @@ public class AgeRateTests
     public AgeRateTests()
     {
         _ageRateRepository = Substitute.For<IGenericRepository<AgeRate>>();
-        _unitOfWork=Substitute.For<IUnitOfWork>();
+        _unitOfWork = Substitute.For<IUnitOfWork>();
     }
 
     [Fact]
@@ -32,10 +31,10 @@ public class AgeRateTests
         var ageRateList=new List<AgeRate>();
         ageRateList.Add(new AgeRate()
         {
-            Id=Guid.NewGuid(),
-            IsActive=true,
-            Name="Genel",
-            Rate=7
+            Id = Guid.NewGuid(),
+            IsActive = true,
+            Name = "Genel",
+            Rate = 7
         });
         ageRateList.Add(new AgeRate()
         {
@@ -61,7 +60,7 @@ public class AgeRateTests
         Assert.True(result.StatusCode == StatusCodes.Status200OK);
         Assert.NotNull(result.Data);
         Assert.Equivalent(result.Data, ageRateListResponse);
-       
+
 
     }
 
@@ -105,7 +104,7 @@ public class AgeRateTests
             Name="Adult",
             Rate= 18
         };
- 
+
         _ageRateRepository.GetAsync(Arg.Any<Expression<Func<AgeRate, bool>>>()).Returns(Task.FromResult(ageRate));
         ageRate.IsActive = false;
         _ageRateRepository.UpdateAsync(Arg.Any<AgeRate>()).Returns(Task.FromResult(ageRate));

@@ -12,7 +12,7 @@ namespace Darwin.Service.Features.ContentAgeRates.Commands;
 
 public static class UpdateAgeRate
 {
-    public record Command(Guid AgeRateId,UpdateAgeRateRequest Model) : ICommand<DarwinResponse<UpdatedAgeRateResponse>>;
+    public record Command(Guid AgeRateId, UpdateAgeRateRequest Model) : ICommand<DarwinResponse<UpdatedAgeRateResponse>>;
 
     public class CommandHandler : ICommandHandler<Command, DarwinResponse<UpdatedAgeRateResponse>>
     {
@@ -27,14 +27,14 @@ public static class UpdateAgeRate
 
         public async Task<DarwinResponse<UpdatedAgeRateResponse>> Handle(Command request, CancellationToken cancellationToken)
         {
-            AgeRate ageRate= await _repository.GetAsync(x=>x.Id==request.AgeRateId);
-            if (ageRate==null)
+            AgeRate ageRate = await _repository.GetAsync(x => x.Id == request.AgeRateId);
+            if (ageRate == null)
             {
                 return DarwinResponse<UpdatedAgeRateResponse>.Fail("Age Rate Not Found.");
             }
             await _repository.UpdateAsync(ageRate);
             await _unitOfWork.CommitAsync();
-            return DarwinResponse<UpdatedAgeRateResponse>.Success(ageRate.Adapt<UpdatedAgeRateResponse>(), 204);
+            return DarwinResponse<UpdatedAgeRateResponse>.Success(ageRate.Adapt<UpdatedAgeRateResponse>());
         }
     }
     public class UpdateAgeRateCommandValidator : AbstractValidator<Command>
