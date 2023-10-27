@@ -12,6 +12,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.IdentityModel.Tokens;
+using Serilog;
 using System.Reflection;
 using System.Text;
 
@@ -58,5 +59,13 @@ public static class ServiceRegistration
         serviceCollection.AddScoped<ITokenService, TokenService>();
 
         serviceCollection.Configure<AppTokenOptions>(configuration.GetSection("AppTokenOptions"));
+
+        Log.Logger = new LoggerConfiguration()
+            .MinimumLevel.Information()
+            .WriteTo.Console()
+            .WriteTo.Seq("http://localhost:5341/")
+            .WriteTo.File("logs/myBeatifulLog-.txt",rollingInterval:RollingInterval.Day)
+            .CreateLogger();
+        
     }
 }
