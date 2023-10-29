@@ -18,5 +18,6 @@
 16. Json Web Token / JwtBearer
 17. RateLimiter -> TokenBucket
 18. Sentry.io for Log Monitoring
-19. Cors
-20. xUnit and NSubstitute Mock for Unit tests 
+19. Serilog / Seq
+20. Cors
+21. xUnit and NSubstitute Mock for Unit tests 
