@@ -1,6 +1,8 @@
 ﻿using Darwin.Core.Entities;
 using Darwin.Infrastructure.DbContexts;
 using Darwin.Service.Behaviors;
+using Darwin.Service.Configures;
+using Darwin.Service.EmailServices;
 using Darwin.Service.Features.Moods.Commands;
 using Darwin.Service.Helper;
 using Darwin.Service.Localizations;
@@ -66,6 +68,10 @@ public static class ServiceRegistration
             .WriteTo.Seq("http://localhost:5341/")
             .WriteTo.File("logs/myBeatifulLog-.txt",rollingInterval:RollingInterval.Day)
             .CreateLogger();
-        
+
+
+        serviceCollection.Configure<EmailSettings>(configuration.GetSection("EmailSettings"));
+        serviceCollection.AddScoped<IEmailService, EmailService>();
+
     }
 }
