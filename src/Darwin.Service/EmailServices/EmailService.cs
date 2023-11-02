@@ -1,7 +1,7 @@
 ﻿using Darwin.Service.Configures;
 using Microsoft.Extensions.Options;
-using System.Net.Mail;
 using System.Net;
+using System.Net.Mail;
 
 namespace Darwin.Service.EmailServices;
 
@@ -12,7 +12,7 @@ public class EmailService : IEmailService
     {
         _emailSettings = options.Value;
     }
-    public async Task SendWeeklySuggestionsAsync(SendEmailModel model)
+    public async Task SendNew5ContentsAsync(SendEmailModel model)
     {
         var smtpClient=new SmtpClient();
         smtpClient.Host = _emailSettings.Host;
@@ -23,25 +23,16 @@ public class EmailService : IEmailService
         smtpClient.Credentials = new NetworkCredential(_emailSettings.Email, _emailSettings.Password);
 
         var mailMessage= new MailMessage();
+        mailMessage.From = new MailAddress(_emailSettings.Email);
+ 
+        mailMessage.To.Add("akdemirsafak@gmail.com");
+        model.Bcc.ForEach(to => mailMessage.Bcc.Add(to));
 
-        mailMessage.From = new MailAddress(_emailSettings.Email); //Kim yolluyor.
-        mailMessage.To.Add(model.To); //Kime gidecek
-        //mailMessage.Subject = model.Title; //Mail Başlığı
-        //mailMessage.Body = model.Body;
-        mailMessage.Subject = "Haftanın özeti bu hafta en çok dinlenenler :";
-        mailMessage.Body = @$"
-            <h1>Haftanın en çok dinlenenlerinde : </h1>
-            <ul>
-                <li> The Weeknd - Is There Someone Else? </li>
-                <li> Ghost - Mary on a cross </li>
-                <li> Post Malone - Circles </li>
-                <li> The Weeknd The Hills</li>
-            </ul>
+        mailMessage.Subject = model.Title;
+        mailMessage.Body = model.Body;
 
-</br></br>
-<h3> Haftaya görüşmek üzere..</h3>
-";    
-        mailMessage.IsBodyHtml = true; //Html kodları barındırdığını belirttik.
+
+        mailMessage.IsBodyHtml = model.isBodyHtml;
 
         await smtpClient.SendMailAsync(mailMessage);
     }

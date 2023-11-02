@@ -5,9 +5,11 @@ using Darwin.Service.Configures;
 using Darwin.Service.EmailServices;
 using Darwin.Service.Features.Moods.Commands;
 using Darwin.Service.Helper;
+using Darwin.Service.Jobs;
 using Darwin.Service.Localizations;
 using Darwin.Service.TokenOperations;
 using FluentValidation;
+using Hangfire;
 using MediatR;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity;
@@ -73,5 +75,14 @@ public static class ServiceRegistration
         serviceCollection.Configure<EmailSettings>(configuration.GetSection("EmailSettings"));
         serviceCollection.AddScoped<IEmailService, EmailService>();
 
+
+        serviceCollection.AddHangfire(x =>
+        {
+            x.UseSqlServerStorage(configuration.GetConnectionString("HangfireJobsConnection"));
+
+            RecurringJob.AddOrUpdate<WeeklyContents>(j => j.SendNew5Contents(),
+                Cron.Weekly(DayOfWeek.Friday, 12),TimeZoneInfo.Local);
+        });
+        serviceCollection.AddHangfireServer();
     }
 }

@@ -1,5 +1,6 @@
 ﻿using Darwin.Infrastructure;
 using Darwin.Service;
+using Hangfire;
 using Microsoft.AspNetCore.RateLimiting;
 using Sentry;
 using Serilog;
@@ -61,6 +62,8 @@ app.UseHttpsRedirection();
 
 app.UseAuthentication();
 app.UseAuthorization();
+
+app.UseHangfireDashboard();
 
 app.MapControllers();
 
