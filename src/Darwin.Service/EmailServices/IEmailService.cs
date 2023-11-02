@@ -4,5 +4,5 @@ namespace Darwin.Service.EmailServices;
 
 public interface IEmailService
 {
-    Task SendWeeklySuggestionsAsync(SendEmailModel model);
+    Task SendNew5ContentsAsync(SendEmailModel model);
 }
