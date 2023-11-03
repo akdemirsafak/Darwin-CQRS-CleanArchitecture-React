@@ -19,5 +19,7 @@
 17. RateLimiter -> TokenBucket
 18. Sentry.io for Log Monitoring
 19. Serilog / Seq
-20. Cors
+20. Email Sender, Created Account and Weekly Summary
 21. xUnit and NSubstitute Mock for Unit tests 
+22. CronJobs with Hangfire
+23. Cors
