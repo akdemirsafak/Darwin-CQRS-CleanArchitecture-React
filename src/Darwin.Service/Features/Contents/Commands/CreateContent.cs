@@ -85,9 +85,9 @@ public static class CreateContent
         }
     }
 
-    public class CreateMusicCommandValidator : AbstractValidator<Command>
+    public class CreateContentCommandValidator : AbstractValidator<Command>
     {
-        public CreateMusicCommandValidator()
+        public CreateContentCommandValidator()
         {
             RuleFor(x => x.Model.Name).NotEmpty().NotNull().Length(3, 64);
             RuleFor(x => x.Model.AgeRateId).NotNull();
