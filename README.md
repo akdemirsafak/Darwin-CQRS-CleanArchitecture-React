@@ -21,5 +21,5 @@
 19. Serilog / Seq
 20. Email Sender, Created Account and Weekly Summary
 21. xUnit and NSubstitute Mock for Unit tests 
-22. CronJobs with Hangfire
+22. CronJobs with Hangfire and SqlServerStorage
 23. Cors
