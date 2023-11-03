@@ -42,9 +42,9 @@ public static class UpdateContent
             return DarwinResponse<UpdatedContentResponse>.Success(existContent.Adapt<UpdatedContentResponse>());
         }
     }
-    public class UpdateMusicCommandValidator : AbstractValidator<Command>
+    public class UpdateContentCommandValidator : AbstractValidator<Command>
     {
-        public UpdateMusicCommandValidator()
+        public UpdateContentCommandValidator()
         {
             RuleFor(x => x.Id).NotEmpty().NotNull();
             RuleFor(x => x.Model.Name).NotEmpty().NotNull().Length(3, 64);

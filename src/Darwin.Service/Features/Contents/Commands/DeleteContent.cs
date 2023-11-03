@@ -25,21 +25,21 @@ public static class DeleteContent
 
         public async Task<DarwinResponse<NoContent>> Handle(Command request, CancellationToken cancellationToken)
         {
-            var existMusic = await _contentRepository.GetAsync(x => x.Id == request.Id);
-            if (existMusic == null)
+            var existContent = await _contentRepository.GetAsync(x => x.Id == request.Id);
+            if (existContent == null)
                 return DarwinResponse<NoContent>.Fail("");
-            existMusic.IsUsable = false;
-            existMusic.DeletedAt = DateTime.UtcNow.Ticks;
-            await _contentRepository.UpdateAsync(existMusic);
+            existContent.IsUsable = false;
+            existContent.DeletedAt = DateTime.UtcNow.Ticks;
+            await _contentRepository.UpdateAsync(existContent);
             await _unitOfWork.CommitAsync();
             return DarwinResponse<NoContent>.Success(204);
         }
     }
 
 
-    public class DeleteMusicCommandValidator : AbstractValidator<Command>
+    public class DeleteContentCommandValidator : AbstractValidator<Command>
     {
-        public DeleteMusicCommandValidator()
+        public DeleteContentCommandValidator()
         {
             RuleFor(x => x.Id).NotNull();
         }
