@@ -1,17 +1,22 @@
 ﻿using Darwin.Core.Entities;
 using Darwin.Infrastructure.DbContexts;
 using Darwin.Service.Behaviors;
+using Darwin.Service.Configures;
+using Darwin.Service.EmailServices;
 using Darwin.Service.Features.Moods.Commands;
 using Darwin.Service.Helper;
+using Darwin.Service.Jobs;
 using Darwin.Service.Localizations;
 using Darwin.Service.TokenOperations;
 using FluentValidation;
+using Hangfire;
 using MediatR;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.IdentityModel.Tokens;
+using Serilog;
 using System.Reflection;
 using System.Text;
 
@@ -58,5 +63,26 @@ public static class ServiceRegistration
         serviceCollection.AddScoped<ITokenService, TokenService>();
 
         serviceCollection.Configure<AppTokenOptions>(configuration.GetSection("AppTokenOptions"));
+
+        Log.Logger = new LoggerConfiguration()
+            .MinimumLevel.Information()
+            .WriteTo.Console()
+            .WriteTo.Seq("http://localhost:5341/")
+            .WriteTo.File("logs/myBeatifulLog-.txt", rollingInterval: RollingInterval.Day)
+            .CreateLogger();
+
+
+        serviceCollection.Configure<EmailSettings>(configuration.GetSection("EmailSettings"));
+        serviceCollection.AddScoped<IEmailService, EmailService>();
+
+
+        serviceCollection.AddHangfire(x =>
+        {
+            x.UseSqlServerStorage(configuration.GetConnectionString("HangfireJobsConnection"));
+
+            RecurringJob.AddOrUpdate<WeeklyContents>(j => j.SendNew5Contents(),
+                Cron.Weekly(DayOfWeek.Friday, 12), TimeZoneInfo.Local);
+        });
+        serviceCollection.AddHangfireServer();
     }
 }

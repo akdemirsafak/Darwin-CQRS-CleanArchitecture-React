@@ -11,14 +11,14 @@ namespace Darwin.Service.Features.PlayLists.Commands;
 
 public static class AddContentToPlayList
 {
-    public record Command(AddContentToPlayListRequest Model) : ICommand<DarwinResponse<GetPlayListByIdResponse>>;
+    public record Command(AddContentToPlayListRequest Model, string creatorId) : ICommand<DarwinResponse<GetPlayListByIdResponse>>;
     public class CommandHandler : ICommandHandler<Command, DarwinResponse<GetPlayListByIdResponse>>
     {
         private readonly IPlayListRepository _playListRepository;
-        private readonly IGenericRepository<Content> _contentRepository;
+        private readonly IContentRepository _contentRepository;
         private readonly IUnitOfWork _unitOfWork;
 
-        public CommandHandler(IPlayListRepository playListRepository, IGenericRepository<Content> contentRepository, IUnitOfWork unitOfWork)
+        public CommandHandler(IPlayListRepository playListRepository, IContentRepository contentRepository, IUnitOfWork unitOfWork)
         {
             _playListRepository = playListRepository;
             _contentRepository = contentRepository;
@@ -27,7 +27,7 @@ public static class AddContentToPlayList
 
         public async Task<DarwinResponse<GetPlayListByIdResponse>> Handle(Command request, CancellationToken cancellationToken)
         {
-            PlayList hasPlayList = await _playListRepository.GetAsync(x => x.Id == request.Model.playListId);
+            PlayList hasPlayList = await _playListRepository.GetAsync(x => x.Id == request.Model.playListId && x.Creator.Id==request.creatorId);
             if (hasPlayList is null)
                 return DarwinResponse<GetPlayListByIdResponse>.Fail("PlayList bulunamadı.", 400);
 

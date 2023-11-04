@@ -1,7 +1,9 @@
 ﻿using Darwin.Infrastructure;
 using Darwin.Service;
+using Hangfire;
 using Microsoft.AspNetCore.RateLimiting;
 using Sentry;
+using Serilog;
 using System.Threading.RateLimiting;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -31,12 +33,15 @@ builder.Services.AddSwaggerGen();
 
 
 builder.Services.AddService(builder.Configuration);
+builder.Host.UseSerilog();
 builder.Services.AddInfrastructure(builder.Configuration);
 builder.Services.AddCors(options =>
      options.AddDefaultPolicy(builder =>
      builder.AllowAnyHeader().AllowAnyMethod().AllowAnyOrigin()));
 
 var app = builder.Build();
+
+app.UseSerilogRequestLogging();
 
 app.UseRateLimiter();
 
@@ -57,6 +62,8 @@ app.UseHttpsRedirection();
 
 app.UseAuthentication();
 app.UseAuthorization();
+
+app.UseHangfireDashboard();
 
 app.MapControllers();
 
