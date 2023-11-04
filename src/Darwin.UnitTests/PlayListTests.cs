@@ -5,6 +5,7 @@ using Darwin.Model.Request.PlayLists;
 using Darwin.Model.Response.PlayLists;
 using Darwin.Service.Features.PlayLists.Commands;
 using Darwin.Service.Features.PlayLists.Queries;
+using Darwin.Service.Helper;
 using Mapster;
 using Microsoft.AspNetCore.Http;
 using NSubstitute;
@@ -17,11 +18,13 @@ public class PlayListTests
     private readonly IPlayListRepository _playListRepository;
     private readonly IGenericRepository<Content> _contentRepository;
     private readonly IUnitOfWork _unitOfWork;
+    private readonly ICurrentUser _currentUser;
     public PlayListTests()
     {
         _playListRepository = Substitute.For<IPlayListRepository>();
         _contentRepository = Substitute.For<IGenericRepository<Content>>();
         _unitOfWork = Substitute.For<IUnitOfWork>();
+        _currentUser = Substitute.For<ICurrentUser>();
 
     }
 
@@ -155,7 +158,7 @@ public class PlayListTests
         await _unitOfWork.CommitAsync();
         var createdPlayListResponse = entity.Adapt<CreatedPlayListResponse>();
 
-        var command = new CreatePlayList.Command(playList);
+        var command = new CreatePlayList.Command(playList,_currentUser.GetUserId);
         var commandHandler = new CreatePlayList.CommandHandler(_playListRepository, _unitOfWork);
 
         //Act
@@ -199,7 +202,7 @@ public class PlayListTests
         var updatedPlayListResponse = playListNewValues.Adapt<UpdatedPlayListResponse>();
 
         var playListRequest = new UpdatePlayListRequest(playListNewValues.Name, playListNewValues.Description, playListNewValues.IsPublic, playListNewValues.IsUsable);
-        var command = new UpdatePlayList.Command(playList.Id, playListRequest);
+        var command = new UpdatePlayList.Command(playList.Id, playListRequest,_currentUser.GetUserId);
         var commandHandler = new UpdatePlayList.CommandHandler(_playListRepository, _unitOfWork);
 
         //Act
@@ -232,7 +235,7 @@ public class PlayListTests
         _playListRepository.UpdateAsync(Arg.Any<PlayList>()).Returns(Task.FromResult(playList));
         await _unitOfWork.CommitAsync();
 
-        var command = new DeletePlayList.Command(playList.Id);
+        var command = new DeletePlayList.Command(playList.Id, _currentUser.GetUserId);
         var commandHandler = new DeletePlayList.CommandHandler(_playListRepository, _unitOfWork);
 
         //Act

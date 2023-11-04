@@ -3,7 +3,6 @@ using Darwin.Core.Entities;
 using Darwin.Model.Request.Users;
 using Darwin.Model.Response.Users;
 using Darwin.Service.Common;
-using Darwin.Service.Notifications;
 using Darwin.Service.Notifications.UserCreated;
 using Mapster;
 using MediatR;
@@ -36,8 +35,12 @@ public static class CreateUser
             {
                 return DarwinResponse<CreatedUserResponse>.Fail(createUserResult.Errors.Select(x => x.Description).ToList(), 400);
             }
-            var userCreatedEventModel=new UserCreatedMailModel(appUser.Email,"burasıConfirmLinki",appUser.UserName,appUser.CreatedAt);
-            await _publisher.Publish(new UserCreatedEvent(userCreatedEventModel),cancellationToken);
+
+
+            await _publisher.Publish(new UserCreatedCreateFavoritePlaylistEvent(appUser.Id), cancellationToken);
+
+            var userCreatedEventModel=new UserCreatedMailModel(appUser.Email!,"burasıConfirmLinki",appUser.UserName!,appUser.CreatedAt);
+            await _publisher.Publish(new UserCreatedSendMailEvent(userCreatedEventModel), cancellationToken);
 
             return DarwinResponse<CreatedUserResponse>.Success(appUser.Adapt<CreatedUserResponse>(), 201);
         }

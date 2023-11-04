@@ -38,9 +38,10 @@ public static class Register
             {
                 return DarwinResponse<TokenResponse>.Fail(registerResult.Errors.Select(x => x.Description).ToList());
             }
-            var userCreatedEventModel=new UserCreatedMailModel(appUser.Email,"burasıConfirmLinki",appUser.UserName,appUser.CreatedAt);
+            var userCreatedEventModel=new UserCreatedMailModel(appUser.Email!,"burasıConfirmLinki",appUser.UserName!,appUser.CreatedAt);
 
-            await _publisher.Publish(new UserCreatedEvent(userCreatedEventModel), cancellationToken);
+            await _publisher.Publish(new UserCreatedCreateFavoritePlaylistEvent(appUser.Id), cancellationToken);
+            await _publisher.Publish(new UserCreatedSendMailEvent(userCreatedEventModel), cancellationToken);
             return DarwinResponse<TokenResponse>.Success(await _tokenService.CreateTokenAsync(appUser), 201);
         }
     }

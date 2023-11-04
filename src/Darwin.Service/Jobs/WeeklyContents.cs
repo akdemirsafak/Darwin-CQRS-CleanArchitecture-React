@@ -20,7 +20,7 @@ public class WeeklyContents
         _userMager = userMager;
     }
 
-    public  async Task SendNew5Contents()
+    public async Task SendNew5Contents()
     {
         var users=  await _userMager.Users.ToListAsync();
         var userSuggestion= await _dbContext.Contents.OrderByDescending(x=>x.CreatedAt).Take(5).ToListAsync();
@@ -59,7 +59,7 @@ public class WeeklyContents
             </html>
 ";
 
-            await _emailService.SendNew5ContentsAsync(new SendEmailModel(to,title,body,true));
+            await _emailService.SendNew5ContentsAsync(new SendEmailModel(to, title, body, true));
         }
     }
 }
