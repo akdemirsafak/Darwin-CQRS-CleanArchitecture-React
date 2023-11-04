@@ -25,7 +25,7 @@ public class EmailService : IEmailService
 
         var mailMessage= new MailMessage();
         mailMessage.From = new MailAddress(_emailSettings.Email);
- 
+
         mailMessage.To.Add("akdemirsafak@gmail.com");
         model.Bcc.ForEach(to => mailMessage.Bcc.Add(to));
 

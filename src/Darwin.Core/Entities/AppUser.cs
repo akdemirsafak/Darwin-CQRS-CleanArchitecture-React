@@ -8,4 +8,5 @@ public class AppUser : IdentityUser
     public long? LastLogin { get; set; }
     public DateTime BirthDate { get; set; }
     public DateTime CreatedAt { get; set; }
+    public virtual ICollection<PlayList> PlayLists { get; set; }
 }

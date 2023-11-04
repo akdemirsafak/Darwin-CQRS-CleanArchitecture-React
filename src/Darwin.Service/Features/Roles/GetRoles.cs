@@ -10,7 +10,7 @@ namespace Darwin.Service.Features.Roles;
 
 public sealed class GetRoles
 {
-    public record Query():IQuery<DarwinResponse<List<GetRoleResponse>>>;
+    public record Query() : IQuery<DarwinResponse<List<GetRoleResponse>>>;
     public class QueryHandler : IQueryHandler<Query, DarwinResponse<List<GetRoleResponse>>>
     {
         private readonly RoleManager<AppRole> _roleManager;

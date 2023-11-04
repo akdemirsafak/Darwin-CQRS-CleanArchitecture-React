@@ -1,12 +1,11 @@
-﻿using Darwin.Core.Entities;
-using Darwin.Service.EmailServices;
+﻿using Darwin.Service.EmailServices;
 using MediatR;
 
 namespace Darwin.Service.Notifications.UserCreated;
 
-public record UserCreatedEvent(UserCreatedMailModel userCreatedMailModel) : INotification;
+public record UserCreatedSendMailEvent(UserCreatedMailModel userCreatedMailModel) : INotification;
 
-internal sealed class UserCreatedEventHandler : INotificationHandler<UserCreatedEvent>
+internal sealed class UserCreatedEventHandler : INotificationHandler<UserCreatedSendMailEvent>
 {
     private readonly IEmailService _emailService;
 
@@ -15,7 +14,7 @@ internal sealed class UserCreatedEventHandler : INotificationHandler<UserCreated
         _emailService = emailService;
     }
 
-    public async Task Handle(UserCreatedEvent notification, CancellationToken cancellationToken)
+    public async Task Handle(UserCreatedSendMailEvent notification, CancellationToken cancellationToken)
     {
         await _emailService.SendWellcomeWithConfirmationAsync(notification.userCreatedMailModel);
     }

@@ -68,7 +68,7 @@ public static class ServiceRegistration
             .MinimumLevel.Information()
             .WriteTo.Console()
             .WriteTo.Seq("http://localhost:5341/")
-            .WriteTo.File("logs/myBeatifulLog-.txt",rollingInterval:RollingInterval.Day)
+            .WriteTo.File("logs/myBeatifulLog-.txt", rollingInterval: RollingInterval.Day)
             .CreateLogger();
 
 
@@ -81,7 +81,7 @@ public static class ServiceRegistration
             x.UseSqlServerStorage(configuration.GetConnectionString("HangfireJobsConnection"));
 
             RecurringJob.AddOrUpdate<WeeklyContents>(j => j.SendNew5Contents(),
-                Cron.Weekly(DayOfWeek.Friday, 12),TimeZoneInfo.Local);
+                Cron.Weekly(DayOfWeek.Friday, 12), TimeZoneInfo.Local);
         });
         serviceCollection.AddHangfireServer();
     }

@@ -14,5 +14,8 @@ public class PlayList : BaseEntity
     public string? Description { get; set; }
     public bool IsPublic { get; set; }
     public bool IsUsable { get; set; }
+    public bool IsFavorite { get; set; } = false;
     public virtual ICollection<Content> Contents { get; set; }
+    public virtual AppUser Creator { get; set; }
+    public virtual string CreatorId { get; set; }
 }

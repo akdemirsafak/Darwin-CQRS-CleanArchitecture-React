@@ -12,7 +12,7 @@ namespace Darwin.Service.Features.PlayLists.Commands;
 
 public static class CreatePlayList
 {
-    public record Command(CreatePlayListRequest Model) : ICommand<DarwinResponse<CreatedPlayListResponse>>;
+    public record Command(CreatePlayListRequest Model, string creatorId) : ICommand<DarwinResponse<CreatedPlayListResponse>>;
 
     public class CommandHandler : ICommandHandler<Command, DarwinResponse<CreatedPlayListResponse>>
     {
@@ -28,7 +28,7 @@ public static class CreatePlayList
         public async Task<DarwinResponse<CreatedPlayListResponse>> Handle(Command request, CancellationToken cancellationToken)
         {
             var entity= request.Model.Adapt<PlayList>();
-
+            entity.CreatorId = request.creatorId;
             await _playListRepository.CreateAsync(entity);
             await _unitOfWork.CommitAsync();
 
