@@ -46,16 +46,14 @@ public static class Register
 
 
             var confirmationToken=await _userManager.GenerateEmailConfirmationTokenAsync(appUser);
-            var requestScheme=_httpContextAccessor.HttpContext.Request.Scheme;
+            var requestScheme=_httpContextAccessor.HttpContext!.Request.Scheme;
             var apiHost=_httpContextAccessor.HttpContext.Request.Host;
+            var confirmationUrl=_linkGenerator.GetUriByAction("ConfirmEmail", "Authentication", new { userId = appUser.Id, token = confirmationToken }, requestScheme, apiHost);
 
-            var confirmationUrl=_linkGenerator.GetUriByAction("ConfirmEmail", "Authentication", new { userId = appUser.Id, token = confirmationToken }, requestScheme, apiHost);;
-           
-            
-            var userCreatedEventModel=new UserCreatedMailModel(appUser.Email!,confirmationUrl,appUser.UserName!,appUser.CreatedAt);
 
-            
+
             await _publisher.Publish(new UserCreatedCreateFavoritePlaylistEvent(appUser.Id), cancellationToken);
+            var userCreatedEventModel=new UserCreatedMailModel(appUser.Email!,confirmationUrl,appUser.UserName!,appUser.CreatedAt);
             await _publisher.Publish(new UserCreatedSendMailEvent(userCreatedEventModel), cancellationToken);
 
             return DarwinResponse<TokenResponse>.Success(await _tokenService.CreateTokenAsync(appUser), 201);
