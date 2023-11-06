@@ -2,13 +2,12 @@
 using Darwin.Core.Entities;
 using Darwin.Model.Request.Authentications;
 using Darwin.Service.Common;
+using Darwin.Service.Helper;
 using Darwin.Service.Notifications.UserCreated;
 using Darwin.Service.TokenOperations;
 using Mapster;
 using MediatR;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
-using Microsoft.AspNetCore.Routing;
 
 namespace Darwin.Service.Features.Authentications;
 
@@ -22,15 +21,14 @@ public static class Register
         private readonly UserManager<AppUser> _userManager;
         private readonly ITokenService _tokenService;
         private readonly IPublisher _publisher;
-        private readonly IHttpContextAccessor _httpContextAccessor;
-        private readonly LinkGenerator _linkGenerator;
-        public CommandHandler(UserManager<AppUser> userManager, ITokenService tokenService, IPublisher publisher, IHttpContextAccessor httpContextAccessor, LinkGenerator linkGenerator)
+        private readonly ILinkCreator _linkCreator;
+
+        public CommandHandler(UserManager<AppUser> userManager, ITokenService tokenService, IPublisher publisher, ILinkCreator linkCreator)
         {
             _userManager = userManager;
             _tokenService = tokenService;
             _publisher = publisher;
-            _httpContextAccessor = httpContextAccessor;
-            _linkGenerator = linkGenerator;
+            _linkCreator = linkCreator;
         }
 
         public async Task<DarwinResponse<TokenResponse>> Handle(Command request, CancellationToken cancellationToken)
@@ -44,15 +42,15 @@ public static class Register
                 return DarwinResponse<TokenResponse>.Fail(registerResult.Errors.Select(x => x.Description).ToList());
             }
 
-
-            var confirmationToken=await _userManager.GenerateEmailConfirmationTokenAsync(appUser);
-            var requestScheme=_httpContextAccessor.HttpContext!.Request.Scheme;
-            var apiHost=_httpContextAccessor.HttpContext.Request.Host;
-            var confirmationUrl=_linkGenerator.GetUriByAction("ConfirmEmail", "Authentication", new { userId = appUser.Id, token = confirmationToken }, requestScheme, apiHost);
-
-
-
+            // !* Create Favorite List For new User
             await _publisher.Publish(new UserCreatedCreateFavoritePlaylistEvent(appUser.Id), cancellationToken);
+
+
+            //Create confirmation link
+            var confirmationToken=await _userManager.GenerateEmailConfirmationTokenAsync(appUser);
+            var confirmationUrl= await _linkCreator.CreateTokenMailUrl("ConfirmEmail","Authentication",appUser.Id,confirmationToken);
+
+            //Send welcome message with confirmation link
             var userCreatedEventModel=new UserCreatedMailModel(appUser.Email!,confirmationUrl,appUser.UserName!,appUser.CreatedAt);
             await _publisher.Publish(new UserCreatedSendMailEvent(userCreatedEventModel), cancellationToken);
 
