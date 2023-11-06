@@ -60,7 +60,7 @@ public class EmailService : IEmailService
             <h2>Selam {model.userName}. Hifi kalitesinde mükemmel içerikler burada.</h2>
             <h3>Yüksek kalitede müzik ve podcast'ler dinleyebilir ve yepyeni keşifler yapabilirsin. Bunun yanı sıra listeler oluşturabilir, yaş kısıtı modunu kullanarak kendi yaşına veya varisi olduğun kişilere özel içeriklerin gösterilmesini sağlayabilirsin.</h3>
 </br>
-             <h4> <a href=""#""> bu yazıya tıklayarak hesabını doğrulayabilirsin.</a>
+             <h4> <a href=""{model.confirmationAddress}""> bu yazıya tıklayarak hesabını doğrulayabilirsin.</a>
 </br></br>
 
             <img src=""https://thumbs.dreamstime.com/b/welcome-poster-spectrum-brush-strokes-white-background-colorful-gradient-brush-design-vector-paper-illustration-r-welcome-125370796.jpg"" width=""500px"" height=""200px"">

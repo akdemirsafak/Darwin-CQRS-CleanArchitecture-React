@@ -61,6 +61,7 @@ public static class ServiceRegistration
 
         serviceCollection.AddScoped<ICurrentUser, CurrentUser>();
         serviceCollection.AddScoped<ITokenService, TokenService>();
+        serviceCollection.AddScoped<ILinkCreator, LinkCreator>();
 
         serviceCollection.Configure<AppTokenOptions>(configuration.GetSection("AppTokenOptions"));
 

@@ -2,6 +2,7 @@
 using Darwin.Core.Entities;
 using Darwin.Model.Request.Authentications;
 using Darwin.Service.Common;
+using Darwin.Service.Helper;
 using Darwin.Service.Notifications.UserCreated;
 using Darwin.Service.TokenOperations;
 using Mapster;
@@ -20,12 +21,14 @@ public static class Register
         private readonly UserManager<AppUser> _userManager;
         private readonly ITokenService _tokenService;
         private readonly IPublisher _publisher;
+        private readonly ILinkCreator _linkCreator;
 
-        public CommandHandler(UserManager<AppUser> userManager, ITokenService tokenService, IPublisher publisher)
+        public CommandHandler(UserManager<AppUser> userManager, ITokenService tokenService, IPublisher publisher, ILinkCreator linkCreator)
         {
             _userManager = userManager;
             _tokenService = tokenService;
             _publisher = publisher;
+            _linkCreator = linkCreator;
         }
 
         public async Task<DarwinResponse<TokenResponse>> Handle(Command request, CancellationToken cancellationToken)
@@ -38,10 +41,19 @@ public static class Register
             {
                 return DarwinResponse<TokenResponse>.Fail(registerResult.Errors.Select(x => x.Description).ToList());
             }
-            var userCreatedEventModel=new UserCreatedMailModel(appUser.Email!,"burasıConfirmLinki",appUser.UserName!,appUser.CreatedAt);
 
+            // !* Create Favorite List For new User
             await _publisher.Publish(new UserCreatedCreateFavoritePlaylistEvent(appUser.Id), cancellationToken);
+
+
+            //Create confirmation link
+            var confirmationToken=await _userManager.GenerateEmailConfirmationTokenAsync(appUser);
+            var confirmationUrl= await _linkCreator.CreateTokenMailUrl("ConfirmEmail","Authentication",appUser.Id,confirmationToken);
+
+            //Send welcome message with confirmation link
+            var userCreatedEventModel=new UserCreatedMailModel(appUser.Email!,confirmationUrl,appUser.UserName!,appUser.CreatedAt);
             await _publisher.Publish(new UserCreatedSendMailEvent(userCreatedEventModel), cancellationToken);
+
             return DarwinResponse<TokenResponse>.Success(await _tokenService.CreateTokenAsync(appUser), 201);
         }
     }
