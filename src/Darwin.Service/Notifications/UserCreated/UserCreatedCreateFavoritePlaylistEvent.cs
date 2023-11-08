@@ -9,10 +9,10 @@ public record UserCreatedCreateFavoritePlaylistEvent(string userId) : INotificat
 
 public class UserCreatedCreateFavoritePlaylistEventHandler : INotificationHandler<UserCreatedCreateFavoritePlaylistEvent>
 {
-    private readonly IPlayListRepository _playListRepository;
+    private readonly IGenericRepository<PlayList> _playListRepository;
     private readonly IUnitOfWork _unitOfWork;
 
-    public UserCreatedCreateFavoritePlaylistEventHandler(IPlayListRepository playListRepository, IUnitOfWork unitOfWork)
+    public UserCreatedCreateFavoritePlaylistEventHandler(IGenericRepository<PlayList> playListRepository, IUnitOfWork unitOfWork)
     {
         _playListRepository = playListRepository;
         _unitOfWork = unitOfWork;

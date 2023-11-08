@@ -16,10 +16,10 @@ public static class CreatePlayList
 
     public class CommandHandler : ICommandHandler<Command, DarwinResponse<CreatedPlayListResponse>>
     {
-        private readonly IPlayListRepository _playListRepository;
+        private readonly IGenericRepository < PlayList > _playListRepository;
         private readonly IUnitOfWork _unitOfWork;
 
-        public CommandHandler(IPlayListRepository playListRepository, IUnitOfWork unitOfWork)
+        public CommandHandler(IGenericRepository<PlayList> playListRepository, IUnitOfWork unitOfWork)
         {
             _playListRepository = playListRepository;
             _unitOfWork = unitOfWork;

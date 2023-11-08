@@ -1,4 +1,5 @@
 ﻿using Darwin.Core.BaseDto;
+using Darwin.Core.Entities;
 using Darwin.Core.RepositoryCore;
 using Darwin.Model.Response.PlayLists;
 using Darwin.Service.Common;
@@ -11,8 +12,8 @@ public static class GetPlayListById
     public record Query(Guid id) : IQuery<DarwinResponse<GetPlayListByIdResponse>>;
     public class QueryHandler : IQueryHandler<Query, DarwinResponse<GetPlayListByIdResponse>>
     {
-        private readonly IPlayListRepository _playListRepository;
-        public QueryHandler(IPlayListRepository playListRepository)
+        private readonly IGenericRepository < PlayList > _playListRepository;
+        public QueryHandler(IGenericRepository<PlayList> playListRepository)
         {
 
             _playListRepository = playListRepository;
@@ -20,7 +21,7 @@ public static class GetPlayListById
 
         public async Task<DarwinResponse<GetPlayListByIdResponse>> Handle(Query request, CancellationToken cancellationToken)
         {
-            var playList=await _playListRepository.GetPlayListByIdWithContentsAsync(request.id);
+            var playList = await _playListRepository.GetAsync(x => x.Id == request.id);
             if (playList is null)
                 return DarwinResponse<GetPlayListByIdResponse>.Fail("Çalma listesi bulunamadı.", 404);
 
