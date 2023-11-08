@@ -22,8 +22,5 @@ public static class ServiceRegistration
         serviceCollection.AddScoped<IUnitOfWork, UnitOfWork>();
 
         serviceCollection.AddScoped(typeof(IGenericRepository<>), typeof(GenericRepository<>));
-        serviceCollection.AddScoped<IPlayListRepository, PlayListRepository>();
-        serviceCollection.AddScoped<IContentRepository, ContentRepository>();
-
     }
 }

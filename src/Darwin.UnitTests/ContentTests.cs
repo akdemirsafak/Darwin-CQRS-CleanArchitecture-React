@@ -14,7 +14,7 @@ namespace Darwin.UnitTests;
 
 public class ContentTests
 {
-    private readonly IContentRepository _contentRepository;
+    private readonly IGenericRepository<Content> _contentRepository;
     private readonly IGenericRepository<Mood> _moodRepository;
     private readonly IGenericRepository<Category> _categoryRepository;
     private readonly IGenericRepository<AgeRate> _ageRateRepository;
@@ -23,14 +23,13 @@ public class ContentTests
 
     public ContentTests()
     {
-        _contentRepository = Substitute.For<IContentRepository>();
+        _contentRepository = Substitute.For<IGenericRepository<Content>>();
         _moodRepository = Substitute.For<IGenericRepository<Mood>>();
         _categoryRepository = Substitute.For<IGenericRepository<Category>>();
         _ageRateRepository = Substitute.For<IGenericRepository<AgeRate>>();
         _unitOfWork = Substitute.For<IUnitOfWork>();
         _currentUser = Substitute.For<ICurrentUser>();
     }
-
 
 
     //DeleteMusic

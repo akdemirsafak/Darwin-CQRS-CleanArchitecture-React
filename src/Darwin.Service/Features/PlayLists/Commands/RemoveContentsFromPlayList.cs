@@ -14,11 +14,11 @@ namespace Darwin.Service.Features.PlayLists.Commands
         public record Command(RemoveContentsFromPlayListRequest Model, string _currentUserId) : ICommand<DarwinResponse<GetPlayListByIdResponse>>;
         public class CommandHandler : ICommandHandler<Command, DarwinResponse<GetPlayListByIdResponse>>
         {
-            private readonly IPlayListRepository _playListRepository;
+            private readonly IGenericRepository < PlayList > _playListRepository;
             private readonly IGenericRepository<Content> _contentRepository;
             private readonly IUnitOfWork _unitOfWork;
 
-            public CommandHandler(IPlayListRepository playListRepository, IUnitOfWork unitOfWork, IGenericRepository<Content> contentRepository)
+            public CommandHandler(IGenericRepository<PlayList> playListRepository, IUnitOfWork unitOfWork, IGenericRepository<Content> contentRepository)
             {
                 _playListRepository = playListRepository;
                 _unitOfWork = unitOfWork;
@@ -27,8 +27,9 @@ namespace Darwin.Service.Features.PlayLists.Commands
 
             public async Task<DarwinResponse<GetPlayListByIdResponse>> Handle(Command request, CancellationToken cancellationToken)
             {
-                var existPlayList = await _playListRepository.GetPlayListByIdWithContentsAsync(request.Model.playListId);
-                if (existPlayList is null) return DarwinResponse<GetPlayListByIdResponse>.Fail("PlayList bulunamadı.", 404);
+                var existPlayList = await _playListRepository.GetAsync(x=>x.Id==request.Model.playListId);
+                if (existPlayList is null)
+                    return DarwinResponse<GetPlayListByIdResponse>.Fail("PlayList bulunamadı.", 404);
 
                 foreach (var requestContentId in request.Model.contentIds)
                 {

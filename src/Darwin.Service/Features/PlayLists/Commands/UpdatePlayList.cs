@@ -1,4 +1,5 @@
 ﻿using Darwin.Core.BaseDto;
+using Darwin.Core.Entities;
 using Darwin.Core.RepositoryCore;
 using Darwin.Core.UnitofWorkCore;
 using Darwin.Model.Request.PlayLists;
@@ -14,10 +15,10 @@ public static class UpdatePlayList
 
     public class CommandHandler : ICommandHandler<Command, DarwinResponse<UpdatedPlayListResponse>>
     {
-        private readonly IPlayListRepository _playListRepository;
+        private readonly IGenericRepository < PlayList > _playListRepository;
         private readonly IUnitOfWork _unitOfWork;
 
-        public CommandHandler(IPlayListRepository playListRepository, IUnitOfWork unitOfWork)
+        public CommandHandler(IGenericRepository<PlayList> playListRepository, IUnitOfWork unitOfWork)
         {
             _playListRepository = playListRepository;
             _unitOfWork = unitOfWork;
