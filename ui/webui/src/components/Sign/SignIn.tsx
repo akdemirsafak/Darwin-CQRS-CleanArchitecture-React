@@ -12,6 +12,8 @@ import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
 import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
+import GoogleButton from 'react-google-button';
+
 
 function Copyright(props: any) {
   return (
@@ -41,7 +43,9 @@ export default function SignIn() {
 
   return (
     <ThemeProvider theme={defaultTheme}>
-      <Container component="main" maxWidth="xs">
+      <Container component="main" sx={{mt:5}} maxWidth="xs">
+        <Typography variant='h3'> Darwin </Typography>
+        <Typography variant="h5" color="primary" > Listen Music & Podcasts </Typography>
         <CssBaseline />
         <Box
           sx={{
@@ -104,7 +108,18 @@ export default function SignIn() {
             </Grid>
           </Box>
         </Box>
-        <Copyright sx={{ mt: 8, mb: 4 }} />
+          <Typography variant="h6" color="initial">veya </Typography>
+          <Grid item xs={12} margin={5}
+          style={{
+          display:'flex',
+          justifyContent:'center'
+          }}>
+              <GoogleButton 
+                style={{backgroundColor:'white',color:'black',borderRadius:'0.5rem', display:'block'}}
+                onClick={() => { console.log('Google button clicked') }}
+                label='Google ile oturum aç'
+                />
+              </Grid>
       </Container>
     </ThemeProvider>
   );
