@@ -1,4 +1,4 @@
 ﻿namespace Darwin.Model.Request.Authentications;
 
-public record LoginRequest(string UserName, string Password);
+public record LoginRequest(string Email, string Password);
 

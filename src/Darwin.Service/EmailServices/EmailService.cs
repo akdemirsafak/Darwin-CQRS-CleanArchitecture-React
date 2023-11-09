@@ -57,7 +57,7 @@ public class EmailService : IEmailService
         mailMessage.Body = $@"
         <body>
 </br></br>
-            <h2>Selam {model.userName}. Hifi kalitesinde mükemmel içerikler burada.</h2>
+            <h2>Hifi kalitesinde mükemmel içerikler burada.</h2>
             <h3>Yüksek kalitede müzik ve podcast'ler dinleyebilir ve yepyeni keşifler yapabilirsin. Bunun yanı sıra listeler oluşturabilir, yaş kısıtı modunu kullanarak kendi yaşına veya varisi olduğun kişilere özel içeriklerin gösterilmesini sağlayabilirsin.</h3>
 </br>
              <h4> <a href=""{model.confirmationAddress}""> bu yazıya tıklayarak hesabını doğrulayabilirsin.</a>

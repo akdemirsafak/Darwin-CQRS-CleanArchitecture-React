@@ -26,7 +26,7 @@ public static class Login
 
         public async Task<DarwinResponse<TokenResponse>> Handle(Command request, CancellationToken cancellationToken)
         {
-            var existUser = await _userManager.FindByNameAsync(request.Model.UserName);
+            var existUser = await _userManager.FindByEmailAsync(request.Model.Email);
             if (existUser is null)
             {
                 return DarwinResponse<TokenResponse>.Fail("User Not Found.", 400);

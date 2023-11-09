@@ -34,7 +34,7 @@ public static class Register
         public async Task<DarwinResponse<TokenResponse>> Handle(Command request, CancellationToken cancellationToken)
         {
             var appUser = request.Model.Adapt<AppUser>();
-            appUser.BirthDate = DateTime.UtcNow.AddYears(-15);
+            appUser.UserName = Guid.NewGuid().ToString();
             appUser.CreatedAt = DateTime.UtcNow;
             var registerResult = await _userManager.CreateAsync(appUser, request.Model.Password);
             if (!registerResult.Succeeded)
@@ -51,7 +51,7 @@ public static class Register
             var confirmationUrl= await _linkCreator.CreateTokenMailUrl("ConfirmEmail","Authentication",appUser.Id,confirmationToken);
 
             //Send welcome message with confirmation link
-            var userCreatedEventModel=new UserCreatedMailModel(appUser.Email!,confirmationUrl,appUser.UserName!,appUser.CreatedAt);
+            var userCreatedEventModel=new UserCreatedMailModel(appUser.Email!,confirmationUrl,appUser.CreatedAt);
             await _publisher.Publish(new UserCreatedSendMailEvent(userCreatedEventModel), cancellationToken);
 
             return DarwinResponse<TokenResponse>.Success(await _tokenService.CreateTokenAsync(appUser), 201);

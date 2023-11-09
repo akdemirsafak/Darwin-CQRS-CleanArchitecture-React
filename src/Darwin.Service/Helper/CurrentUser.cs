@@ -12,6 +12,5 @@ public class CurrentUser : ICurrentUser
         _httpContextAccessor = httpContextAccessor;
     }
     public string GetUserId => _httpContextAccessor.HttpContext.User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
-    public int UserAge => Convert.ToInt32(_httpContextAccessor.HttpContext.User.FindFirst("age").Value);
 
 }
