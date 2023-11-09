@@ -17,7 +17,6 @@ public class ContentTests
     private readonly IGenericRepository<Content> _contentRepository;
     private readonly IGenericRepository<Mood> _moodRepository;
     private readonly IGenericRepository<Category> _categoryRepository;
-    private readonly IGenericRepository<AgeRate> _ageRateRepository;
     private readonly IUnitOfWork _unitOfWork;
     private readonly ICurrentUser _currentUser;
 
@@ -26,7 +25,6 @@ public class ContentTests
         _contentRepository = Substitute.For<IGenericRepository<Content>>();
         _moodRepository = Substitute.For<IGenericRepository<Mood>>();
         _categoryRepository = Substitute.For<IGenericRepository<Category>>();
-        _ageRateRepository = Substitute.For<IGenericRepository<AgeRate>>();
         _unitOfWork = Substitute.For<IUnitOfWork>();
         _currentUser = Substitute.For<ICurrentUser>();
     }

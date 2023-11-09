@@ -1,4 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore.Migrations;
+﻿using System;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
 #nullable disable
@@ -6,25 +7,11 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace Darwin.Infrastructure.Migrations
 {
     /// <inheritdoc />
-    public partial class manyToMany : Migration
+    public partial class InitialCreate : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
         {
-            migrationBuilder.CreateTable(
-                name: "AgeRates",
-                columns: table => new
-                {
-                    Id = table.Column<Guid>(type: "uuid", nullable: false),
-                    Rate = table.Column<int>(type: "integer", nullable: false),
-                    Name = table.Column<string>(type: "character varying(30)", maxLength: 30, nullable: false),
-                    IsActive = table.Column<bool>(type: "boolean", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_AgeRates", x => x.Id);
-                });
-
             migrationBuilder.CreateTable(
                 name: "AspNetRoles",
                 columns: table => new
@@ -45,7 +32,7 @@ namespace Darwin.Infrastructure.Migrations
                 {
                     Id = table.Column<string>(type: "text", nullable: false),
                     LastLogin = table.Column<long>(type: "bigint", nullable: true),
-                    BirthDate = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
+                    CreatedAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
                     UserName = table.Column<string>(type: "character varying(256)", maxLength: 256, nullable: true),
                     NormalizedUserName = table.Column<string>(type: "character varying(256)", maxLength: 256, nullable: true),
                     Email = table.Column<string>(type: "character varying(256)", maxLength: 256, nullable: true),
@@ -84,6 +71,24 @@ namespace Darwin.Infrastructure.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "Contents",
+                columns: table => new
+                {
+                    Id = table.Column<Guid>(type: "uuid", nullable: false),
+                    Name = table.Column<string>(type: "character varying(64)", maxLength: 64, nullable: false),
+                    ImageUrl = table.Column<string>(type: "text", nullable: false),
+                    Lyrics = table.Column<string>(type: "text", nullable: true),
+                    IsUsable = table.Column<bool>(type: "boolean", nullable: false),
+                    CreatedAt = table.Column<long>(type: "bigint", nullable: false),
+                    UpdatedAt = table.Column<long>(type: "bigint", nullable: true),
+                    DeletedAt = table.Column<long>(type: "bigint", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Contents", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "Moods",
                 columns: table => new
                 {
@@ -98,31 +103,6 @@ namespace Darwin.Infrastructure.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Moods", x => x.Id);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "Musics",
-                columns: table => new
-                {
-                    Id = table.Column<Guid>(type: "uuid", nullable: false),
-                    Name = table.Column<string>(type: "character varying(64)", maxLength: 64, nullable: false),
-                    ImageUrl = table.Column<string>(type: "text", nullable: false),
-                    Lyrics = table.Column<string>(type: "text", nullable: true),
-                    IsUsable = table.Column<bool>(type: "boolean", nullable: false),
-                    AgeRateId = table.Column<Guid>(type: "uuid", nullable: false),
-                    CreatedAt = table.Column<long>(type: "bigint", nullable: false),
-                    UpdatedAt = table.Column<long>(type: "bigint", nullable: true),
-                    DeletedAt = table.Column<long>(type: "bigint", nullable: true)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Musics", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_Musics_AgeRates_AgeRateId",
-                        column: x => x.AgeRateId,
-                        principalTable: "AgeRates",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
@@ -232,49 +212,99 @@ namespace Darwin.Infrastructure.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "CategoryMusic",
+                name: "PlayLists",
                 columns: table => new
                 {
-                    CategoriesId = table.Column<Guid>(type: "uuid", nullable: false),
-                    MusicsId = table.Column<Guid>(type: "uuid", nullable: false)
+                    Id = table.Column<Guid>(type: "uuid", nullable: false),
+                    Name = table.Column<string>(type: "character varying(64)", maxLength: 64, nullable: false),
+                    Description = table.Column<string>(type: "text", nullable: true),
+                    IsPublic = table.Column<bool>(type: "boolean", nullable: false),
+                    IsUsable = table.Column<bool>(type: "boolean", nullable: false),
+                    IsFavorite = table.Column<bool>(type: "boolean", nullable: false),
+                    CreatorId = table.Column<string>(type: "text", nullable: false),
+                    CreatedAt = table.Column<long>(type: "bigint", nullable: false),
+                    UpdatedAt = table.Column<long>(type: "bigint", nullable: true),
+                    DeletedAt = table.Column<long>(type: "bigint", nullable: true)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_CategoryMusic", x => new { x.CategoriesId, x.MusicsId });
+                    table.PrimaryKey("PK_PlayLists", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_CategoryMusic_Categories_CategoriesId",
-                        column: x => x.CategoriesId,
-                        principalTable: "Categories",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                    table.ForeignKey(
-                        name: "FK_CategoryMusic_Musics_MusicsId",
-                        column: x => x.MusicsId,
-                        principalTable: "Musics",
+                        name: "FK_PlayLists_AspNetUsers_CreatorId",
+                        column: x => x.CreatorId,
+                        principalTable: "AspNetUsers",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
-                name: "MoodMusic",
+                name: "CategoryContent",
                 columns: table => new
                 {
-                    MoodsId = table.Column<Guid>(type: "uuid", nullable: false),
-                    MusicsId = table.Column<Guid>(type: "uuid", nullable: false)
+                    CategoriesId = table.Column<Guid>(type: "uuid", nullable: false),
+                    ContentsId = table.Column<Guid>(type: "uuid", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_MoodMusic", x => new { x.MoodsId, x.MusicsId });
+                    table.PrimaryKey("PK_CategoryContent", x => new { x.CategoriesId, x.ContentsId });
                     table.ForeignKey(
-                        name: "FK_MoodMusic_Moods_MoodsId",
+                        name: "FK_CategoryContent_Categories_CategoriesId",
+                        column: x => x.CategoriesId,
+                        principalTable: "Categories",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_CategoryContent_Contents_ContentsId",
+                        column: x => x.ContentsId,
+                        principalTable: "Contents",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "ContentMood",
+                columns: table => new
+                {
+                    ContentsId = table.Column<Guid>(type: "uuid", nullable: false),
+                    MoodsId = table.Column<Guid>(type: "uuid", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_ContentMood", x => new { x.ContentsId, x.MoodsId });
+                    table.ForeignKey(
+                        name: "FK_ContentMood_Contents_ContentsId",
+                        column: x => x.ContentsId,
+                        principalTable: "Contents",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_ContentMood_Moods_MoodsId",
                         column: x => x.MoodsId,
                         principalTable: "Moods",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "ContentPlayList",
+                columns: table => new
+                {
+                    ContentsId = table.Column<Guid>(type: "uuid", nullable: false),
+                    PlayListsId = table.Column<Guid>(type: "uuid", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_ContentPlayList", x => new { x.ContentsId, x.PlayListsId });
                     table.ForeignKey(
-                        name: "FK_MoodMusic_Musics_MusicsId",
-                        column: x => x.MusicsId,
-                        principalTable: "Musics",
+                        name: "FK_ContentPlayList_Contents_ContentsId",
+                        column: x => x.ContentsId,
+                        principalTable: "Contents",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_ContentPlayList_PlayLists_PlayListsId",
+                        column: x => x.PlayListsId,
+                        principalTable: "PlayLists",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
@@ -317,19 +347,24 @@ namespace Darwin.Infrastructure.Migrations
                 unique: true);
 
             migrationBuilder.CreateIndex(
-                name: "IX_CategoryMusic_MusicsId",
-                table: "CategoryMusic",
-                column: "MusicsId");
+                name: "IX_CategoryContent_ContentsId",
+                table: "CategoryContent",
+                column: "ContentsId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_MoodMusic_MusicsId",
-                table: "MoodMusic",
-                column: "MusicsId");
+                name: "IX_ContentMood_MoodsId",
+                table: "ContentMood",
+                column: "MoodsId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Musics_AgeRateId",
-                table: "Musics",
-                column: "AgeRateId");
+                name: "IX_ContentPlayList_PlayListsId",
+                table: "ContentPlayList",
+                column: "PlayListsId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_PlayLists_CreatorId",
+                table: "PlayLists",
+                column: "CreatorId");
         }
 
         /// <inheritdoc />
@@ -351,16 +386,16 @@ namespace Darwin.Infrastructure.Migrations
                 name: "AspNetUserTokens");
 
             migrationBuilder.DropTable(
-                name: "CategoryMusic");
+                name: "CategoryContent");
 
             migrationBuilder.DropTable(
-                name: "MoodMusic");
+                name: "ContentMood");
+
+            migrationBuilder.DropTable(
+                name: "ContentPlayList");
 
             migrationBuilder.DropTable(
                 name: "AspNetRoles");
-
-            migrationBuilder.DropTable(
-                name: "AspNetUsers");
 
             migrationBuilder.DropTable(
                 name: "Categories");
@@ -369,10 +404,13 @@ namespace Darwin.Infrastructure.Migrations
                 name: "Moods");
 
             migrationBuilder.DropTable(
-                name: "Musics");
+                name: "Contents");
 
             migrationBuilder.DropTable(
-                name: "AgeRates");
+                name: "PlayLists");
+
+            migrationBuilder.DropTable(
+                name: "AspNetUsers");
         }
     }
 }

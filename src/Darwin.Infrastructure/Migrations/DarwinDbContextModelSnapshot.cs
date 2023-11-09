@@ -67,28 +67,6 @@ namespace Darwin.Infrastructure.Migrations
                     b.ToTable("ContentPlayList");
                 });
 
-            modelBuilder.Entity("Darwin.Core.Entities.AgeRate", b =>
-                {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uuid");
-
-                    b.Property<bool>("IsActive")
-                        .HasColumnType("boolean");
-
-                    b.Property<string>("Name")
-                        .IsRequired()
-                        .HasMaxLength(30)
-                        .HasColumnType("character varying(30)");
-
-                    b.Property<int>("Rate")
-                        .HasColumnType("integer");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("AgeRates");
-                });
-
             modelBuilder.Entity("Darwin.Core.Entities.AppRole", b =>
                 {
                     b.Property<string>("Id")
@@ -123,12 +101,12 @@ namespace Darwin.Infrastructure.Migrations
                     b.Property<int>("AccessFailedCount")
                         .HasColumnType("integer");
 
-                    b.Property<DateTime>("BirthDate")
-                        .HasColumnType("timestamp with time zone");
-
                     b.Property<string>("ConcurrencyStamp")
                         .IsConcurrencyToken()
                         .HasColumnType("text");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("timestamp with time zone");
 
                     b.Property<string>("Email")
                         .HasMaxLength(256)
@@ -222,9 +200,6 @@ namespace Darwin.Infrastructure.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uuid");
 
-                    b.Property<Guid>("AgeRateId")
-                        .HasColumnType("uuid");
-
                     b.Property<long>("CreatedAt")
                         .HasColumnType("bigint");
 
@@ -250,8 +225,6 @@ namespace Darwin.Infrastructure.Migrations
                         .HasColumnType("bigint");
 
                     b.HasKey("Id");
-
-                    b.HasIndex("AgeRateId");
 
                     b.ToTable("Contents");
                 });
@@ -296,11 +269,18 @@ namespace Darwin.Infrastructure.Migrations
                     b.Property<long>("CreatedAt")
                         .HasColumnType("bigint");
 
+                    b.Property<string>("CreatorId")
+                        .IsRequired()
+                        .HasColumnType("text");
+
                     b.Property<long?>("DeletedAt")
                         .HasColumnType("bigint");
 
                     b.Property<string>("Description")
                         .HasColumnType("text");
+
+                    b.Property<bool>("IsFavorite")
+                        .HasColumnType("boolean");
 
                     b.Property<bool>("IsPublic")
                         .HasColumnType("boolean");
@@ -317,6 +297,8 @@ namespace Darwin.Infrastructure.Migrations
                         .HasColumnType("bigint");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("CreatorId");
 
                     b.ToTable("PlayLists");
                 });
@@ -472,15 +454,15 @@ namespace Darwin.Infrastructure.Migrations
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("Darwin.Core.Entities.Content", b =>
+            modelBuilder.Entity("Darwin.Core.Entities.PlayList", b =>
                 {
-                    b.HasOne("Darwin.Core.Entities.AgeRate", "AgeRate")
-                        .WithMany("Contents")
-                        .HasForeignKey("AgeRateId")
+                    b.HasOne("Darwin.Core.Entities.AppUser", "Creator")
+                        .WithMany("PlayLists")
+                        .HasForeignKey("CreatorId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.Navigation("AgeRate");
+                    b.Navigation("Creator");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
@@ -534,9 +516,9 @@ namespace Darwin.Infrastructure.Migrations
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("Darwin.Core.Entities.AgeRate", b =>
+            modelBuilder.Entity("Darwin.Core.Entities.AppUser", b =>
                 {
-                    b.Navigation("Contents");
+                    b.Navigation("PlayLists");
                 });
 #pragma warning restore 612, 618
         }

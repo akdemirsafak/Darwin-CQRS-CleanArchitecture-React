@@ -59,14 +59,11 @@ public class TokenService : ITokenService
     private IEnumerable<Claim> GetClaims(AppUser appUser, List<String> audiences)
     {
         var roles= _userManager.GetRolesAsync(appUser).Result;
-        var age=DateTime.UtcNow.AddYears(-appUser.BirthDate.Year).Year.ToString();
         var claims = new List<Claim>
         {
             new(ClaimTypes.NameIdentifier, appUser.Id),
             new(JwtRegisteredClaimNames.Email, appUser.Email),
-            new(ClaimTypes.Name, appUser.UserName),
-            new(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()),
-            new Claim("age",age),
+            new(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString())
 
         };
         claims.AddRange(audiences.Select(x => new Claim(JwtRegisteredClaimNames.Aud, x)));
