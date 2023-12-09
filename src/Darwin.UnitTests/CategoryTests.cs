@@ -34,7 +34,7 @@ public class CategoryTests
                 Name="CategoryTest",
                 ImageUrl="categorytest.png",
                 IsUsable=true,
-                CreatedAt=DateTime.UtcNow.Ticks
+                CreatedOnUtc=DateTime.UtcNow
             },
             new Category()
             {
@@ -42,7 +42,7 @@ public class CategoryTests
                 Name="Test2",
                 ImageUrl="bilmemne.png",
                 IsUsable=false,
-                CreatedAt=DateTime.UtcNow.Ticks
+                CreatedOnUtc=DateTime.UtcNow
             }
 
         };
@@ -146,7 +146,7 @@ public class CategoryTests
         var category = new Category()
         {
             Id = categoryId,
-            CreatedAt = DateTime.UtcNow.Ticks,
+            CreatedOnUtc=DateTime.UtcNow,
             Name = "Test",
             IsUsable = false,
             ImageUrl = null
@@ -195,8 +195,7 @@ public class CategoryTests
             Name = "Rap",
             ImageUrl = "ceza.png",
             IsUsable = true,
-            CreatedAt = DateTime.UtcNow.Ticks,
-            DeletedAt = null
+            CreatedOnUtc = DateTime.UtcNow,
         };
         _categoryRepository.GetAsync(Arg.Any<Expression<Func<Category, bool>>>()).Returns(Task.FromResult(category));
         _categoryRepository.RemoveAsync(Arg.Any<Category>()).Returns(Task.FromResult(category));

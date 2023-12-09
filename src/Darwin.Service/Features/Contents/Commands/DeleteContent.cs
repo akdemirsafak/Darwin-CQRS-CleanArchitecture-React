@@ -29,7 +29,6 @@ public static class DeleteContent
             if (existContent == null)
                 return DarwinResponse<NoContent>.Fail("");
             existContent.IsUsable = false;
-            existContent.DeletedAt = DateTime.UtcNow.Ticks;
             await _contentRepository.UpdateAsync(existContent);
             await _unitOfWork.CommitAsync();
             return DarwinResponse<NoContent>.Success(204);

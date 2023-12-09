@@ -35,7 +35,7 @@ public class MoodTest
                 Name="Mood1",
                 ImageUrl="moodTest.png",
                 IsUsable=true,
-                CreatedAt=DateTime.UtcNow.Ticks
+                CreatedOnUtc = DateTime.UtcNow
             },
             new Mood()
             {
@@ -43,7 +43,7 @@ public class MoodTest
                 Name="Mood 2",
                 ImageUrl="sad.png",
                 IsUsable=false,
-                CreatedAt=DateTime.UtcNow.Ticks
+                CreatedOnUtc = DateTime.UtcNow
             }
         };
 
@@ -74,7 +74,7 @@ public class MoodTest
             Id = new Guid(),
             Name = "Belirsiz",
             ImageUrl = "nothing.jpg",
-            CreatedAt = DateTime.UtcNow.Ticks,
+            CreatedOnUtc = DateTime.UtcNow,
             IsUsable = false
         };
 
@@ -105,7 +105,7 @@ public class MoodTest
             Id = new Guid(),
             Name = "Hadi",
             ImageUrl = "nothing.jpg",
-            CreatedAt = DateTime.UtcNow.Ticks,
+            CreatedOnUtc = DateTime.UtcNow,
             IsUsable = false
         };
         var newValues = new Mood()

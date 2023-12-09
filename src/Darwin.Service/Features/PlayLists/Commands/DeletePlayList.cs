@@ -34,7 +34,6 @@ public static class DeletePlayList
                 return DarwinResponse<DeletedPlayListResponse>.Fail("Favori içeriklerim listesi silinemez.", 400);
             }
             hasPlayList.IsUsable = false;
-            hasPlayList.DeletedAt = DateTime.UtcNow.Ticks;
             await _playListRepository.UpdateAsync(hasPlayList);
             await _unitOfWork.CommitAsync();
             return DarwinResponse<DeletedPlayListResponse>.Success(204);

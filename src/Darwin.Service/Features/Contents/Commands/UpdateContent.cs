@@ -36,7 +36,6 @@ public static class UpdateContent
             existContent.Name = request.Model.Name != existContent.Name ? request.Model.Name : existContent.Name;
             existContent.Lyrics = request.Model.Lyrics != existContent.Lyrics ? request.Model.Lyrics : existContent.Lyrics;
             existContent.IsUsable = request.Model.IsUsable;
-            existContent.UpdatedAt = DateTime.UtcNow.Ticks;
             await _repository.UpdateAsync(existContent);
             await _unitOfWork.CommitAsync();
             return DarwinResponse<UpdatedContentResponse>.Success(existContent.Adapt<UpdatedContentResponse>());

@@ -232,7 +232,6 @@ public class PlayListTests
 
         _playListRepository.GetAsync(Arg.Any<Expression<Func<PlayList, bool>>>()).Returns(Task.FromResult(playList));
         playList.IsUsable = false;
-        playList.DeletedAt = DateTime.UtcNow.Ticks;
         _playListRepository.UpdateAsync(Arg.Any<PlayList>()).Returns(Task.FromResult(playList));
         await _unitOfWork.CommitAsync();
 

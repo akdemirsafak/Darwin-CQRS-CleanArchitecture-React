@@ -38,11 +38,6 @@ public static class UpdatePlayList
             hasList.Name = request.Model.Name;
             hasList.Description = request.Model.Description;
             hasList.IsPublic = request.Model.IsPublic;
-            hasList.UpdatedAt = DateTime.UtcNow.Ticks;
-
-            if (!request.Model.IsUsable)
-                hasList.DeletedAt = DateTime.UtcNow.Ticks;
-
 
             await _playListRepository.UpdateAsync(hasList);
             await _unitOfWork.CommitAsync();

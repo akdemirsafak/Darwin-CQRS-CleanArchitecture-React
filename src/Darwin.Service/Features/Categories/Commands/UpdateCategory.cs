@@ -35,7 +35,6 @@ public static class UpdateCategory
             existCategory.ImageUrl = request.Model.ImageUrl;
             existCategory.Name = request.Model.Name;
             existCategory.IsUsable = request.Model.IsUsable;
-            existCategory.UpdatedAt = DateTime.UtcNow.Ticks;
             await _repository.UpdateAsync(existCategory);
             await _unitOfWork.CommitAsync();
             return DarwinResponse<UpdatedCategoryResponse>.Success(existCategory.Adapt<UpdatedCategoryResponse>());

@@ -36,7 +36,6 @@ public static class UpdateMood
             existMood.ImageUrl = request.Model.ImageUrl;
             existMood.Name = request.Model.Name;
             existMood.IsUsable = request.Model.IsUsable;
-            existMood.UpdatedAt = DateTime.UtcNow.Ticks;
             await _repository.UpdateAsync(existMood);
             await _unitOfWork.CommitAsync();
             return DarwinResponse<UpdatedMoodResponse>.Success(existMood.Adapt<UpdatedMoodResponse>());

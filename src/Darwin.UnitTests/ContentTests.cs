@@ -43,7 +43,7 @@ public class ContentTests
             Name="name",
             ImageUrl="abersie.png",
             IsUsable=!false,
-            CreatedAt=DateTime.UtcNow.Ticks
+            CreatedOnUtc = DateTime.UtcNow
         };
 
         _contentRepository.GetAsync(Arg.Any<Expression<Func<Content, bool>>>()).Returns(content);
@@ -102,28 +102,28 @@ public class ContentTests
                 Name="Hurt you",
                 ImageUrl="hurtyou.img",
                 IsUsable=false,
-                CreatedAt=DateTime.UtcNow.Ticks,
+                CreatedOnUtc = DateTime.UtcNow,
             },
             new Content(){
                 Id=new Guid(),
                 Name="Is There Someone Else?",
                 ImageUrl="tryMaybeThere.png",
                 IsUsable=true,
-                CreatedAt=DateTime.UtcNow.Ticks,
+                CreatedOnUtc = DateTime.UtcNow,
             },
             new Content(){
                 Id=new Guid(),
                 Name="Still Loving you",
                 ImageUrl="Scorpions.jpeg",
                 IsUsable=false,
-                CreatedAt=DateTime.UtcNow.Ticks,
+                CreatedOnUtc = DateTime.UtcNow,
             },
             new Content(){
                 Id=new Guid(),
                 Name="Feel it Still",
                 ImageUrl="portugal_theman.jpeg",
                 IsUsable=false,
-                CreatedAt=DateTime.UtcNow.Ticks,
+                CreatedOnUtc = DateTime.UtcNow,
             }
         };
         string searchText="Still";
