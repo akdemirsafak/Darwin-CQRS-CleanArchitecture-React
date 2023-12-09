@@ -2,7 +2,7 @@
 
 namespace Darwin.Core.Entities;
 
-public class Content : BaseEntity
+public class Content : BaseEntity, IAuditableEntity
 {
     public Content()
     {
@@ -18,5 +18,6 @@ public class Content : BaseEntity
     public virtual ICollection<Category> Categories { get; set; }
     public virtual ICollection<Mood> Moods { get; set; }
     public virtual ICollection<PlayList> PlayLists { get; set; }
-
+    public DateTime CreatedOnUtc { get; set; }
+    public DateTime? UpdatedOnUtc { get; set; }
 }

@@ -2,7 +2,7 @@
 
 namespace Darwin.Core.Entities;
 
-public class PlayList : BaseEntity
+public class PlayList : BaseEntity, IAuditableEntity
 {
     public PlayList()
     {
@@ -18,4 +18,6 @@ public class PlayList : BaseEntity
     public virtual ICollection<Content> Contents { get; set; }
     public virtual AppUser Creator { get; set; }
     public virtual string CreatorId { get; set; }
+    public DateTime CreatedOnUtc { get; set; }
+    public DateTime? UpdatedOnUtc { get; set; }
 }

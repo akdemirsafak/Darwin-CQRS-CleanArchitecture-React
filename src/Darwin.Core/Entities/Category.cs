@@ -2,7 +2,7 @@
 
 namespace Darwin.Core.Entities;
 
-public class Category : BaseEntity
+public class Category : BaseEntity, IAuditableEntity
 {
     public Category()
     {
@@ -14,4 +14,6 @@ public class Category : BaseEntity
     public string? ImageUrl { get; set; }
     public bool IsUsable { get; set; }
     public virtual ICollection<Content> Contents { get; set; }
+    public DateTime CreatedOnUtc { get; set; }
+    public DateTime? UpdatedOnUtc { get; set; }
 }
