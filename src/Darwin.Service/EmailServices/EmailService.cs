@@ -1,5 +1,5 @@
 ﻿using Darwin.Service.Configures;
-using Darwin.Service.Notifications.UserCreated;
+using Darwin.Service.Events.UserCreated;
 using Microsoft.Extensions.Options;
 using System.Net;
 using System.Net.Mail;

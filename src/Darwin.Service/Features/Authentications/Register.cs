@@ -3,7 +3,7 @@ using Darwin.Core.Entities;
 using Darwin.Model.Request.Authentications;
 using Darwin.Service.Common;
 using Darwin.Service.Helper;
-using Darwin.Service.Notifications.UserCreated;
+using Darwin.Service.Events.UserCreated;
 using Darwin.Service.TokenOperations;
 using Mapster;
 using MediatR;

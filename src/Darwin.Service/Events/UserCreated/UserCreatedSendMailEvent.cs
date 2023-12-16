@@ -3,7 +3,7 @@ using MediatR;
 using Polly;
 using Polly.Retry;
 
-namespace Darwin.Service.Notifications.UserCreated;
+namespace Darwin.Service.Events.UserCreated;
 
 public record UserCreatedSendMailEvent(UserCreatedMailModel userCreatedMailModel) : INotification;
 

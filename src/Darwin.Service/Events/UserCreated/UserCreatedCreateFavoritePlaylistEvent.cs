@@ -3,7 +3,7 @@ using Darwin.Core.RepositoryCore;
 using Darwin.Core.UnitofWorkCore;
 using MediatR;
 
-namespace Darwin.Service.Notifications.UserCreated;
+namespace Darwin.Service.Events.UserCreated;
 
 public record UserCreatedCreateFavoritePlaylistEvent(string userId) : INotification;
 
