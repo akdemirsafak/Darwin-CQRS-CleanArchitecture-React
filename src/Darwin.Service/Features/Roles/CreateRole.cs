@@ -22,7 +22,11 @@ public static class CreateRole
 
         public async Task<DarwinResponse<NoContent>> Handle(Command request, CancellationToken cancellationToken)
         {
-            var result = await _roleManager.CreateAsync(new AppRole() { Name=request.role});
+            var result = await _roleManager.CreateAsync(new AppRole() 
+            {
+                Name=request.role,
+                ConcurrencyStamp=Guid.NewGuid().ToString()
+            });
             if (!result.Succeeded)
             {
                 return DarwinResponse<NoContent>.Fail(result.Errors.First().Description, 500);
