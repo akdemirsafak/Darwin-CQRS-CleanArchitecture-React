@@ -2,6 +2,7 @@
 using Darwin.Service;
 using Hangfire;
 using Microsoft.AspNetCore.RateLimiting;
+using Microsoft.OpenApi.Models;
 using Sentry;
 using Serilog;
 using System.Threading.RateLimiting;
@@ -29,7 +30,37 @@ builder.Services.AddRateLimiter(options =>
 });
 
 builder.Services.AddEndpointsApiExplorer();
-builder.Services.AddSwaggerGen();
+builder.Services.AddSwaggerGen(x =>
+{
+    x.SwaggerDoc("v1", new OpenApiInfo
+    {
+        Title = "Darwin Api"
+    });
+    x.AddSecurityDefinition("Bearer",new OpenApiSecurityScheme()
+    {
+        Name="Authorization",
+        Type=SecuritySchemeType.ApiKey,
+        Scheme="Bearer",
+        BearerFormat="JWT",
+        In=ParameterLocation.Header,
+        Description="Bearerdan sonra boşluk sonra token"
+
+    });
+    x.AddSecurityRequirement(new OpenApiSecurityRequirement()
+    {
+        {
+            new OpenApiSecurityScheme
+            {
+                Reference=new OpenApiReference
+                {
+                    Id="Bearer",
+                    Type=ReferenceType.SecurityScheme
+                }
+            },
+            Array.Empty<string>()
+        }
+    });
+});
 
 
 builder.Services.AddService(builder.Configuration);
@@ -38,6 +69,9 @@ builder.Services.AddInfrastructure(builder.Configuration);
 builder.Services.AddCors(options =>
      options.AddDefaultPolicy(builder =>
      builder.AllowAnyHeader().AllowAnyMethod().AllowAnyOrigin()));
+
+
+//builder.Services.AddSwaggerGen(); //
 
 var app = builder.Build();
 

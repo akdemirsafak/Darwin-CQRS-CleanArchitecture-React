@@ -32,11 +32,13 @@ public static class ServiceRegistration
         serviceCollection.AddTransient(typeof(IPipelineBehavior<,>), typeof(ValidationBehavior<,>));
 
         var tokenOptions = configuration.GetSection("AppTokenOptions").Get<AppTokenOptions>();
-
+        
+        
+        //serviceCollection.AddIndentityCore<AppUser,AppRole>().AddRoles<AppRole>(); 
         serviceCollection.AddIdentity<AppUser, AppRole>(x =>
         {
             x.User.RequireUniqueEmail = true;
-        })
+        })    
         .AddEntityFrameworkStores<DarwinDbContext>()
         .AddErrorDescriber<LocalizationsIdentityErrorDescriber>()
         .AddDefaultTokenProviders();
@@ -45,15 +47,16 @@ public static class ServiceRegistration
         {
             options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
             options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
-        }).AddJwtBearer(options =>
+        }).AddJwtBearer(JwtBearerDefaults.AuthenticationScheme, options =>
         {
+            options.SaveToken = true;
             options.TokenValidationParameters = new TokenValidationParameters
             {
                 ValidateIssuer = true,
                 ValidateAudience = true,
                 ValidateLifetime = true,
                 ValidIssuer = tokenOptions!.Issuer,
-                ValidAudience = tokenOptions.Audience[0],
+                ValidAudiences = tokenOptions.Audience,
                 ValidateIssuerSigningKey = true,
                 IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(tokenOptions.SecurityKey))
             };

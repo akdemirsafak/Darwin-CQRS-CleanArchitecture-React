@@ -15,4 +15,8 @@
     <ProjectReference Include="..\Darwin.Core\Darwin.Core.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Response\Auth\" />
+  </ItemGroup>
+
 </Project>
