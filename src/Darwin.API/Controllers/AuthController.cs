@@ -17,35 +17,35 @@ public class AuthController : CustomBaseController
     public AuthController(IMediator mediator) : base(mediator)
     {
     }
-    [HttpPost("[action]")]
+    [HttpPost]
     public async Task<IActionResult> Login(LoginRequest request)
     {
         return CreateActionResult(await _mediator.Send(new Login.Command(request)));
     }
-    [HttpPost("[action]")]
+    [HttpPost]
     public async Task<IActionResult> Register(RegisterRequest request)
     {
         return CreateActionResult(await _mediator.Send(new Register.Command(request)));
     }
 
-    [HttpGet("[action]")]
+    [HttpGet]
     public async Task<IActionResult> ConfirmEmail(string userId, string token)
     {
         return CreateActionResult(await _mediator.Send(new ConfirmEmail.Command(userId, token)));
     }
 
-    [HttpPost("[action]")]
+    [HttpPost]
     public async Task<IActionResult> RefreshToken(RefreshTokenRequest request) //CreateTokenByRefreshToken
     {
         return CreateActionResult(await _mediator.Send(new CreateTokenByRefreshToken.Command(request)));
     }
 
-    [HttpPost("[action]")]
+    [HttpPost]
     public async Task<IActionResult> RevokeToken(string email)
     {
         return CreateActionResult(await _mediator.Send(new RevokeToken.Command(email)));
     }
-    [HttpPost("[action]")]
+    [HttpPost]
     public async Task<IActionResult> RevokeAllTokens()
     {
         return CreateActionResult(await _mediator.Send(new RevokeAllTokens.Command()));
