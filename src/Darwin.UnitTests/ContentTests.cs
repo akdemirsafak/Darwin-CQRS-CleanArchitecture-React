@@ -14,23 +14,20 @@ namespace Darwin.UnitTests;
 
 public class ContentTests
 {
-    private readonly IContentRepository _contentRepository;
+    private readonly IGenericRepository<Content> _contentRepository;
     private readonly IGenericRepository<Mood> _moodRepository;
     private readonly IGenericRepository<Category> _categoryRepository;
-    private readonly IGenericRepository<AgeRate> _ageRateRepository;
     private readonly IUnitOfWork _unitOfWork;
     private readonly ICurrentUser _currentUser;
 
     public ContentTests()
     {
-        _contentRepository = Substitute.For<IContentRepository>();
+        _contentRepository = Substitute.For<IGenericRepository<Content>>();
         _moodRepository = Substitute.For<IGenericRepository<Mood>>();
         _categoryRepository = Substitute.For<IGenericRepository<Category>>();
-        _ageRateRepository = Substitute.For<IGenericRepository<AgeRate>>();
         _unitOfWork = Substitute.For<IUnitOfWork>();
         _currentUser = Substitute.For<ICurrentUser>();
     }
-
 
 
     //DeleteMusic
@@ -46,7 +43,7 @@ public class ContentTests
             Name="name",
             ImageUrl="abersie.png",
             IsUsable=!false,
-            CreatedAt=DateTime.UtcNow.Ticks
+            CreatedOnUtc = DateTime.UtcNow
         };
 
         _contentRepository.GetAsync(Arg.Any<Expression<Func<Content, bool>>>()).Returns(content);
@@ -105,28 +102,28 @@ public class ContentTests
                 Name="Hurt you",
                 ImageUrl="hurtyou.img",
                 IsUsable=false,
-                CreatedAt=DateTime.UtcNow.Ticks,
+                CreatedOnUtc = DateTime.UtcNow,
             },
             new Content(){
                 Id=new Guid(),
                 Name="Is There Someone Else?",
                 ImageUrl="tryMaybeThere.png",
                 IsUsable=true,
-                CreatedAt=DateTime.UtcNow.Ticks,
+                CreatedOnUtc = DateTime.UtcNow,
             },
             new Content(){
                 Id=new Guid(),
                 Name="Still Loving you",
                 ImageUrl="Scorpions.jpeg",
                 IsUsable=false,
-                CreatedAt=DateTime.UtcNow.Ticks,
+                CreatedOnUtc = DateTime.UtcNow,
             },
             new Content(){
                 Id=new Guid(),
                 Name="Feel it Still",
                 ImageUrl="portugal_theman.jpeg",
                 IsUsable=false,
-                CreatedAt=DateTime.UtcNow.Ticks,
+                CreatedOnUtc = DateTime.UtcNow,
             }
         };
         string searchText="Still";

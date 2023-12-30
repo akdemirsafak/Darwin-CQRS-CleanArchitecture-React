@@ -23,7 +23,7 @@ public class WeeklyContents
     public async Task SendNew5Contents()
     {
         var users=  await _userMager.Users.ToListAsync();
-        var userSuggestion= await _dbContext.Contents.OrderByDescending(x=>x.CreatedAt).Take(5).ToListAsync();
+        var userSuggestion= await _dbContext.Contents.OrderByDescending(x=>x.CreatedOnUtc).Take(5).ToListAsync();
 
         if (users is not null)
         {

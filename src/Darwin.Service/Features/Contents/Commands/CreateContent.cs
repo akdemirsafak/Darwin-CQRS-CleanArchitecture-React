@@ -19,32 +19,23 @@ public static class CreateContent
         private readonly IGenericRepository<Content> _contentRepositoryAsync;
         private readonly IGenericRepository<Category> _categoryRepositoryAsync;
         private readonly IGenericRepository<Mood> _moodRepositoryAsync;
-        private readonly IGenericRepository<AgeRate> _ageRateRepositoryAsync;
         private readonly IUnitOfWork _unitOfWork;
 
         public CommandHandler(IGenericRepository<Content> contentRepositoryAsync,
             IGenericRepository<Category> categoryRepositoryAsync,
             IGenericRepository<Mood> moodRepositoryAsync,
-            IGenericRepository<AgeRate> ageRateRepositoryAsync,
             IUnitOfWork unitOfWork)
         {
             _contentRepositoryAsync = contentRepositoryAsync;
             _categoryRepositoryAsync = categoryRepositoryAsync;
             _moodRepositoryAsync = moodRepositoryAsync;
-            _ageRateRepositoryAsync = ageRateRepositoryAsync;
             _unitOfWork = unitOfWork;
         }
 
         public async Task<DarwinResponse<CreatedContentResponse>> Handle(Command request, CancellationToken cancellationToken)
         {
 
-            ////Age Rate
 
-            var ageRate= await _ageRateRepositoryAsync.GetAsync(x=>x.Id==request.Model.AgeRateId);
-            if (ageRate is null)
-            {
-                return DarwinResponse<CreatedContentResponse>.Fail("NotFound", 404);
-            }
 
             List<Mood> moodList=new();
             foreach (var moodId in request.Model.MoodIds)
@@ -73,7 +64,6 @@ public static class CreateContent
                 Lyrics= request.Model.Lyrics,
                 ImageUrl = request.Model.ImageUrl,
                 IsUsable = request.Model.IsUsable,
-                AgeRate=ageRate,
                 Categories =categoryList,
                 Moods =moodList
             };
@@ -90,7 +80,6 @@ public static class CreateContent
         public CreateContentCommandValidator()
         {
             RuleFor(x => x.Model.Name).NotEmpty().NotNull().Length(3, 64);
-            RuleFor(x => x.Model.AgeRateId).NotNull();
             RuleFor(x => x.Model.MoodIds).NotNull();
             RuleFor(x => x.Model.CategoryIds).NotNull();
         }

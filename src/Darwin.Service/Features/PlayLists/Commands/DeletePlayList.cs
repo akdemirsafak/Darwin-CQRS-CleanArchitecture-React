@@ -1,4 +1,5 @@
 ﻿using Darwin.Core.BaseDto;
+using Darwin.Core.Entities;
 using Darwin.Core.RepositoryCore;
 using Darwin.Core.UnitofWorkCore;
 using Darwin.Model.Response.PlayLists;
@@ -12,10 +13,10 @@ public static class DeletePlayList
 
     public class CommandHandler : ICommandHandler<Command, DarwinResponse<DeletedPlayListResponse>>
     {
-        private readonly IPlayListRepository _playListRepository;
+        private readonly IGenericRepository<PlayList> _playListRepository;
         private readonly IUnitOfWork _unitOfWork;
 
-        public CommandHandler(IPlayListRepository playListRepository, IUnitOfWork unitOfWork)
+        public CommandHandler(IGenericRepository<PlayList> playListRepository, IUnitOfWork unitOfWork)
         {
             _playListRepository = playListRepository;
             _unitOfWork = unitOfWork;
@@ -33,7 +34,6 @@ public static class DeletePlayList
                 return DarwinResponse<DeletedPlayListResponse>.Fail("Favori içeriklerim listesi silinemez.", 400);
             }
             hasPlayList.IsUsable = false;
-            hasPlayList.DeletedAt = DateTime.UtcNow.Ticks;
             await _playListRepository.UpdateAsync(hasPlayList);
             await _unitOfWork.CommitAsync();
             return DarwinResponse<DeletedPlayListResponse>.Success(204);

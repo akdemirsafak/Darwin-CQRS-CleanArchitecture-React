@@ -48,10 +48,15 @@ public class PlayListController : CustomBaseController
     {
         return CreateActionResult(await _mediator.Send(new DeletePlayList.Command(id, _currentUser.GetUserId)));
     }
-    [HttpPost("AddContentToPlayList")]
-    public async Task<IActionResult> AddContentToPlayList([FromBody] AddContentToPlayListRequest request)
+    [HttpPost("AddContentsToPlayList")]
+    public async Task<IActionResult> AddContentToPlayList([FromBody] AddContentsToPlayListRequest request)
     {
-        return CreateActionResult(await _mediator.Send(new AddContentToPlayList.Command(request, _currentUser.GetUserId)));
+        return CreateActionResult(await _mediator.Send(new AddContentsToPlayList.Command(request, _currentUser.GetUserId)));
+    }
+    [HttpPost("RemoveContentsFromPlayList")]
+    public async Task<IActionResult> RemoveContentsFromPlayList([FromBody] RemoveContentsFromPlayListRequest request)
+    {
+        return CreateActionResult(await _mediator.Send(new RemoveContentsFromPlayList.Command(request, _currentUser.GetUserId)));
     }
 
 }

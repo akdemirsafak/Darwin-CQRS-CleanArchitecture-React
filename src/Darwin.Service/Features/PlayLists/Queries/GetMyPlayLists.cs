@@ -1,4 +1,5 @@
 ﻿using Darwin.Core.BaseDto;
+using Darwin.Core.Entities;
 using Darwin.Core.RepositoryCore;
 using Darwin.Model.Response.PlayLists;
 using Darwin.Service.Common;
@@ -12,9 +13,9 @@ public static class GetMyPlayLists
 
     public class QueryHandler : IQueryHandler<Query, DarwinResponse<List<GetPlayListResponse>>>
     {
-        private readonly IPlayListRepository _playListRepository;
+        private readonly IGenericRepository<PlayList> _playListRepository;
 
-        public QueryHandler(IPlayListRepository playListRepository)
+        public QueryHandler(IGenericRepository<PlayList> playListRepository)
         {
             _playListRepository = playListRepository;
         }

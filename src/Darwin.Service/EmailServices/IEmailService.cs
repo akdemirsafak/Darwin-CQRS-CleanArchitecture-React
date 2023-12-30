@@ -1,5 +1,5 @@
 ﻿using Darwin.Service.Configures;
-using Darwin.Service.Notifications.UserCreated;
+using Darwin.Service.Events.UserCreated;
 
 namespace Darwin.Service.EmailServices;
 

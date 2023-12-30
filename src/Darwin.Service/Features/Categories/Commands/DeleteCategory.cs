@@ -29,7 +29,6 @@ public static class DeleteCategory
             if (existMusic == null)
                 return DarwinResponse<NoContent>.Fail("");
             existMusic.IsUsable = false;
-            existMusic.DeletedAt = DateTime.UtcNow.Ticks;
             await _repository.UpdateAsync(existMusic);
             await _unitOfWork.CommitAsync();
             return DarwinResponse<NoContent>.Success(204);
