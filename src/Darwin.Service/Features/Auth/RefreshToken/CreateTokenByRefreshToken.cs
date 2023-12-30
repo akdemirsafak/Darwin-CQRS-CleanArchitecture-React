@@ -18,18 +18,12 @@ public static class CreateTokenByRefreshToken
     {
         private readonly UserManager<AppUser> _userManager;
         private readonly ITokenService _tokenService;
-        private readonly IGenericRepository<UserRefreshToken> _userRefreshTokenRepository;
-        private readonly IUnitOfWork _unitOfWork;
 
         public CommandHandler(UserManager<AppUser> userManager,
-            ITokenService tokenService,
-            IGenericRepository<UserRefreshToken> userRefreshTokenRepository,
-            IUnitOfWork unitOfWork)
+            ITokenService tokenService)
         {
             _userManager = userManager;
             _tokenService = tokenService;
-            _userRefreshTokenRepository = userRefreshTokenRepository;
-            _unitOfWork = unitOfWork;
         }
 
         public async Task<DarwinResponse<TokenResponse>> Handle(Command request, CancellationToken cancellationToken)
@@ -41,15 +35,14 @@ public static class CreateTokenByRefreshToken
             AppUser? user = await _userManager.FindByEmailAsync(emailFromToken);
             var roles= await _userManager.GetRolesAsync(user);
 
-            UserRefreshToken? userRefreshToken= await _userRefreshTokenRepository.GetAsync(x=>x.UserId==user.Id);
-
-            if (userRefreshToken.Expiration <= DateTime.UtcNow || userRefreshToken.UserId!=user.Id)
+            if (user.RefreshTokenExpiration <= DateTime.UtcNow)
                 throw new Exception("Lütfen yeniden giriş yapınız.");
 
             var newToken= await _tokenService.CreateTokenAsync(user);
 
-            userRefreshToken.Code = newToken.RefreshToken;
-            await _unitOfWork.CommitAsync();
+            user.RefreshToken = newToken.RefreshToken;
+            await _userManager.UpdateAsync(user);
+
             return DarwinResponse<TokenResponse>.Success(newToken, 200);
         }
     }

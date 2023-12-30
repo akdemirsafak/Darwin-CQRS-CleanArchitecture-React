@@ -14,7 +14,6 @@ public class DarwinDbContext : IdentityDbContext<AppUser, AppRole, string>
     public DbSet<PlayList> PlayLists { get; set; }
     public DbSet<Mood> Moods { get; set; }
     public DbSet<Category> Categories { get; set; }
-    public DbSet<UserRefreshToken> UserRefreshTokens { get; set; }
 
 
     protected override void OnModelCreating(ModelBuilder builder)

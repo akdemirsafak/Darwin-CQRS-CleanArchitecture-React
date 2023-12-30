@@ -19,26 +19,22 @@ public static class Login
         private readonly UserManager<AppUser> _userManager;
         private readonly SignInManager<AppUser> _signInManager;
         private readonly ITokenService _tokenService;
-        private readonly IGenericRepository<UserRefreshToken> _userRefreshTokenRepository;
-        private readonly IUnitOfWork _unitOfWork;
 
         public CommandHandler(UserManager<AppUser> userManager,
             SignInManager<AppUser> signInManager,
-            ITokenService tokenService,
-            IGenericRepository<UserRefreshToken> userRefreshTokenRepository,
-            IUnitOfWork unitOfWork)
+            ITokenService tokenService)
         {
             _userManager = userManager;
             _signInManager = signInManager;
             _tokenService = tokenService;
-            _userRefreshTokenRepository = userRefreshTokenRepository;
-            _unitOfWork = unitOfWork;
         }
 
         public async Task<DarwinResponse<TokenResponse>> Handle(Command request, CancellationToken cancellationToken)
         {
             var existUser = await _userManager.FindByEmailAsync(request.Model.Email);
 
+            if (existUser is null)
+                return DarwinResponse<TokenResponse>.Fail("User not found.",404);
 
             var loginResult = await _signInManager.CheckPasswordSignInAsync(existUser, request.Model.Password, true);
 
@@ -51,28 +47,10 @@ public static class Login
                 return DarwinResponse<TokenResponse>.Fail("Login Failed.", 400);
 
 
-            var userRefreshToken = await _userRefreshTokenRepository.GetAsync(x => x.UserId == existUser.Id);
-
             var token = await _tokenService.CreateTokenAsync(existUser);
 
-            //User'ın refresh token'ı yoksa
-            if (userRefreshToken is null)
-            {
-                var newRefreshToken = new UserRefreshToken()
-                {
-                    UserId = existUser.Id,
-                    Code = token.RefreshToken,
-                    Expiration = token.RefreshTokenExpiration
-                };
-                await _userRefreshTokenRepository.CreateAsync(newRefreshToken);
-            }
-            else
-            {
-                userRefreshToken.Code = token.RefreshToken;
-                userRefreshToken.Expiration = token.RefreshTokenExpiration;
-            }
-            await _unitOfWork.CommitAsync();
-
+            existUser.RefreshToken = token.RefreshToken;
+            existUser.RefreshTokenExpiration= token.RefreshTokenExpiration;
 
             //Last Login işlemi yaptık.
             existUser.LastLogin = DateTime.UtcNow;
@@ -81,7 +59,7 @@ public static class Login
 
             await _userManager.UpdateSecurityStampAsync(existUser); // TODO !
             await _userManager.SetAuthenticationTokenAsync(existUser, "Default", "AccessToken", token.AccessToken);
-
+            
             if (!updateResult.Succeeded)
                 return DarwinResponse<TokenResponse>.Fail("Login cannot updated.", 500);
 
