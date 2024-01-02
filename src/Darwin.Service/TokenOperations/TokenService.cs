@@ -47,7 +47,7 @@ public class TokenService : ITokenService
             RefreshTokenExpiration = refreshTokenExpiration
         };
 
-        await _userManager.AddClaimsAsync(appUser,claims);
+        await _userManager.AddClaimsAsync(appUser, claims);
 
         return tokenDto;
     }
@@ -94,7 +94,7 @@ public class TokenService : ITokenService
             || !jwtSecurityToken.Header.Alg.Equals(SecurityAlgorithms.HmacSha256Signature,
             StringComparison.InvariantCultureIgnoreCase))
 
-                throw new SecurityTokenException();
+            throw new SecurityTokenException();
 
         return principal;
     }

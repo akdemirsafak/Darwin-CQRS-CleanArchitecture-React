@@ -1,5 +1,4 @@
-﻿using System;
-using Microsoft.EntityFrameworkCore.Migrations;
+﻿using Microsoft.EntityFrameworkCore.Migrations;
 
 #nullable disable
 
@@ -159,7 +158,7 @@ namespace Darwin.Infrastructure.Migrations
                 table: "Categories");
 
 
-          
+
 
             migrationBuilder.DropColumn(
                 name: "UpdatedOnUtc",

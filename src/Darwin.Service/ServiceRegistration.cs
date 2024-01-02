@@ -32,13 +32,13 @@ public static class ServiceRegistration
         serviceCollection.AddTransient(typeof(IPipelineBehavior<,>), typeof(ValidationBehavior<,>));
 
         var tokenOptions = configuration.GetSection("AppTokenOptions").Get<AppTokenOptions>();
-        
-        
+
+
         //serviceCollection.AddIndentityCore<AppUser,AppRole>().AddRoles<AppRole>(); 
         serviceCollection.AddIdentity<AppUser, AppRole>(x =>
         {
             x.User.RequireUniqueEmail = true;
-        })    
+        })
         .AddEntityFrameworkStores<DarwinDbContext>()
         .AddErrorDescriber<LocalizationsIdentityErrorDescriber>()
         .AddDefaultTokenProviders();
