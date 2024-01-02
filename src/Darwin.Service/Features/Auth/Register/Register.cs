@@ -25,9 +25,9 @@ public static class Register
         private readonly IPublisher _publisher;
         private readonly ILinkCreator _linkCreator;
 
-        public CommandHandler(UserManager<AppUser> userManager, 
+        public CommandHandler(UserManager<AppUser> userManager,
             RoleManager<AppRole> roleManager,
-            ITokenService tokenService, 
+            ITokenService tokenService,
             IPublisher publisher,
             ILinkCreator linkCreator)
         {
@@ -53,20 +53,20 @@ public static class Register
 
             //Kullanıcının bilgileri değişince security stamp'i de değiştirelim ki mevcut tokenla uyuşmasın ve tekrar giriş yapılması gereksin.
             //Telefon ve bilgisayarda açık aynı hesap olduğunu düşünürsek herhangi bir cihazda işlem yapılırsa diğerinden tekrar giriş yapılmasını gerektiren durumu sağlar.  
-            
+
 
             var existRole= await _roleManager.RoleExistsAsync("User");
 
             if (!existRole) //Yoksa oluştur.
             {
-                    var createdRoleResult=await _roleManager.CreateAsync(new AppRole() 
-                    { 
-                        Name = "User", 
-                        ConcurrencyStamp = Guid.NewGuid().ToString() 
-                    });
+                var createdRoleResult=await _roleManager.CreateAsync(new AppRole()
+                {
+                    Name = "User",
+                    ConcurrencyStamp = Guid.NewGuid().ToString()
+                });
             }
             await _userManager.AddToRoleAsync(appUser, "User");
-          
+
 
             // !* Create Favorite List For new User
             await _publisher.Publish(new UserCreatedCreateFavoritePlaylistEvent(appUser.Id), cancellationToken);
@@ -98,7 +98,7 @@ public static class Register
 
             RuleFor(x => x.Model.ConfirmPassword)
             .NotEmpty()
-            .Equal(x=>x.Model.Password)
+            .Equal(x => x.Model.Password)
             .WithName("ConfirmPassword");
         }
     }

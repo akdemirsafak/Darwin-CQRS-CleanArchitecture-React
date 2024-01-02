@@ -27,7 +27,7 @@ internal sealed class UserCreatedEventHandler : INotificationHandler<UserCreated
         PolicyResult result= await policy.ExecuteAndCaptureAsync(() =>
         _emailService.SendWellcomeWithConfirmationAsync(notification.userCreatedMailModel)
         );
-        
+
 
         //await _emailService.SendWellcomeWithConfirmationAsync(notification.userCreatedMailModel);
     }

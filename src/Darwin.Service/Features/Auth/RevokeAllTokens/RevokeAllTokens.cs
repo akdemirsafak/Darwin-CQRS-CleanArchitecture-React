@@ -26,7 +26,7 @@ namespace Darwin.Service.Features.Auth.RevokeAllTokens
                 users.ForEach(async user =>
                 {
                     user.RefreshToken = null;
-                    await _userManager.UpdateAsync(user);  
+                    await _userManager.UpdateAsync(user);
                 });
                 return DarwinResponse<NoContent>.Success();
             }
