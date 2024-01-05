@@ -24,4 +24,19 @@ public class DarwinDbContext : IdentityDbContext<AppUser, AppRole, string>
 
         base.OnModelCreating(builder);
     }
+    StreamWriter _log=new("../Darwin.Infrastructure/entityFrameworkLogs/logs.txt",append:true);
+    protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+    {
+       optionsBuilder.LogTo(async message=>await _log.WriteLineAsync(message));
+    }
+    public override void Dispose()
+    {
+        base.Dispose();
+        _log.Dispose();
+    }
+    public override async ValueTask DisposeAsync()
+    {
+        await base.DisposeAsync();
+        await _log.DisposeAsync();
+    }
 }

@@ -1,0 +1,40 @@
+dbug: 1/5/2024 15:04:54.683 CoreEventId.ShadowPropertyCreated[10600] (Microsoft.EntityFrameworkCore.Model.Validation) 
+      The property 'CategoryContent (Dictionary<string, object>).CategoriesId' was created in shadow state because there are no eligible CLR members with a matching name.
+dbug: 1/5/2024 15:04:54.684 CoreEventId.ShadowPropertyCreated[10600] (Microsoft.EntityFrameworkCore.Model.Validation) 
+      The property 'CategoryContent (Dictionary<string, object>).ContentsId' was created in shadow state because there are no eligible CLR members with a matching name.
+dbug: 1/5/2024 15:04:54.684 CoreEventId.ShadowPropertyCreated[10600] (Microsoft.EntityFrameworkCore.Model.Validation) 
+      The property 'ContentMood (Dictionary<string, object>).ContentsId' was created in shadow state because there are no eligible CLR members with a matching name.
+dbug: 1/5/2024 15:04:54.684 CoreEventId.ShadowPropertyCreated[10600] (Microsoft.EntityFrameworkCore.Model.Validation) 
+      The property 'ContentMood (Dictionary<string, object>).MoodsId' was created in shadow state because there are no eligible CLR members with a matching name.
+dbug: 1/5/2024 15:04:54.684 CoreEventId.ShadowPropertyCreated[10600] (Microsoft.EntityFrameworkCore.Model.Validation) 
+      The property 'ContentPlayList (Dictionary<string, object>).ContentsId' was created in shadow state because there are no eligible CLR members with a matching name.
+dbug: 1/5/2024 15:04:54.684 CoreEventId.ShadowPropertyCreated[10600] (Microsoft.EntityFrameworkCore.Model.Validation) 
+      The property 'ContentPlayList (Dictionary<string, object>).PlayListsId' was created in shadow state because there are no eligible CLR members with a matching name.
+dbug: 1/5/2024 15:04:54.840 CoreEventId.ContextInitialized[10403] (Microsoft.EntityFrameworkCore.Infrastructure) 
+      Entity Framework Core 7.0.12 initialized 'DarwinDbContext' using provider 'Npgsql.EntityFrameworkCore.PostgreSQL:7.0.11+c25a0d7b68d66c6ab3849a3b4333964faea6adc9' with options: MigrationsAssembly=Darwin.Infrastructure 
+dbug: 1/5/2024 15:04:54.884 CoreEventId.QueryCompilationStarting[10111] (Microsoft.EntityFrameworkCore.Query) 
+      Compiling query expression: 
+      'DbSet<Category>()'
+dbug: 1/5/2024 15:04:54.968 CoreEventId.QueryExecutionPlanned[10107] (Microsoft.EntityFrameworkCore.Query) 
+      Generated query execution expression: 
+      'queryContext => new SingleQueryingEnumerable<Category>(
+          (RelationalQueryContext)queryContext, 
+          RelationalCommandCache.QueryExpression(
+              Projection Mapping:
+                  EmptyProjectionMember -> Dictionary<IProperty, int> { [Property: Category.Id (Guid) Required PK AfterSave:Throw ValueGenerated.OnAdd, 0], [Property: Category.CreatedBy (string), 1], [Property: Category.CreatedOnUtc (DateTime) Required, 2], [Property: Category.ImageUrl (string), 3], [Property: Category.IsUsable (bool) Required, 4], [Property: Category.Name (string) Required MaxLength(64), 5], [Property: Category.UpdatedBy (string), 6], [Property: Category.UpdatedOnUtc (DateTime?), 7] }
+              SELECT c.Id, c.CreatedBy, c.CreatedOnUtc, c.ImageUrl, c.IsUsable, c.Name, c.UpdatedBy, c.UpdatedOnUtc
+              FROM Categories AS c), 
+          null, 
+          Func<QueryContext, DbDataReader, ResultContext, SingleQueryResultCoordinator, Category>, 
+          Darwin.Infrastructure.DbContexts.DarwinDbContext, 
+          False, 
+          False, 
+          True
+      )'
+dbug: 1/5/2024 15:04:54.982 RelationalEventId.ConnectionCreating[20005] (Microsoft.EntityFrameworkCore.Database.Connection) 
+      Creating DbConnection.
+dbug: 1/5/2024 15:04:54.996 RelationalEventId.ConnectionCreated[20006] (Microsoft.EntityFrameworkCore.Database.Connection) 
+      Created DbConnection. (12ms).
+dbug: 1/5/2024 15:04:54.996 RelationalEventId.CommandCreating[20103] (Microsoft.EntityFrameworkCore.Database.Command) 
+      Creating DbCommand for 'ExecuteReader'.
+dbug: 1/5/2024 15:04:54.998 RelationalEventId.CommandCreated[20104] (Microsoft.EntityFrameworkCore.
