@@ -7,7 +7,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace Darwin.API.Controllers;
 
-[Authorize]
+
 public class ContentController : CustomBaseController
 {
     public ContentController(IMediator mediator) : base(mediator)
@@ -29,17 +29,20 @@ public class ContentController : CustomBaseController
     {
         return CreateActionResult(await _mediator.Send(new SearchContents.Query(searchText)));
     }
+    [Authorize]
     [HttpPost]
     public async Task<IActionResult> Create([FromBody] CreateContentRequest request)
     {
 
         return CreateActionResult(await _mediator.Send(new CreateContent.Command(request)));
     }
+    [Authorize]
     [HttpPut("{id}")]
     public async Task<IActionResult> Update(Guid id, [FromBody] UpdateContentRequest request)
     {
         return CreateActionResult(await _mediator.Send(new UpdateContent.Command(id, request)));
     }
+    [Authorize]
     [HttpDelete("{id}")]
     public async Task<IActionResult> Delete(Guid id)
     {
