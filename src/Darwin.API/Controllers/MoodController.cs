@@ -2,6 +2,7 @@
 using Darwin.Service.Features.Moods.Commands;
 using Darwin.Service.Features.Moods.Queries;
 using MediatR;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Darwin.API.Controllers;
@@ -18,12 +19,14 @@ public class MoodController : CustomBaseController
     {
         return CreateActionResult(await _mediator.Send(new GetMoods.Query()));
     }
+    [Authorize]
     [HttpPost]
     public async Task<IActionResult> Create([FromBody] CreateMoodRequest request)
     {
 
         return CreateActionResult(await _mediator.Send(new CreateMood.Command(request)));
     }
+    [Authorize]
     [HttpPut("{id}")]
     public async Task<IActionResult> Update(Guid id, [FromBody] UpdateMoodRequest request)
     {
