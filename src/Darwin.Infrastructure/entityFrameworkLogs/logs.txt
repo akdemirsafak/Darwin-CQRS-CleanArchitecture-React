@@ -1,40 +1,28 @@
-dbug: 1/5/2024 15:04:54.683 CoreEventId.ShadowPropertyCreated[10600] (Microsoft.EntityFrameworkCore.Model.Validation) 
-      The property 'CategoryContent (Dictionary<string, object>).CategoriesId' was created in shadow state because there are no eligible CLR members with a matching name.
-dbug: 1/5/2024 15:04:54.684 CoreEventId.ShadowPropertyCreated[10600] (Microsoft.EntityFrameworkCore.Model.Validation) 
-      The property 'CategoryContent (Dictionary<string, object>).ContentsId' was created in shadow state because there are no eligible CLR members with a matching name.
-dbug: 1/5/2024 15:04:54.684 CoreEventId.ShadowPropertyCreated[10600] (Microsoft.EntityFrameworkCore.Model.Validation) 
-      The property 'ContentMood (Dictionary<string, object>).ContentsId' was created in shadow state because there are no eligible CLR members with a matching name.
-dbug: 1/5/2024 15:04:54.684 CoreEventId.ShadowPropertyCreated[10600] (Microsoft.EntityFrameworkCore.Model.Validation) 
-      The property 'ContentMood (Dictionary<string, object>).MoodsId' was created in shadow state because there are no eligible CLR members with a matching name.
-dbug: 1/5/2024 15:04:54.684 CoreEventId.ShadowPropertyCreated[10600] (Microsoft.EntityFrameworkCore.Model.Validation) 
-      The property 'ContentPlayList (Dictionary<string, object>).ContentsId' was created in shadow state because there are no eligible CLR members with a matching name.
-dbug: 1/5/2024 15:04:54.684 CoreEventId.ShadowPropertyCreated[10600] (Microsoft.EntityFrameworkCore.Model.Validation) 
-      The property 'ContentPlayList (Dictionary<string, object>).PlayListsId' was created in shadow state because there are no eligible CLR members with a matching name.
-dbug: 1/5/2024 15:04:54.840 CoreEventId.ContextInitialized[10403] (Microsoft.EntityFrameworkCore.Infrastructure) 
-      Entity Framework Core 7.0.12 initialized 'DarwinDbContext' using provider 'Npgsql.EntityFrameworkCore.PostgreSQL:7.0.11+c25a0d7b68d66c6ab3849a3b4333964faea6adc9' with options: MigrationsAssembly=Darwin.Infrastructure 
-dbug: 1/5/2024 15:04:54.884 CoreEventId.QueryCompilationStarting[10111] (Microsoft.EntityFrameworkCore.Query) 
-      Compiling query expression: 
-      'DbSet<Category>()'
-dbug: 1/5/2024 15:04:54.968 CoreEventId.QueryExecutionPlanned[10107] (Microsoft.EntityFrameworkCore.Query) 
-      Generated query execution expression: 
-      'queryContext => new SingleQueryingEnumerable<Category>(
-          (RelationalQueryContext)queryContext, 
-          RelationalCommandCache.QueryExpression(
-              Projection Mapping:
-                  EmptyProjectionMember -> Dictionary<IProperty, int> { [Property: Category.Id (Guid) Required PK AfterSave:Throw ValueGenerated.OnAdd, 0], [Property: Category.CreatedBy (string), 1], [Property: Category.CreatedOnUtc (DateTime) Required, 2], [Property: Category.ImageUrl (string), 3], [Property: Category.IsUsable (bool) Required, 4], [Property: Category.Name (string) Required MaxLength(64), 5], [Property: Category.UpdatedBy (string), 6], [Property: Category.UpdatedOnUtc (DateTime?), 7] }
-              SELECT c.Id, c.CreatedBy, c.CreatedOnUtc, c.ImageUrl, c.IsUsable, c.Name, c.UpdatedBy, c.UpdatedOnUtc
-              FROM Categories AS c), 
-          null, 
-          Func<QueryContext, DbDataReader, ResultContext, SingleQueryResultCoordinator, Category>, 
-          Darwin.Infrastructure.DbContexts.DarwinDbContext, 
-          False, 
-          False, 
-          True
-      )'
-dbug: 1/5/2024 15:04:54.982 RelationalEventId.ConnectionCreating[20005] (Microsoft.EntityFrameworkCore.Database.Connection) 
-      Creating DbConnection.
-dbug: 1/5/2024 15:04:54.996 RelationalEventId.ConnectionCreated[20006] (Microsoft.EntityFrameworkCore.Database.Connection) 
-      Created DbConnection. (12ms).
-dbug: 1/5/2024 15:04:54.996 RelationalEventId.CommandCreating[20103] (Microsoft.EntityFrameworkCore.Database.Command) 
-      Creating DbCommand for 'ExecuteReader'.
-dbug: 1/5/2024 15:04:54.998 RelationalEventId.CommandCreated[20104] (Microsoft.EntityFrameworkCore.
+fail: 1/5/2024 15:18:13.824 RelationalEventId.ConnectionError[20004] (Microsoft.EntityFrameworkCore.Database.Connection) 
+      An error occurred using the connection to database 'Darwin_Db' on server ''.
+fail: 1/5/2024 15:18:13.876 CoreEventId.QueryIterationFailed[10100] (Microsoft.EntityFrameworkCore.Query) 
+      An exception occurred while iterating over the results of a query for context type 'Darwin.Infrastructure.DbContexts.DarwinDbContext'.
+      System.InvalidOperationException: An exception has been raised that is likely due to a transient failure.
+       ---> Npgsql.NpgsqlException (0x80004005): Failed to connect to 127.0.0.1:5435
+       ---> System.Net.Sockets.SocketException (10061): No connection could be made because the target machine actively refused it.
+         at System.Net.Sockets.Socket.AwaitableSocketAsyncEventArgs.ThrowException(SocketError error, CancellationToken cancellationToken)
+         at System.Net.Sockets.Socket.AwaitableSocketAsyncEventArgs.System.Threading.Tasks.Sources.IValueTaskSource.GetResult(Int16 token)
+         at System.Net.Sockets.Socket.<ConnectAsync>g__WaitForConnectWithCancellation|281_0(AwaitableSocketAsyncEventArgs saea, ValueTask connectTask, CancellationToken cancellationToken)
+         at Npgsql.TaskTimeoutAndCancellation.ExecuteAsync(Func`2 getTaskFunc, NpgsqlTimeout timeout, CancellationToken cancellationToken)
+         at Npgsql.Internal.NpgsqlConnector.ConnectAsync(NpgsqlTimeout timeout, CancellationToken cancellationToken)
+         at Npgsql.Internal.NpgsqlConnector.ConnectAsync(NpgsqlTimeout timeout, CancellationToken cancellationToken)
+         at Npgsql.Internal.NpgsqlConnector.RawOpen(SslMode sslMode, NpgsqlTimeout timeout, Boolean async, CancellationToken cancellationToken, Boolean isFirstAttempt)
+         at Npgsql.Internal.NpgsqlConnector.<Open>g__OpenCore|216_1(NpgsqlConnector conn, SslMode sslMode, NpgsqlTimeout timeout, Boolean async, CancellationToken cancellationToken, Boolean isFirstAttempt)
+         at Npgsql.Internal.NpgsqlConnector.Open(NpgsqlTimeout timeout, Boolean async, CancellationToken cancellationToken)
+         at Npgsql.PoolingDataSource.OpenNewConnector(NpgsqlConnection conn, NpgsqlTimeout timeout, Boolean async, CancellationToken cancellationToken)
+         at Npgsql.PoolingDataSource.<Get>g__RentAsync|28_0(NpgsqlConnection conn, NpgsqlTimeout timeout, Boolean async, CancellationToken cancellationToken)
+         at Npgsql.NpgsqlConnection.<Open>g__OpenAsync|45_0(Boolean async, CancellationToken cancellationToken)
+         at Microsoft.EntityFrameworkCore.Storage.RelationalConnection.OpenInternalAsync(Boolean errorsExpected, CancellationToken cancellationToken)
+         at Microsoft.EntityFrameworkCore.Storage.RelationalConnection.OpenInternalAsync(Boolean errorsExpected, CancellationToken cancellationToken)
+         at Microsoft.EntityFrameworkCore.Storage.RelationalConnection.OpenAsync(CancellationToken cancellationToken, Boolean errorsExpected)
+         at Microsoft.EntityFrameworkCore.Storage.RelationalCommand.ExecuteReaderAsync(RelationalCommandParameterObject parameterObject, CancellationToken cancellationToken)
+         at Microsoft.EntityFrameworkCore.Query.Internal.SingleQueryingEnumerable`1.AsyncEnumerator.InitializeReaderAsync(AsyncEnumerator enumerator, CancellationToken cancellationToken)
+         at Npgsql.EntityFrameworkCore.PostgreSQL.Storage.Internal.NpgsqlExecutionStrategy.ExecuteAsync[TState,TResult](TState state, Func`4 operation, Func`4 verifySucceeded, CancellationToken cancellationToken)
+         --- End of inner exception stack trace ---
+         at Npgsql.EntityFrameworkCore.PostgreSQL.Storage.Internal.NpgsqlExecutionStrategy.ExecuteAsync[TState,TResult](TState state, Func`4 operation, Func`4 verifySucceeded, CancellationToken cancellationToken)
+         at Microsoft.EntityFrameworkCore.Query.Internal.SingleQueryingEnumerable`1.AsyncEnumerator.MoveNextAsync()

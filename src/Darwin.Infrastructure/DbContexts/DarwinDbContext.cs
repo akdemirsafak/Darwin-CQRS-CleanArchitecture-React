@@ -1,6 +1,7 @@
 ﻿using Darwin.Core.Entities;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Logging;
 
 namespace Darwin.Infrastructure.DbContexts;
 
@@ -27,7 +28,9 @@ public class DarwinDbContext : IdentityDbContext<AppUser, AppRole, string>
     StreamWriter _log=new("../Darwin.Infrastructure/entityFrameworkLogs/logs.txt",append:true);
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
     {
-       optionsBuilder.LogTo(async message=>await _log.WriteLineAsync(message));
+       optionsBuilder.LogTo(async message=>await _log.WriteLineAsync(message),LogLevel.Warning)
+            .EnableSensitiveDataLogging()
+            .EnableDetailedErrors();
     }
     public override void Dispose()
     {
