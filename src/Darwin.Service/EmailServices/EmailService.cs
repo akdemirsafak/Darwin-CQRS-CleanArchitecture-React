@@ -71,6 +71,8 @@ public class EmailService : IEmailService
         
 <hr>
 </br></br>
+Yukarıdaki linke tıklayamıyorsan bu yazıyı tarayıcına yapıştırarak hesabını onaylayabilirsin : {model.confirmationAddress}
+</br></br>
             <footer> Keyifli günler..</footer>
         <body>
 ";

@@ -72,13 +72,13 @@ public static class Register
             await _publisher.Publish(new UserCreatedCreateFavoritePlaylistEvent(appUser.Id), cancellationToken);
 
 
-            ////Create confirmation link
-            //var confirmationToken = await _userManager.GenerateEmailConfirmationTokenAsync(appUser);
-            //var confirmationUrl = await _linkCreator.CreateTokenMailUrl("ConfirmEmail", "Authentication", appUser.Id, confirmationToken);
+            //Create confirmation link
+            var confirmationToken = await _userManager.GenerateEmailConfirmationTokenAsync(appUser);
+            var confirmationUrl = await _linkCreator.CreateTokenMailUrl("ConfirmEmail", "Auth", appUser.Id, confirmationToken);
 
-            ////Send welcome message with confirmation link
-            //var userCreatedEventModel = new UserCreatedMailModel(appUser.Email!, confirmationUrl, appUser.CreatedOnUtc);
-            //await _publisher.Publish(new UserCreatedSendMailEvent(userCreatedEventModel), cancellationToken);
+            //Send welcome message with confirmation link
+            var userCreatedEventModel = new UserCreatedMailModel(appUser.Email!, confirmationUrl, appUser.CreatedOnUtc);
+            await _publisher.Publish(new UserCreatedSendMailEvent(userCreatedEventModel), cancellationToken);
 
             return DarwinResponse<NoContent>.Success(201);
         }
