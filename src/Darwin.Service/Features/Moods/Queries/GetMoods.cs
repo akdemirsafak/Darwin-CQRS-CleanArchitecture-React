@@ -3,13 +3,19 @@ using Darwin.Core.Entities;
 using Darwin.Core.RepositoryCore;
 using Darwin.Model.Response.Moods;
 using Darwin.Service.Common;
+using Darwin.Service.Services;
 using Mapster;
 
 namespace Darwin.Service.Features.Moods.Queries;
 
 public static class GetMoods
 {
-    public record Query() : IQuery<DarwinResponse<List<GetMoodResponse>>>;
+    public record Query() : IQuery<DarwinResponse<List<GetMoodResponse>>>, ICacheableQuery
+    {
+        public string CachingKey => "GetAllMoods";
+
+        public double CacheTime => 2 ; //Minutes - Dakika
+    }
 
     public class QueryHandler : IQueryHandler<Query, DarwinResponse<List<GetMoodResponse>>>
     {

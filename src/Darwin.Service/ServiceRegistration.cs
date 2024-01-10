@@ -1,4 +1,5 @@
 ﻿using Darwin.Core.Entities;
+using Darwin.Core.ServiceCore;
 using Darwin.Infrastructure.DbContexts;
 using Darwin.Service.Behaviors;
 using Darwin.Service.Configures;
@@ -7,6 +8,7 @@ using Darwin.Service.Features.Moods.Commands;
 using Darwin.Service.Helper;
 using Darwin.Service.Jobs;
 using Darwin.Service.Localizations;
+using Darwin.Service.Services;
 using Darwin.Service.TokenOperations;
 using FluentValidation;
 using Hangfire;
@@ -79,7 +81,7 @@ public static class ServiceRegistration
         serviceCollection.Configure<EmailSettings>(configuration.GetSection("EmailSettings"));
         serviceCollection.AddScoped<IEmailService, EmailService>();
 
-
+        
         serviceCollection.AddHangfire(x =>
         {
             x.UseSqlServerStorage(configuration.GetConnectionString("HangfireJobsConnection"));
@@ -88,5 +90,17 @@ public static class ServiceRegistration
                 Cron.Weekly(DayOfWeek.Friday, 12), TimeZoneInfo.Local);
         });
         serviceCollection.AddHangfireServer();
+
+
+
+        serviceCollection.AddStackExchangeRedisCache(options =>
+        {
+            options.Configuration = configuration["RedisCacheSettings:ConnectionString"];
+            options.Configuration = configuration["RedisCacheSettings:InstanceName"];
+        });
+        serviceCollection.Configure<RedisCacheSettings>(configuration.GetSection("RedisCacheSettings"));
+        serviceCollection.AddTransient(typeof(IPipelineBehavior<,>), typeof(RedisCacheBehavior<,>));
+        serviceCollection.AddScoped<IRedisCacheService, RedisCacheService>();
+        
     }
 }
