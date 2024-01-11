@@ -47,5 +47,10 @@ namespace Darwin.Infrastructure.Repository
             addedEntity.State = EntityState.Added;
             return entity;
         }
+
+        public IQueryable<T> GetList(Expression<Func<T, bool>> filter = null)
+        {
+            return _dbSet.AsNoTracking();
+        }
     }
 }

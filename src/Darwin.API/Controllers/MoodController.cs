@@ -1,4 +1,5 @@
-﻿using Darwin.Model.Request.Moods;
+﻿using Darwin.Model.Request;
+using Darwin.Model.Request.Moods;
 using Darwin.Service.Features.Moods.Commands;
 using Darwin.Service.Features.Moods.Queries;
 using MediatR;
@@ -18,6 +19,11 @@ public class MoodController : CustomBaseController
     public async Task<IActionResult> Get()
     {
         return CreateActionResult(await _mediator.Send(new GetMoods.Query()));
+    }
+    [HttpPost("[action]")]
+    public async Task<IActionResult> GetList([FromBody] GetPaginationListRequest request)
+    {
+        return CreateActionResult(await _mediator.Send(new GetMoodList.Query(request)));
     }
     [Authorize]
     [HttpPost]
