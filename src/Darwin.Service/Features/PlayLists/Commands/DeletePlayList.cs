@@ -24,7 +24,7 @@ public static class DeletePlayList
 
         public async Task<DarwinResponse<DeletedPlayListResponse>> Handle(Command request, CancellationToken cancellationToken)
         {
-            var hasPlayList= await _playListRepository.GetAsync(x=>x.Id==request.id && x.Creator.Id==request.creatorId);
+            var hasPlayList= await _playListRepository.GetAsync(x=>x.Id==request.id);
             if (hasPlayList is null)
             {
                 return DarwinResponse<DeletedPlayListResponse>.Fail("Liste bulunamadı.Daha önce silinmiş olabilir.", 400);
