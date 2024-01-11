@@ -2,7 +2,7 @@
 
 namespace Darwin.Core.RepositoryCore;
 
-public interface IContentRepository:IGenericRepository<Content>
+public interface IContentRepository : IGenericRepository<Content>
 {
     IQueryable<Content> GetList();
 }

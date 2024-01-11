@@ -30,7 +30,7 @@ public class AuthController : CustomBaseController
         return CreateActionResult(await _mediator.Send(new Register.Command(request)));
     }
 
-    [Authorize,HttpGet]
+    [Authorize, HttpGet]
     public async Task<IActionResult> VerifyEmail()
     {
         return CreateActionResult(await _mediator.Send(new VerifyEmail.Command()));
@@ -41,7 +41,7 @@ public class AuthController : CustomBaseController
     {
         return CreateActionResult(await _mediator.Send(new ConfirmEmail.Command(userId, token)));
     }
-    
+
     //
     [HttpPost]
     public async Task<IActionResult> ResetPassword(string email)

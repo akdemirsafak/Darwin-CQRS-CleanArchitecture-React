@@ -20,9 +20,9 @@ public class ContentController : CustomBaseController
         return CreateActionResult(await _mediator.Send(new GetContents.Query()));
     }
     [HttpPost("[action]")]
-    public async Task<IActionResult> GetContentList(int page,int pageSize)
+    public async Task<IActionResult> GetContentList(int page, int pageSize)
     {
-        return CreateActionResult(await _mediator.Send(new GetContentList.Query(page,pageSize)));
+        return CreateActionResult(await _mediator.Send(new GetContentList.Query(page, pageSize)));
     }
     [HttpGet("{id}")]
     public async Task<IActionResult> GetById(Guid id)

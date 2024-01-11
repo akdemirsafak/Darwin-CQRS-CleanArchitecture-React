@@ -34,18 +34,18 @@ public sealed class UpdateAuditableEntitiesInterceptor : SaveChangesInterceptor
         foreach (EntityEntry<IAuditableEntity> entry in entries)
         {
             if (entry.State == EntityState.Added)
-            { 
+            {
                 entry.Property(x => x.CreatedOnUtc).CurrentValue = DateTime.UtcNow;
-                entry.Property(x => x.CreatedBy).CurrentValue= _httpContextAccessor.HttpContext.User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+                entry.Property(x => x.CreatedBy).CurrentValue = _httpContextAccessor.HttpContext.User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
 
             }
 
             if (entry.State == EntityState.Modified)
-            { 
-                entry.Property(x => x.UpdatedOnUtc).CurrentValue = DateTime.UtcNow; 
+            {
+                entry.Property(x => x.UpdatedOnUtc).CurrentValue = DateTime.UtcNow;
                 entry.Property(x => x.UpdatedBy).CurrentValue = _httpContextAccessor.HttpContext.User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
             }
-                
+
         }
         return base.SavingChangesAsync(eventData, result, cancellationToken);
     }

@@ -2,6 +2,6 @@
 
 public interface ICacheableQuery //Bu interface sayesinde her req response için ayrı ayrı cache'leme işlemi yapabileceğiz.
 {
-    string CachingKey { get; }  
+    string CachingKey { get; }
     double CacheTime { get; }
 }

@@ -1,5 +1,4 @@
-﻿using Darwin.Core.Entities;
-using Darwin.Service.Configures;
+﻿using Darwin.Service.Configures;
 using Darwin.Service.Events.UserCreated;
 using Microsoft.Extensions.Options;
 using System.Net;

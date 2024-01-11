@@ -2,7 +2,8 @@
 
 namespace Darwin.Model.Request.Users;
 
-public class ResetPasswordRequest {
+public class ResetPasswordRequest
+{
 
     [DataType(DataType.Password)]
     public required string Password { get; set; }

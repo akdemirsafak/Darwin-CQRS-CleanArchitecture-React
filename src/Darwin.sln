@@ -1,4 +1,4 @@
-﻿
+
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.7.34018.315
@@ -13,7 +13,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Darwin.Model", "Darwin.Mode
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Darwin.Infrastructure", "Darwin.Infrastructure\Darwin.Infrastructure.csproj", "{091520D5-10E8-4160-9BDD-8C1C702A4971}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Darwin.UnitTests", "Darwin.UnitTests\Darwin.UnitTests.csproj", "{66B14046-E402-4DB6-B2D0-C34C660481A1}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Darwin.UnitTests", "Darwin.UnitTests\Darwin.UnitTests.csproj", "{66B14046-E402-4DB6-B2D0-C34C660481A1}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

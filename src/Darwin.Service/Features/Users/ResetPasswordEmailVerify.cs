@@ -11,15 +11,15 @@ namespace Darwin.Service.Features.Users;
 
 public static class ResetPasswordEmailVerify
 {
-    public record Command(ResetPasswordRequest Model,string userId,string Token):ICommand<DarwinResponse<NoContent>>;
+    public record Command(ResetPasswordRequest Model, string userId, string Token) : ICommand<DarwinResponse<NoContent>>;
 
     public class CommandHanler : ICommandHandler<Command, DarwinResponse<NoContent>>
     {
         private readonly UserManager<AppUser> _userManager;
         private readonly ILinkCreator _linkCreator;
         private readonly IEmailService _emailService;
-        public CommandHanler(UserManager<AppUser> userManager, 
-            ILinkCreator linkCreator, 
+        public CommandHanler(UserManager<AppUser> userManager,
+            ILinkCreator linkCreator,
             IEmailService emailService)
         {
             _userManager = userManager;
