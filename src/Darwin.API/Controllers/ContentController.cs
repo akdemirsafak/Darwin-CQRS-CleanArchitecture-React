@@ -1,4 +1,5 @@
-﻿using Darwin.Model.Request.Contents;
+﻿using Darwin.Model.Request;
+using Darwin.Model.Request.Contents;
 using Darwin.Service.Features.Contents.Commands;
 using Darwin.Service.Features.Contents.Queries;
 using MediatR;
@@ -20,9 +21,9 @@ public class ContentController : CustomBaseController
         return CreateActionResult(await _mediator.Send(new GetContents.Query()));
     }
     [HttpPost("[action]")]
-    public async Task<IActionResult> GetContentList(int page, int pageSize)
+    public async Task<IActionResult> GetContentList([FromBody] GetPaginationListRequest request)
     {
-        return CreateActionResult(await _mediator.Send(new GetContentList.Query(page, pageSize)));
+        return CreateActionResult(await _mediator.Send(new GetContentList.Query(request)));
     }
     [HttpGet("{id}")]
     public async Task<IActionResult> GetById(Guid id)

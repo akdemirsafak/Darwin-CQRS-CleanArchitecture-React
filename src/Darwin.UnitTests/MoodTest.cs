@@ -1,6 +1,5 @@
 ﻿using Darwin.Core.Entities;
 using Darwin.Core.RepositoryCore;
-using Darwin.Core.UnitofWorkCore;
 using Darwin.Model.Request.Moods;
 using Darwin.Model.Response.Moods;
 using Darwin.Service.Features.Moods.Commands;
