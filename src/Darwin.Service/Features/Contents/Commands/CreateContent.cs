@@ -1,7 +1,6 @@
 ﻿using Darwin.Core.BaseDto;
 using Darwin.Core.Entities;
 using Darwin.Core.RepositoryCore;
-using Darwin.Core.UnitofWorkCore;
 using Darwin.Model.Request.Contents;
 using Darwin.Model.Response.Contents;
 using Darwin.Service.Common;
@@ -19,23 +18,18 @@ public static class CreateContent
         private readonly IGenericRepository<Content> _contentRepositoryAsync;
         private readonly IGenericRepository<Category> _categoryRepositoryAsync;
         private readonly IGenericRepository<Mood> _moodRepositoryAsync;
-        private readonly IUnitOfWork _unitOfWork;
 
         public CommandHandler(IGenericRepository<Content> contentRepositoryAsync,
             IGenericRepository<Category> categoryRepositoryAsync,
-            IGenericRepository<Mood> moodRepositoryAsync,
-            IUnitOfWork unitOfWork)
+            IGenericRepository<Mood> moodRepositoryAsync)
         {
             _contentRepositoryAsync = contentRepositoryAsync;
             _categoryRepositoryAsync = categoryRepositoryAsync;
             _moodRepositoryAsync = moodRepositoryAsync;
-            _unitOfWork = unitOfWork;
         }
 
         public async Task<DarwinResponse<CreatedContentResponse>> Handle(Command request, CancellationToken cancellationToken)
         {
-
-
 
             List<Mood> moodList=new();
             foreach (var moodId in request.Model.MoodIds)
@@ -70,7 +64,7 @@ public static class CreateContent
 
             //SaveOperations
             await _contentRepositoryAsync.CreateAsync(content);
-            await _unitOfWork.CommitAsync();
+
             return DarwinResponse<CreatedContentResponse>.Success(content.Adapt<CreatedContentResponse>(), 201);
         }
     }

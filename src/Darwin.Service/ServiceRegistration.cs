@@ -29,7 +29,11 @@ public static class ServiceRegistration
     public static void AddService(this IServiceCollection serviceCollection, IConfiguration configuration)
     {
 
-        serviceCollection.AddMediatR(cfg => cfg.RegisterServicesFromAssemblyContaining(typeof(CreateMood.Command)));
+        serviceCollection.AddMediatR(cfg => 
+        {
+            cfg.RegisterServicesFromAssemblyContaining(typeof(CreateMood.Command));
+            cfg.AddOpenBehavior(typeof(UnitOfWorkBehavior<,>));
+        });
         serviceCollection.AddValidatorsFromAssembly(Assembly.GetExecutingAssembly());
         serviceCollection.AddTransient(typeof(IPipelineBehavior<,>), typeof(ValidationBehavior<,>));
 

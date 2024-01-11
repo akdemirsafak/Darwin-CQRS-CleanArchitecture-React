@@ -14,23 +14,16 @@ public static class CreatePlayList
 {
     public record Command(CreatePlayListRequest Model, string creatorId) : ICommand<DarwinResponse<CreatedPlayListResponse>>;
 
-    public class CommandHandler : ICommandHandler<Command, DarwinResponse<CreatedPlayListResponse>>
+    public class CommandHandler (IGenericRepository<PlayList> _playListRepository)
+        : ICommandHandler<Command, DarwinResponse<CreatedPlayListResponse>>
     {
-        private readonly IGenericRepository < PlayList > _playListRepository;
-        private readonly IUnitOfWork _unitOfWork;
-
-        public CommandHandler(IGenericRepository<PlayList> playListRepository, IUnitOfWork unitOfWork)
-        {
-            _playListRepository = playListRepository;
-            _unitOfWork = unitOfWork;
-        }
+      
 
         public async Task<DarwinResponse<CreatedPlayListResponse>> Handle(Command request, CancellationToken cancellationToken)
         {
             var entity= request.Model.Adapt<PlayList>();
             entity.CreatorId = request.creatorId;
             await _playListRepository.CreateAsync(entity);
-            await _unitOfWork.CommitAsync();
 
             return DarwinResponse<CreatedPlayListResponse>.Success(entity.Adapt<CreatedPlayListResponse>(), 201);
         }

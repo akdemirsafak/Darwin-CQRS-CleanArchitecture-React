@@ -13,34 +13,24 @@ public static class UpdatePlayList
 {
     public record Command(Guid id, UpdatePlayListRequest Model, string creatorId) : ICommand<DarwinResponse<UpdatedPlayListResponse>>;
 
-    public class CommandHandler : ICommandHandler<Command, DarwinResponse<UpdatedPlayListResponse>>
+    public class CommandHandler(IGenericRepository<PlayList> _playListRepository) 
+        : ICommandHandler<Command, DarwinResponse<UpdatedPlayListResponse>>
     {
-        private readonly IGenericRepository < PlayList > _playListRepository;
-        private readonly IUnitOfWork _unitOfWork;
-
-        public CommandHandler(IGenericRepository<PlayList> playListRepository, IUnitOfWork unitOfWork)
-        {
-            _playListRepository = playListRepository;
-            _unitOfWork = unitOfWork;
-        }
-
         public async Task<DarwinResponse<UpdatedPlayListResponse>> Handle(Command request, CancellationToken cancellationToken)
         {
             var hasList= await _playListRepository.GetAsync(x=>x.Id==request.id && x.Creator.Id==request.creatorId);
             if (hasList is null)
-            {
                 return DarwinResponse<UpdatedPlayListResponse>.Fail("Liste bulunamadı.", 404);
-            }
+
             if (!hasList.IsFavorite)
-            {
                 hasList.IsUsable = request.Model.IsUsable;
-            }
+ 
             hasList.Name = request.Model.Name;
             hasList.Description = request.Model.Description;
             hasList.IsPublic = request.Model.IsPublic;
 
             await _playListRepository.UpdateAsync(hasList);
-            await _unitOfWork.CommitAsync();
+
             return DarwinResponse<UpdatedPlayListResponse>.Success(hasList.Adapt<UpdatedPlayListResponse>());
         }
     }
