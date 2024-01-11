@@ -46,7 +46,7 @@ public class PlayListController : CustomBaseController
     [HttpDelete("{id}")]
     public async Task<IActionResult> Delete(Guid id)
     {
-        return CreateActionResult(await _mediator.Send(new DeletePlayList.Command(id, _currentUser.GetUserId)));
+        return CreateActionResult(await _mediator.Send(new DeletePlayList.Command(id)));
     }
     [HttpPost("AddContentsToPlayList")]
     public async Task<IActionResult> AddContentToPlayList([FromBody] AddContentsToPlayListRequest request)

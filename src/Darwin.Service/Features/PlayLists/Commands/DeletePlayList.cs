@@ -9,7 +9,7 @@ namespace Darwin.Service.Features.PlayLists.Commands;
 
 public static class DeletePlayList
 {
-    public record Command(Guid id, string creatorId) : ICommand<DarwinResponse<DeletedPlayListResponse>>;
+    public record Command(Guid id) : ICommand<DarwinResponse<DeletedPlayListResponse>>;
 
     public class CommandHandler : ICommandHandler<Command, DarwinResponse<DeletedPlayListResponse>>
     {
