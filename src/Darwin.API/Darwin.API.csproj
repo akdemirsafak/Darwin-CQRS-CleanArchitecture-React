@@ -6,6 +6,9 @@
     <UserSecretsId>7d0f1d8d-baa6-4d24-95fd-a78ecfb2c6e5</UserSecretsId>
   </PropertyGroup>
   <ItemGroup>
+    <None Include="..\.editorconfig" Link=".editorconfig" />
+  </ItemGroup>
+  <ItemGroup>
     <PackageReference Include="Sentry.AspNetCore" Version="3.41.3" />
     <PackageReference Include="Swashbuckle.AspNetCore" Version="6.5.0" />
     <PackageReference Include="Microsoft.AspNetCore.OpenApi" Version="8.0.1" />

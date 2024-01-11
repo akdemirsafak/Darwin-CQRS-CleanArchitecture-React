@@ -16,13 +16,12 @@ public static class AddContentsToPlayList
     {
         private readonly IGenericRepository<PlayList> _playListRepository;
         private readonly IGenericRepository <Content> _contentRepository;
-        private readonly IUnitOfWork _unitOfWork;
 
-        public CommandHandler(IGenericRepository<PlayList> playListRepository, IGenericRepository<Content> contentRepository, IUnitOfWork unitOfWork)
+        public CommandHandler(IGenericRepository<PlayList> playListRepository, 
+            IGenericRepository<Content> contentRepository)
         {
             _playListRepository = playListRepository;
             _contentRepository = contentRepository;
-            _unitOfWork = unitOfWork;
         }
 
         public async Task<DarwinResponse<GetPlayListByIdResponse>> Handle(Command request, CancellationToken cancellationToken)
@@ -43,10 +42,8 @@ public static class AddContentsToPlayList
             }
 
             await _playListRepository.UpdateAsync(hasPlayList);
-            await _unitOfWork.CommitAsync();
 
             return DarwinResponse<GetPlayListByIdResponse>.Success(hasPlayList.Adapt<GetPlayListByIdResponse>(), 201);
-
         }
     }
 }
