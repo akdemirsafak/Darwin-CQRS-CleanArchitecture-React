@@ -1,6 +1,6 @@
 # Darwin
 
-1. Asp.net Core 7
+1. Asp.net Core 7 Upgraded .Net 8
 2. N Layer Architecture
 3. Cqrs Pattern with Mediatr. Commands, Queries, Notifications and anothers
 4. Vertical Slice Pattern
