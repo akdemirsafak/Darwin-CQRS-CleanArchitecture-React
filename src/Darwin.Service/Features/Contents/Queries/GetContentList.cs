@@ -2,6 +2,7 @@
 using Darwin.Core.RepositoryCore;
 using Darwin.Model.Response.Contents;
 using Darwin.Service.Common;
+using Darwin.Service.Services;
 using FluentValidation;
 using Mapster;
 using Microsoft.EntityFrameworkCore;
@@ -10,7 +11,13 @@ namespace Darwin.Service.Features.Contents.Queries;
 
 public static class GetContentList
 {
-    public record Query(int Page, int PageSize) : IQuery<DarwinResponse<GetContentListResponse>>;
+    public record Query(int Page, int PageSize) : IQuery<DarwinResponse<GetContentListResponse>>, ICacheableQuery
+    {
+        public string CachingKey => "GetContentList";
+
+        public double CacheTime => 0.5;
+    }
+
     public class QueryHandler : IQueryHandler<Query, DarwinResponse<GetContentListResponse>>
     {
         private readonly IContentRepository _contentRepository;

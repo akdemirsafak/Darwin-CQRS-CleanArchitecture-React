@@ -14,7 +14,7 @@ public static class GetMoods
     {
         public string CachingKey => "GetAllMoods";
 
-        public double CacheTime => 2; //Minutes - Dakika
+        public double CacheTime => 0.5; //Minutes - Dakika cinsinden.
     }
 
     public class QueryHandler : IQueryHandler<Query, DarwinResponse<List<GetMoodResponse>>>
