@@ -10,7 +10,7 @@ namespace Darwin.Service.Features.Users;
 
 public static class VerifyEmail
 {
-    public record Command():ICommand<DarwinResponse<NoContent>>;
+    public record Command() : ICommand<DarwinResponse<NoContent>>;
 
     public class CommandHandler : ICommandHandler<Command, DarwinResponse<NoContent>>
     {
@@ -19,9 +19,9 @@ public static class VerifyEmail
         private readonly IEmailService _emailService;
         private readonly ILinkCreator _linkCreator;
 
-        public CommandHandler(UserManager<AppUser> userManager, 
-            ICurrentUser currentUser, 
-            IEmailService emailService, 
+        public CommandHandler(UserManager<AppUser> userManager,
+            ICurrentUser currentUser,
+            IEmailService emailService,
             ILinkCreator linkCreator)
         {
             _userManager = userManager;

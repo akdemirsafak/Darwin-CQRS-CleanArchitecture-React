@@ -1,7 +1,5 @@
 ﻿using Darwin.Core.BaseDto;
-using Darwin.Core.Entities;
 using Darwin.Core.RepositoryCore;
-using Darwin.Model.Response;
 using Darwin.Model.Response.Contents;
 using Darwin.Service.Common;
 using FluentValidation;
@@ -12,7 +10,7 @@ namespace Darwin.Service.Features.Contents.Queries;
 
 public static class GetContentList
 {
-    public record Query(int Page,int PageSize) : IQuery<DarwinResponse<GetContentListResponse>>;
+    public record Query(int Page, int PageSize) : IQuery<DarwinResponse<GetContentListResponse>>;
     public class QueryHandler : IQueryHandler<Query, DarwinResponse<GetContentListResponse>>
     {
         private readonly IContentRepository _contentRepository;
@@ -56,8 +54,8 @@ public static class GetContentList
     {
         public GetPaginableContentQueryValidator()
         {
-            RuleFor(x=>x.Page).GreaterThanOrEqualTo(1);
-            RuleFor(x=>x.PageSize).GreaterThanOrEqualTo(1);
+            RuleFor(x => x.Page).GreaterThanOrEqualTo(1);
+            RuleFor(x => x.PageSize).GreaterThanOrEqualTo(1);
         }
     }
 }

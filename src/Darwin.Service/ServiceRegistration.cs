@@ -81,7 +81,7 @@ public static class ServiceRegistration
         serviceCollection.Configure<EmailSettings>(configuration.GetSection("EmailSettings"));
         serviceCollection.AddScoped<IEmailService, EmailService>();
 
-        
+
         serviceCollection.AddHangfire(x =>
         {
             x.UseSqlServerStorage(configuration.GetConnectionString("HangfireJobsConnection"));
@@ -101,6 +101,6 @@ public static class ServiceRegistration
         serviceCollection.Configure<RedisCacheSettings>(configuration.GetSection("RedisCacheSettings"));
         serviceCollection.AddTransient(typeof(IPipelineBehavior<,>), typeof(RedisCacheBehavior<,>));
         serviceCollection.AddScoped<IRedisCacheService, RedisCacheService>();
-        
+
     }
 }

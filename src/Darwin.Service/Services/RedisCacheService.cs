@@ -17,13 +17,13 @@ public class RedisCacheService : IRedisCacheService
         _redisCacheSettings = options.Value;
         //appsettings'de abortConnect=false tanımladık bağlantı sağlanmadığında uygulamanın çalıştırılmaması anlamına gelir. 
         var connection=ConfigurationOptions.Parse(_redisCacheSettings.ConnectionString);
-        _redisConnection=ConnectionMultiplexer.Connect(connection);
-        _database=_redisConnection.GetDatabase();
+        _redisConnection = ConnectionMultiplexer.Connect(connection);
+        _database = _redisConnection.GetDatabase();
     }
 
     public async Task<T> GetAsync<T>(string key)
     {
-       var value= await _database.StringGetAsync(key);
+        var value= await _database.StringGetAsync(key);
         if (value.HasValue)
             return JsonConvert.DeserializeObject<T>(value);
 
