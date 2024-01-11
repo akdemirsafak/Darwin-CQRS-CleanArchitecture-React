@@ -24,3 +24,4 @@
 22. xUnit and NSubstitute Mock for Unit tests 
 23. CronJobs with Hangfire and SqlServerStorage
 24. Cors
+25. Redis ile Cache
