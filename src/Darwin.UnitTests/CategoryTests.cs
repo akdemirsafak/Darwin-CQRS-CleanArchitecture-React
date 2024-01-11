@@ -15,11 +15,9 @@ namespace Darwin.UnitTests;
 public class CategoryTests
 {
     private readonly IGenericRepository<Category> _categoryRepository;
-    private readonly IUnitOfWork _unitOfWork;
     public CategoryTests()
     {
         _categoryRepository = Substitute.For<IGenericRepository<Category>>();
-        _unitOfWork = Substitute.For<IUnitOfWork>();
     }
 
     [Fact]
@@ -125,7 +123,7 @@ public class CategoryTests
 
         var request = new CreateCategoryRequest(category.Name, category.ImageUrl, category.IsUsable);
         var command = new CreateCategory.Command(request);
-        var commandHandler = new CreateCategory.CommandHandler(_categoryRepository, _unitOfWork);
+        var commandHandler = new CreateCategory.CommandHandler(_categoryRepository);
 
         //Act
         var result = await commandHandler.Handle(command, CancellationToken.None);
@@ -172,7 +170,7 @@ public class CategoryTests
 
         var request = new UpdateCategoryRequest(newCategoryValues.Name, newCategoryValues.ImageUrl, newCategoryValues.IsUsable);
         var command = new UpdateCategory.Command(category.Id, request);
-        var commandHandler = new UpdateCategory.CommandHandler(_categoryRepository, _unitOfWork);
+        var commandHandler = new UpdateCategory.CommandHandler(_categoryRepository);
 
         //Act
         var result = await commandHandler.Handle(command, CancellationToken.None);
@@ -201,7 +199,7 @@ public class CategoryTests
         _categoryRepository.RemoveAsync(Arg.Any<Category>()).Returns(Task.FromResult(category));
 
         var command = new DeleteCategory.Command(category.Id);
-        var commandHandler = new DeleteCategory.CommandHandler(_categoryRepository, _unitOfWork);
+        var commandHandler = new DeleteCategory.CommandHandler(_categoryRepository);
         //Act
         var result = await commandHandler.Handle(command, CancellationToken.None);
         Assert.Null(result.Errors);

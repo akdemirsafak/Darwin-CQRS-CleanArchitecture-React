@@ -50,7 +50,7 @@ public class ContentTests
         _contentRepository.RemoveAsync(Arg.Any<Content>()).Returns(Task.FromResult(content));
 
         var command= new DeleteContent.Command(content.Id);
-        var commandHandler = new DeleteContent.CommandHandler(_contentRepository,_unitOfWork);
+        var commandHandler = new DeleteContent.CommandHandler(_contentRepository);
 
         //Act
         var result= await commandHandler.Handle(command,CancellationToken.None);
