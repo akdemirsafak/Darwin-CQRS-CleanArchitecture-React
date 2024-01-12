@@ -18,4 +18,7 @@
   <ItemGroup>
     <ProjectReference Include="..\Darwin.Service\Darwin.Service.csproj" />
   </ItemGroup>
+  <ItemGroup>
+    <Folder Include="wwwroot\photos\" />
+  </ItemGroup>
 </Project>
