@@ -5,10 +5,8 @@ using Darwin.Service.Features.Auth.RefreshToken;
 using Darwin.Service.Features.Auth.Register;
 using Darwin.Service.Features.Auth.RevokeAllTokens;
 using Darwin.Service.Features.Auth.RevokeToken;
-using Darwin.Service.Features.Common;
 using Darwin.Service.Features.Users;
 using MediatR;
-using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Darwin.API.Controllers;
@@ -30,17 +28,6 @@ public class AuthController : CustomBaseController
         return CreateActionResult(await _mediator.Send(new Register.Command(request)));
     }
 
-    [Authorize, HttpGet]
-    public async Task<IActionResult> VerifyEmail()
-    {
-        return CreateActionResult(await _mediator.Send(new VerifyEmail.Command()));
-    }
-
-    [HttpGet]
-    public async Task<IActionResult> ConfirmEmail(string userId, string token)
-    {
-        return CreateActionResult(await _mediator.Send(new ConfirmEmail.Command(userId, token)));
-    }
 
     //
     [HttpPost]
