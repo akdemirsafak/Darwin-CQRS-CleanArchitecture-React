@@ -16,12 +16,11 @@ namespace Darwin.Service.Features.PlayLists.Commands
         {
             private readonly IGenericRepository < PlayList > _playListRepository;
             private readonly IGenericRepository<Content> _contentRepository;
-            private readonly IUnitOfWork _unitOfWork;
 
-            public CommandHandler(IGenericRepository<PlayList> playListRepository, IUnitOfWork unitOfWork, IGenericRepository<Content> contentRepository)
+            public CommandHandler(IGenericRepository<PlayList> playListRepository, 
+                IGenericRepository<Content> contentRepository)
             {
                 _playListRepository = playListRepository;
-                _unitOfWork = unitOfWork;
                 _contentRepository = contentRepository;
             }
 
@@ -36,7 +35,7 @@ namespace Darwin.Service.Features.PlayLists.Commands
                     var content = await _contentRepository.GetAsync(x => x.Id == requestContentId);
                     existPlayList.Contents.Remove(content);
                 }
-                await _unitOfWork.CommitAsync();
+
                 return DarwinResponse<GetPlayListByIdResponse>.Success(existPlayList.Adapt<GetPlayListByIdResponse>(), 200);
             }
         }

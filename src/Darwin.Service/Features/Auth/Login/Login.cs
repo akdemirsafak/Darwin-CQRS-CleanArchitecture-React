@@ -1,7 +1,5 @@
 ﻿using Darwin.Core.BaseDto;
 using Darwin.Core.Entities;
-using Darwin.Core.RepositoryCore;
-using Darwin.Core.UnitofWorkCore;
 using Darwin.Model.Request.Users;
 using Darwin.Service.Common;
 using Darwin.Service.TokenOperations;
@@ -34,7 +32,7 @@ public static class Login
             var existUser = await _userManager.FindByEmailAsync(request.Model.Email);
 
             if (existUser is null)
-                return DarwinResponse<TokenResponse>.Fail("User not found.",404);
+                return DarwinResponse<TokenResponse>.Fail("User not found.", 404);
 
             var loginResult = await _signInManager.CheckPasswordSignInAsync(existUser, request.Model.Password, true);
 
@@ -50,16 +48,16 @@ public static class Login
             var token = await _tokenService.CreateTokenAsync(existUser);
 
             existUser.RefreshToken = token.RefreshToken;
-            existUser.RefreshTokenExpiration= token.RefreshTokenExpiration;
+            existUser.RefreshTokenExpiration = token.RefreshTokenExpiration;
 
             //Last Login işlemi yaptık.
             existUser.LastLogin = DateTime.UtcNow;
-            
+
             var updateResult = await _userManager.UpdateAsync(existUser);
 
             await _userManager.UpdateSecurityStampAsync(existUser); // TODO !
             await _userManager.SetAuthenticationTokenAsync(existUser, "Default", "AccessToken", token.AccessToken);
-            
+
             if (!updateResult.Succeeded)
                 return DarwinResponse<TokenResponse>.Fail("Login cannot updated.", 500);
 

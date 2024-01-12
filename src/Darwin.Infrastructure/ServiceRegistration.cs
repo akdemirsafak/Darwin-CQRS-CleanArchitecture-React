@@ -17,7 +17,7 @@ public static class ServiceRegistration
     {
         serviceCollection.AddSingleton<UpdateAuditableEntitiesInterceptor>();
 
-        serviceCollection.AddDbContext<DarwinDbContext>((sp,opt) =>
+        serviceCollection.AddDbContext<DarwinDbContext>((sp, opt) =>
         {
             var interceptor=sp.GetService<UpdateAuditableEntitiesInterceptor>()!;
             //var anotherinterceptor
@@ -26,12 +26,9 @@ public static class ServiceRegistration
             .AddInterceptors(interceptor);
             //If we have someinterceptors = AddInterceptors(interceptor1,interceptor2);
         });
-        
+
         serviceCollection.AddScoped<IUnitOfWork, UnitOfWork>();
 
         serviceCollection.AddScoped(typeof(IGenericRepository<>), typeof(GenericRepository<>));
-
-
-        
     }
 }

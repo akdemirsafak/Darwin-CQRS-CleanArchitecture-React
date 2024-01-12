@@ -9,7 +9,7 @@ namespace Darwin.Service.Features.Auth.RevokeToken;
 
 public static class RevokeToken
 {
-    public record Command(string Email):ICommand<DarwinResponse<NoContent>>;
+    public record Command(string Email) : ICommand<DarwinResponse<NoContent>>;
     public class CommandHandler : ICommandHandler<Command, DarwinResponse<NoContent>>
     {
         private readonly UserManager<AppUser> _userManager;
@@ -33,11 +33,11 @@ public static class RevokeToken
             return DarwinResponse<NoContent>.Success();
         }
     }
-    public class RevokeTokenCommandValidator: AbstractValidator<Command>
+    public class RevokeTokenCommandValidator : AbstractValidator<Command>
     {
         public RevokeTokenCommandValidator()
         {
-            RuleFor(x=>x.Email)
+            RuleFor(x => x.Email)
                 .NotEmpty()
                 .EmailAddress();
         }

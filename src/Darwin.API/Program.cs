@@ -36,14 +36,14 @@ builder.Services.AddSwaggerGen(x =>
     {
         Title = "Darwin Api"
     });
-    x.AddSecurityDefinition("Bearer",new OpenApiSecurityScheme()
+    x.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme()
     {
-        Name="Authorization",
-        Type=SecuritySchemeType.ApiKey,
-        Scheme="Bearer",
-        BearerFormat="JWT",
-        In=ParameterLocation.Header,
-        Description="Bearerdan sonra boşluk sonra token"
+        Name = "Authorization",
+        Type = SecuritySchemeType.ApiKey,
+        Scheme = "Bearer",
+        BearerFormat = "JWT",
+        In = ParameterLocation.Header,
+        Description = "Bearerdan sonra boşluk sonra token"
 
     });
     x.AddSecurityRequirement(new OpenApiSecurityRequirement()

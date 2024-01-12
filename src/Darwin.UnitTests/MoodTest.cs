@@ -1,6 +1,5 @@
 ﻿using Darwin.Core.Entities;
 using Darwin.Core.RepositoryCore;
-using Darwin.Core.UnitofWorkCore;
 using Darwin.Model.Request.Moods;
 using Darwin.Model.Response.Moods;
 using Darwin.Service.Features.Moods.Commands;
@@ -15,11 +14,9 @@ namespace Darwin.UnitTests;
 public class MoodTest
 {
     private readonly IGenericRepository<Mood> _moodRepository;
-    private readonly IUnitOfWork _unitOfWork;
     public MoodTest()
     {
         _moodRepository = Substitute.For<IGenericRepository<Mood>>();
-        _unitOfWork = Substitute.For<IUnitOfWork>();
     }
 
 
@@ -83,7 +80,7 @@ public class MoodTest
 
         var request = new CreateMoodRequest(mood.Name, mood.ImageUrl, mood.IsUsable);
         var command = new CreateMood.Command(request);
-        var commandHandler = new CreateMood.CommandHandler(_moodRepository, _unitOfWork);
+        var commandHandler = new CreateMood.CommandHandler(_moodRepository);
 
         //action
 
@@ -121,7 +118,7 @@ public class MoodTest
 
         var request = new UpdateMoodRequest(newValues.Name, newValues.ImageUrl, newValues.IsUsable);
         var command = new UpdateMood.Command(mood.Id, request);
-        var commandHandler = new UpdateMood.CommandHandler(_moodRepository, _unitOfWork);
+        var commandHandler = new UpdateMood.CommandHandler(_moodRepository);
 
         // Action
         var result = await commandHandler.Handle(command, CancellationToken.None);

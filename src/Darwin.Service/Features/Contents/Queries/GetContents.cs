@@ -3,13 +3,20 @@ using Darwin.Core.Entities;
 using Darwin.Core.RepositoryCore;
 using Darwin.Model.Response.Contents;
 using Darwin.Service.Common;
+using Darwin.Service.Services;
 using Mapster;
 
 namespace Darwin.Service.Features.Contents.Queries;
 
 public static class GetContents
 {
-    public record Query() : IQuery<DarwinResponse<List<GetContentResponse>>>;
+    public record Query() : IQuery<DarwinResponse<List<GetContentResponse>>>, ICacheableQuery
+    {
+        public string CachingKey => "GetContents";
+        public double CacheTime => 0.5;
+    }
+
+
 
     public class QueryHandler : IQueryHandler<Query, DarwinResponse<List<GetContentResponse>>>
     {

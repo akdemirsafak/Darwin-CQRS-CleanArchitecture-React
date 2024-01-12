@@ -15,18 +15,10 @@ namespace Darwin.UnitTests;
 public class ContentTests
 {
     private readonly IGenericRepository<Content> _contentRepository;
-    private readonly IGenericRepository<Mood> _moodRepository;
-    private readonly IGenericRepository<Category> _categoryRepository;
-    private readonly IUnitOfWork _unitOfWork;
-    private readonly ICurrentUser _currentUser;
 
     public ContentTests()
     {
         _contentRepository = Substitute.For<IGenericRepository<Content>>();
-        _moodRepository = Substitute.For<IGenericRepository<Mood>>();
-        _categoryRepository = Substitute.For<IGenericRepository<Category>>();
-        _unitOfWork = Substitute.For<IUnitOfWork>();
-        _currentUser = Substitute.For<ICurrentUser>();
     }
 
 
@@ -50,7 +42,7 @@ public class ContentTests
         _contentRepository.RemoveAsync(Arg.Any<Content>()).Returns(Task.FromResult(content));
 
         var command= new DeleteContent.Command(content.Id);
-        var commandHandler = new DeleteContent.CommandHandler(_contentRepository,_unitOfWork);
+        var commandHandler = new DeleteContent.CommandHandler(_contentRepository);
 
         //Act
         var result= await commandHandler.Handle(command,CancellationToken.None);
@@ -63,30 +55,30 @@ public class ContentTests
 
     //GetContentById
 
-    //[Fact]
-    //public async Task GetContentById_Should_ReturnContentWith200StatusCode()
-    //{
-    //    var content=new Content()
-    //    {
-    //        Id=new Guid(),
-    //        Name="name",
-    //        ImageUrl="abersie.png",
-    //        IsUsable=!false,
-    //        CreatedAt=DateTime.UtcNow.Ticks
-    //    };
+    [Fact]
+    public async Task GetContentById_Should_ReturnContentWith200StatusCode()
+    {
+        var content=new Content()
+        {
+            Id=new Guid(),
+            Name="name",
+            ImageUrl="abersie.png",
+            IsUsable=!false
+        };
 
-    //    _contentRepository.GetAsync(Arg.Any<Expression<Func<Content, bool>>>()).Returns(Task.FromResult(content));
-    //    var contentResponse=content.Adapt<GetContentByIdResponse>();
-    //    var query= new GetContentById.Query(content.Id);
-    //    var queryHandler = new GetContentById.QueryHandler(_contentRepository);
+        _contentRepository.GetAsync(Arg.Any<Expression<Func<Content, bool>>>()).Returns(Task.FromResult(content));
+        var contentResponse=content.Adapt<GetContentByIdResponse>();
+        var query= new GetContentById.Query(content.Id);
+        var queryHandler = new GetContentById.QueryHandler(_contentRepository);
 
-    //    //Act
-    //    var result= await queryHandler.Handle(query,CancellationToken.None);
+        //Act
+        var result= await queryHandler.Handle(query,CancellationToken.None);
 
-    //    //Assert
-    //    Assert.True(result.StatusCode == StatusCodes.Status200OK);
-    //    Assert.NotNull(result.Data);
-    //}
+        //Assert
+        Assert.True(result.StatusCode == StatusCodes.Status200OK);
+        Assert.NotNull(result.Data);
+        Assert.Equivalent(result.Data, contentResponse);
+    }
 
     // SearchContent
 

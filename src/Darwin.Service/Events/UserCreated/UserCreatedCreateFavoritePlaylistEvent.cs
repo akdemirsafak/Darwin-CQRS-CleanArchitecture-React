@@ -30,6 +30,6 @@ public class UserCreatedCreateFavoritePlaylistEventHandler : INotificationHandle
             Description="Your favorite contents here."
         };
         await _playListRepository.CreateAsync(entity);
-        await _unitOfWork.CommitAsync();
+        await _unitOfWork.CommitAsync(cancellationToken);
     }
 }

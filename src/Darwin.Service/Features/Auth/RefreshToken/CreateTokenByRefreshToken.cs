@@ -1,7 +1,5 @@
 ﻿using Darwin.Core.BaseDto;
 using Darwin.Core.Entities;
-using Darwin.Core.RepositoryCore;
-using Darwin.Core.UnitofWorkCore;
 using Darwin.Model.Request.Authentications;
 using Darwin.Service.Common;
 using Darwin.Service.TokenOperations;
@@ -12,7 +10,7 @@ namespace Darwin.Service.Features.Auth.RefreshToken;
 
 public static class CreateTokenByRefreshToken
 {
-    public record Command(RefreshTokenRequest Model) :ICommand<DarwinResponse<TokenResponse>>;
+    public record Command(RefreshTokenRequest Model) : ICommand<DarwinResponse<TokenResponse>>;
 
     public class CommandHandler : ICommandHandler<Command, DarwinResponse<TokenResponse>>
     {
@@ -29,7 +27,7 @@ public static class CreateTokenByRefreshToken
         public async Task<DarwinResponse<TokenResponse>> Handle(Command request, CancellationToken cancellationToken)
         {
             ClaimsPrincipal? principal=_tokenService.GetPrincipalFromExpiredToken(request.Model.AccessToken); //Gelen Access token belirlediğimiz şartlara uyuyor mu kontrolleri yapılıyor ve süresi dolmuş mu kontrolü yapılıyor.
-            
+
             var emailFromToken = principal.FindFirstValue(ClaimTypes.Email);
 
             AppUser? user = await _userManager.FindByEmailAsync(emailFromToken);

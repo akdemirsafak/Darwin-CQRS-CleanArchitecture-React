@@ -1,4 +1,5 @@
 ﻿using Darwin.Core.Entities;
+using Darwin.Core.ServiceCore;
 using Darwin.Infrastructure.DbContexts;
 using Darwin.Service.Behaviors;
 using Darwin.Service.Configures;
@@ -7,6 +8,7 @@ using Darwin.Service.Features.Moods.Commands;
 using Darwin.Service.Helper;
 using Darwin.Service.Jobs;
 using Darwin.Service.Localizations;
+using Darwin.Service.Services;
 using Darwin.Service.TokenOperations;
 using FluentValidation;
 using Hangfire;
@@ -27,18 +29,22 @@ public static class ServiceRegistration
     public static void AddService(this IServiceCollection serviceCollection, IConfiguration configuration)
     {
 
-        serviceCollection.AddMediatR(cfg => cfg.RegisterServicesFromAssemblyContaining(typeof(CreateMood.Command)));
+        serviceCollection.AddMediatR(cfg => 
+        {
+            cfg.RegisterServicesFromAssemblyContaining(typeof(CreateMood.Command));
+            cfg.AddOpenBehavior(typeof(UnitOfWorkBehavior<,>));
+        });
         serviceCollection.AddValidatorsFromAssembly(Assembly.GetExecutingAssembly());
         serviceCollection.AddTransient(typeof(IPipelineBehavior<,>), typeof(ValidationBehavior<,>));
 
         var tokenOptions = configuration.GetSection("AppTokenOptions").Get<AppTokenOptions>();
-        
-        
+
+
         //serviceCollection.AddIndentityCore<AppUser,AppRole>().AddRoles<AppRole>(); 
         serviceCollection.AddIdentity<AppUser, AppRole>(x =>
         {
             x.User.RequireUniqueEmail = true;
-        })    
+        })
         .AddEntityFrameworkStores<DarwinDbContext>()
         .AddErrorDescriber<LocalizationsIdentityErrorDescriber>()
         .AddDefaultTokenProviders();
@@ -88,5 +94,17 @@ public static class ServiceRegistration
                 Cron.Weekly(DayOfWeek.Friday, 12), TimeZoneInfo.Local);
         });
         serviceCollection.AddHangfireServer();
+
+
+
+        serviceCollection.AddStackExchangeRedisCache(options =>
+        {
+            options.Configuration = configuration["RedisCacheSettings:ConnectionString"];
+            options.Configuration = configuration["RedisCacheSettings:InstanceName"];
+        });
+        serviceCollection.Configure<RedisCacheSettings>(configuration.GetSection("RedisCacheSettings"));
+        serviceCollection.AddTransient(typeof(IPipelineBehavior<,>), typeof(RedisCacheBehavior<,>));
+        serviceCollection.AddScoped<IRedisCacheService, RedisCacheService>();
+
     }
 }
