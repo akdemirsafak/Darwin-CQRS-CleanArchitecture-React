@@ -83,6 +83,7 @@ app.UseRateLimiter();
 
 app.UseSentryTracing();
 
+app.UseStaticFiles();
 
 app.UseCors();
 

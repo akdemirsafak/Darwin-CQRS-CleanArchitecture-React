@@ -1,3 +1,8 @@
-﻿namespace Darwin.Model.Request.Moods;
+﻿using Microsoft.AspNetCore.Http;
 
-public record CreateMoodRequest(string Name, string ImageUrl, bool IsUsable);
+namespace Darwin.Model.Request.Moods;
+
+public record CreateMoodRequest(
+    string Name, 
+    IFormFile ImageFile, 
+    bool IsUsable); 
