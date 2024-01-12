@@ -27,7 +27,7 @@ public class MoodController : CustomBaseController
     }
     [Authorize]
     [HttpPost]
-    public async Task<IActionResult> Create([FromBody] CreateMoodRequest request)
+    public async Task<IActionResult> Create([FromForm] CreateMoodRequest request)
     {
 
         return CreateActionResult(await _mediator.Send(new CreateMood.Command(request)));

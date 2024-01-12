@@ -29,7 +29,7 @@ public static class ServiceRegistration
     public static void AddService(this IServiceCollection serviceCollection, IConfiguration configuration)
     {
 
-        serviceCollection.AddMediatR(cfg => 
+        serviceCollection.AddMediatR(cfg =>
         {
             cfg.RegisterServicesFromAssemblyContaining(typeof(CreateMood.Command));
             cfg.AddOpenBehavior(typeof(UnitOfWorkBehavior<,>));
@@ -83,7 +83,9 @@ public static class ServiceRegistration
 
 
         serviceCollection.Configure<EmailSettings>(configuration.GetSection("EmailSettings"));
+
         serviceCollection.AddScoped<IEmailService, EmailService>();
+        serviceCollection.AddScoped<IFileService, FileService>();
 
 
         serviceCollection.AddHangfire(x =>
