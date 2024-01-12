@@ -1,22 +1,26 @@
 # Darwin
-
-1. Asp.net Core 7
-2. N Layer Architecture
-3. Cqrs Pattern with Mediatr.
-4. Vertical Slice Pattern
-5. Repository Pattern
-6. Options pattern for Jwt
-7. EntityFramework Core 7
-8. PostgreSql Npgsql.EntityFrameworkCore.Postgresql
-9. Mapster
-10. Attribute Based Entity Configurations
-11. Fluent Validation for Request's
-12. Identity Authentication / Authorization
-13. Identity Error Describer
-14. Policy and Role based Authorization
-15. Identity Localization
-16. Json Web Token / JwtBearer
-17. RateLimiter -> TokenBucket
-18. Sentry.io for Log Monitoring
-19. Cors
-20. xUnit and NSubstitute Mock for Unit tests 
+Asp.net Core 7 Upgraded .Net 8
+N Layer Architecture
+Cqrs Pattern with Mediatr. Commands, Queries, Notifications and anothers
+Vertical Slice Pattern
+Repository Pattern
+Options pattern for Jwt
+EntityFramework Core 7, Entity Audit Logging used Interceptors
+PostgreSql Npgsql.EntityFrameworkCore.Postgresql
+Mapster
+Attribute Based Entity Configurations (Fluent)
+Fluent Validation for Request's
+Identity Authentication / Authorization, confirmation token mails..
+Polly for User Created Send mail event
+Identity Error Describer
+Policy and Role based Authorization
+Identity Localization
+Json Web Token / JwtBearer
+RateLimiter -> TokenBucket
+Sentry.io for Log Monitoring
+Serilog / Seq
+Email Sender, Created Account and Weekly Summary
+xUnit and NSubstitute Mock for Unit tests
+CronJobs with Hangfire and SqlServerStorage
+Cors
+Redis ile Cache
