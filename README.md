@@ -25,4 +25,4 @@
 23. CronJobs with Hangfire and SqlServerStorage
 24. Cors
 25. Redis ile Cache
-26. File Upload
+26. File Upload 
