@@ -11,7 +11,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace Darwin.API.Controllers;
 
-[Route("[action]")]
+[Route("[controller]/[action]")]
 public class AuthController : CustomBaseController
 {
     public AuthController(IMediator mediator) : base(mediator)
