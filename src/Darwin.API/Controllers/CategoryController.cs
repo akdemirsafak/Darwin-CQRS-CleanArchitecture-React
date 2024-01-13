@@ -22,7 +22,7 @@ public class CategoryController : CustomBaseController
         return CreateActionResult(await _mediator.Send(new GetCategories.Query()));
     }
     [HttpPost("[action]")]
-    public async Task<IActionResult> GetCategoryList([FromBody] GetPaginationListRequest request)
+    public async Task<IActionResult> List([FromBody] GetPaginationListRequest request)
     {
         return CreateActionResult(await _mediator.Send(new GetCategoryList.Query(request)));
     }
