@@ -21,7 +21,7 @@ public class ContentController : CustomBaseController
         return CreateActionResult(await _mediator.Send(new GetContents.Query()));
     }
     [HttpPost("[action]")]
-    public async Task<IActionResult> GetContentList([FromBody] GetPaginationListRequest request)
+    public async Task<IActionResult> List([FromBody] GetPaginationListRequest request)
     {
         return CreateActionResult(await _mediator.Send(new GetContentList.Query(request)));
     }

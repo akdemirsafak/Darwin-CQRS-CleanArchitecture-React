@@ -21,7 +21,7 @@ public class MoodController : CustomBaseController
         return CreateActionResult(await _mediator.Send(new GetMoods.Query()));
     }
     [HttpPost("[action]")]
-    public async Task<IActionResult> GetList([FromBody] GetPaginationListRequest request)
+    public async Task<IActionResult> List([FromBody] GetPaginationListRequest request)
     {
         return CreateActionResult(await _mediator.Send(new GetMoodList.Query(request)));
     }
