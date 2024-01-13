@@ -1,4 +1,5 @@
-﻿using Darwin.Model.Request.Categories;
+﻿using Darwin.Model.Request;
+using Darwin.Model.Request.Categories;
 using Darwin.Service.Features.Categories.Commands;
 using Darwin.Service.Features.Categories.Queries;
 using MediatR;
@@ -19,6 +20,11 @@ public class CategoryController : CustomBaseController
     public async Task<IActionResult> Get()
     {
         return CreateActionResult(await _mediator.Send(new GetCategories.Query()));
+    }
+    [HttpPost("[action]")]
+    public async Task<IActionResult> GetCategoryList([FromBody] GetPaginationListRequest request)
+    {
+        return CreateActionResult(await _mediator.Send(new GetCategoryList.Query(request)));
     }
     [HttpGet("{id}")]
     public async Task<IActionResult> GetById(Guid id)

@@ -5,6 +5,7 @@ using Darwin.Model.Request;
 using Darwin.Model.Response.Moods;
 using Darwin.Service.Common;
 using Darwin.Service.Helper;
+using Darwin.Service.Services;
 using FluentValidation;
 using Mapster;
 
@@ -12,7 +13,11 @@ namespace Darwin.Service.Features.Moods.Queries;
 
 public static class GetMoodList
 {
-    public record Query(GetPaginationListRequest Model) : IQuery<DarwinResponse<GetMoodListResponse>>;
+    public record Query(GetPaginationListRequest Model) : IQuery<DarwinResponse<GetMoodListResponse>>, ICacheableQuery
+    {
+        public string CachingKey => "MoodListCached";
+        public double CacheTime => 0.5;
+    }
 
     public class QueryHandler(IGenericRepository<Mood> _moodRepository) : IQueryHandler<Query, DarwinResponse<GetMoodListResponse>>
     {
