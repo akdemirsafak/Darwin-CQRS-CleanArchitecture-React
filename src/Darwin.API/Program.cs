@@ -16,18 +16,18 @@ builder.WebHost.UseSentry(options =>
     }));
 
 builder.Services.AddControllers();
-builder.Services.AddRateLimiter(options =>
-{
-    options.AddTokenBucketLimiter("TokenBucket", _options =>
-    {
-        _options.TokenLimit = 10;
-        _options.TokensPerPeriod = 3;
-        _options.QueueProcessingOrder = QueueProcessingOrder.OldestFirst;
-        _options.QueueLimit = 5;
-        _options.ReplenishmentPeriod = TimeSpan.FromSeconds(30);
-    });
-    options.RejectionStatusCode = 429;
-});
+//builder.Services.AddRateLimiter(options =>
+//{
+//    options.AddTokenBucketLimiter("TokenBucket", _options =>
+//    {
+//        _options.TokenLimit = 10;
+//        _options.TokensPerPeriod = 3;
+//        _options.QueueProcessingOrder = QueueProcessingOrder.OldestFirst;
+//        _options.QueueLimit = 5;
+//        _options.ReplenishmentPeriod = TimeSpan.FromSeconds(30);
+//    });
+//    options.RejectionStatusCode = 429;
+//});
 
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen(x =>
@@ -77,7 +77,7 @@ var app = builder.Build();
 
 app.UseSerilogRequestLogging();
 
-app.UseRateLimiter();
+//app.UseRateLimiter();
 
 //app.UseGlobalExceptionMiddleware();
 
