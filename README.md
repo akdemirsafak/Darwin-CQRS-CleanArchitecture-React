@@ -3,7 +3,7 @@
 1. Asp.net Core 7 Upgraded .Net 8
 2. N Layer Architecture
 3. Cqrs Pattern with Mediatr. Commands, Queries, Notifications and anothers
-4. Vertical Slice Pattern
+4. Redis Distributed Caching
 5. Repository Pattern
 6. Options pattern for Jwt
 7. EntityFramework Core 7, Entity Audit Logging used Interceptors
@@ -24,5 +24,4 @@
 22. xUnit and NSubstitute Mock for Unit tests 
 23. CronJobs with Hangfire and SqlServerStorage
 24. Cors
-25. Redis Distributed Caching
-26. File Upload 
+25. File Upload 
