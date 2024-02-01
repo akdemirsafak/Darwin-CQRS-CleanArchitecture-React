@@ -1,3 +1,7 @@
-﻿namespace Darwin.Model.Request.Categories;
+﻿using Microsoft.AspNetCore.Http;
 
-public record CreateCategoryRequest(string Name, string ImageUrl, bool IsUsable);
+namespace Darwin.Model.Request.Categories;
+
+public record CreateCategoryRequest(string Name,
+    IFormFile ImageFile,
+    bool IsUsable);
