@@ -1,4 +1,5 @@
-﻿using Darwin.Core.Entities;
+﻿using Azure.Storage.Blobs;
+using Darwin.Core.Entities;
 using Darwin.Core.ServiceCore;
 using Darwin.Infrastructure.DbContexts;
 using Darwin.Service.Behaviors;
@@ -72,6 +73,9 @@ public static class ServiceRegistration
         serviceCollection.AddScoped<ITokenService, TokenService>();
         serviceCollection.AddScoped<ILinkCreator, LinkCreator>();
 
+
+        serviceCollection.AddSingleton<IAzureBlobStorageService, AzureBlobStorageService>();
+
         serviceCollection.Configure<AppTokenOptions>(configuration.GetSection("AppTokenOptions"));
 
         Log.Logger = new LoggerConfiguration()
@@ -97,6 +101,7 @@ public static class ServiceRegistration
         });
         serviceCollection.AddHangfireServer();
 
+        serviceCollection.AddSingleton(new BlobServiceClient(configuration.GetValue<string>("AzureBlobStorageConnectionString")));
 
 
         serviceCollection.AddStackExchangeRedisCache(options =>

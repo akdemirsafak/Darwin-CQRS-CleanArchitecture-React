@@ -34,7 +34,7 @@ public class CategoryController : CustomBaseController
 
     [Authorize]
     [HttpPost]
-    public async Task<IActionResult> Create([FromBody] CreateCategoryRequest request)
+    public async Task<IActionResult> Create([FromForm] CreateCategoryRequest request)
     {
 
         return CreateActionResult(await _mediator.Send(new CreateCategory.Command(request)));

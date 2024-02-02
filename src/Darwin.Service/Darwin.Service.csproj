@@ -6,6 +6,7 @@
     <UserSecretsId>2967b442-94d3-41f4-9acb-f94c84827f10</UserSecretsId>
   </PropertyGroup>
   <ItemGroup>
+    <PackageReference Include="Azure.Storage.Blobs" Version="12.19.1" />
     <PackageReference Include="Bogus" Version="35.3.1" />
     <PackageReference Include="Google.Apis.YouTube.v3" Version="1.65.0.3205" />
     <PackageReference Include="Hangfire" Version="1.8.7" />

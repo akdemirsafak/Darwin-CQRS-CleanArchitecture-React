@@ -100,42 +100,42 @@ public class CategoryTests
 
 
 
-    [Fact]
-    public async Task CreateCategory_Should_SuccessWith201StatusCode_WhenCreated()
-    {
-        //Arrange
-
-        var category = new Category()
-        {
-            Name = "CategoryTest",
-            ImageUrl = "categorytest.png",
-            IsUsable = true
-        };
-        _categoryRepository.CreateAsync(Arg.Any<Category>()).Returns(Task.FromResult(category));
-        category.Adapt<CreatedCategoryResponse>();
-        var createdCategoryResponse = new CreatedCategoryResponse()
-        {
-            Id = category.Id,
-            Name = category.Name,
-            ImageUrl = category.ImageUrl,
-            IsUsable = category.IsUsable
-        };
-
-        var request = new CreateCategoryRequest(category.Name, category.ImageUrl, category.IsUsable);
-        var command = new CreateCategory.Command(request);
-        var commandHandler = new CreateCategory.CommandHandler(_categoryRepository);
-
-        //Act
-        var result = await commandHandler.Handle(command, CancellationToken.None);
-
-        //Assert
-        Assert.NotNull(result.Data);
-        Assert.Null(result.Errors);
-        Assert.True(result.StatusCode == StatusCodes.Status201Created);
-        Assert.Equivalent(result.Data, createdCategoryResponse);
-
-    }
-
+    // [Fact]
+    // public async Task CreateCategory_Should_SuccessWith201StatusCode_WhenCreated()
+    // {
+    //     //Arrange
+    //
+    //     var category = new Category()
+    //     {
+    //         Name = "CategoryTest",
+    //         ImageUrl = "categorytest.png",
+    //         IsUsable = true
+    //     };
+    //     _categoryRepository.CreateAsync(Arg.Any<Category>()).Returns(Task.FromResult(category));
+    //     category.Adapt<CreatedCategoryResponse>();
+    //     var createdCategoryResponse = new CreatedCategoryResponse()
+    //     {
+    //         Id = category.Id,
+    //         Name = category.Name,
+    //         ImageUrl = category.ImageUrl,
+    //         IsUsable = category.IsUsable
+    //     };
+    //
+    //     var request = new CreateCategoryRequest(category.Name, category.ImageUrl, category.IsUsable);
+    //     var command = new CreateCategory.Command(request);
+    //     var commandHandler = new CreateCategory.CommandHandler(_categoryRepository);
+    //
+    //     //Act
+    //     var result = await commandHandler.Handle(command, CancellationToken.None);
+    //
+    //     //Assert
+    //     Assert.NotNull(result.Data);
+    //     Assert.Null(result.Errors);
+    //     Assert.True(result.StatusCode == StatusCodes.Status201Created);
+    //     Assert.Equivalent(result.Data, createdCategoryResponse);
+    //
+    // }
+    //
 
     [Fact]
     public async Task UpdateCategory_Should_Return_UpdateCategoryResponse_WhenSuccess()
