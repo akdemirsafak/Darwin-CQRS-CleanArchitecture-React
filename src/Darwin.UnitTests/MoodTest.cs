@@ -1,14 +1,6 @@
-﻿using Darwin.Core.Entities;
-using Darwin.Core.RepositoryCore;
-using Darwin.Model.Request.Moods;
-using Darwin.Model.Response.Moods;
-using Darwin.Service.Features.Moods.Commands;
-using Darwin.Service.Features.Moods.Queries;
-using Mapster;
-using Microsoft.AspNetCore.Http;
+﻿using Microsoft.AspNetCore.Http;
 using NSubstitute;
 using System.Linq.Expressions;
-using Darwin.Service.Services;
 
 namespace Darwin.UnitTests;
 
