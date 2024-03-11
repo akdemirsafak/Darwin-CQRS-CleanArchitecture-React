@@ -1,12 +1,4 @@
-﻿using Darwin.Core.Entities;
-using Darwin.Core.RepositoryCore;
-using Darwin.Core.UnitofWorkCore;
-using Darwin.Model.Response.Contents;
-using Darwin.Service.Features.Contents.Commands;
-using Darwin.Service.Features.Contents.Queries;
-using Darwin.Service.Helper;
-using Mapster;
-using Microsoft.AspNetCore.Http;
+﻿using Microsoft.AspNetCore.Http;
 using NSubstitute;
 using System.Linq.Expressions;
 
