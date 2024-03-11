@@ -12,10 +12,13 @@ namespace Darwin.Persistance.Services;
 public sealed class CategoryService : ICategoryService
 {
     private readonly IGenericRepository<Category> _categoryRepository;
+    private readonly ICategoryRepository _categoryReadRepository;
 
-    public CategoryService(IGenericRepository<Category> categoryRepository)
+    public CategoryService(IGenericRepository<Category> categoryRepository,
+        ICategoryRepository categoryReadRepository)
     {
         _categoryRepository = categoryRepository;
+        _categoryReadRepository = categoryReadRepository;
     }
 
     public async Task<CreatedCategoryResponse> CreateAsync(CreateCategoryRequest request, string imageUrl)
@@ -41,8 +44,8 @@ public sealed class CategoryService : ICategoryService
 
     public async Task<GetCategoryResponse> GetByIdAsync(Guid id)
     {
-        var category= await _categoryRepository.GetAsync(x=>x.Id==id);
-        return category.Adapt<GetCategoryResponse>();
+        GetCategoryResponse category= await _categoryReadRepository.GetByIdAsync(id);
+        return category;
     }
 
     public async Task<GetCategoryListResponse> GetListAsync(GetPaginationListRequest request)

@@ -35,6 +35,11 @@ public class ContentController : CustomBaseController
     {
         return CreateActionResult(await _mediator.Send(new SearchContents.Query(searchText)));
     }
+    [HttpGet("FullTextSearch")]
+    public async Task<IActionResult> FullTextSearch([FromQuery] string searchText)
+    {
+        return CreateActionResult(await _mediator.Send(new FullTextSearchContents.Query(searchText)));
+    }
     [Authorize]
     [HttpPost]
     public async Task<IActionResult> Create([FromBody] CreateContentRequest request)
