@@ -32,7 +32,6 @@ public class CategoryController : CustomBaseController
     {
         return CreateActionResult(await _mediator.Send(new GetCategoryById.Query(id)));
     }
-
     [Authorize]
     [HttpPost]
     public async Task<IActionResult> Create([FromForm] CreateCategoryRequest request)

@@ -13,5 +13,6 @@ public interface IContentService
     Task<GetContentByIdResponse> GetByIdAsync(Guid id);
     Task<GetContentListResponse> GetListAsync(GetPaginationListRequest request);
     Task<List<SearchContentResponse>> SearchAsync(string searchText);
+    Task<List<SearchContentResponse>> FullTextSearchAsync(string searchText);
     Task<List<GetContentResponse>> GetNewContentsAsync(int size);
 }

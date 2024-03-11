@@ -9,11 +9,11 @@ namespace Darwin.Application.Features.Moods.Queries;
 
 public static class GetMoodList
 {
-    public record Query(GetPaginationListRequest Model) : IQuery<DarwinResponse<GetMoodListResponse>>, ICacheableQuery
-    {
-        public string CachingKey => "MoodListCached";
-        public double CacheTime => 0.5;
-    }
+    public record Query(GetPaginationListRequest Model) : IQuery<DarwinResponse<GetMoodListResponse>>;//, ICacheableQuery
+    //{
+    //    //public string CachingKey => "MoodListCached";
+    //    //public double CacheTime => 0.5;
+    //}
 
     public class QueryHandler(IMoodService _moodService) : IQueryHandler<Query, DarwinResponse<GetMoodListResponse>>
     {

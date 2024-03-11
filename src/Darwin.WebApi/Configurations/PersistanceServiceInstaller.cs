@@ -5,6 +5,7 @@ using Darwin.Persistance.DbContexts;
 using Darwin.Persistance.Helper;
 using Darwin.Persistance.Interceptors;
 using Darwin.Persistance.Repository;
+using Darwin.Persistance.Repository.DapperRepository;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using System.Reflection;
@@ -38,6 +39,9 @@ public static class PersistanceServiceInstaller
 
 
         services.AddScoped(typeof(IGenericRepository<>), typeof(GenericRepository<>));
+        services.AddScoped<ICategoryRepository, CategoryRepository>();
+        services.AddScoped<IContentRepository, ContentRepository>();
+        services.AddScoped<IMoodRepository, MoodRepository>();
 
 
 

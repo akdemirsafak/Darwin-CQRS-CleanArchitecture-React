@@ -15,14 +15,17 @@ public sealed class ContentService : IContentService
     private readonly IGenericRepository<Content> _contentRepository;
     private readonly IGenericRepository<Category> _categoryRepository;
     private readonly IGenericRepository<Mood> _moodRepository;
+    private readonly IContentRepository _contentReadRepository;
 
     public ContentService(IGenericRepository<Content> contentRepository,
         IGenericRepository<Category> categoryRepository,
-        IGenericRepository<Mood> moodRepository)
+        IGenericRepository<Mood> moodRepository,
+        IContentRepository contentReadRepository)
     {
         _contentRepository = contentRepository;
         _categoryRepository = categoryRepository;
         _moodRepository = moodRepository;
+        _contentReadRepository = contentReadRepository;
     }
 
     public async Task<CreatedContentResponse> CreateAsync(CreateContentRequest request)
@@ -74,14 +77,12 @@ public sealed class ContentService : IContentService
 
     public async Task<List<GetContentResponse>> GetAllAsync()
     {
-        var contents= await _contentRepository.GetAllAsync();
-        return contents.Adapt<List<GetContentResponse>>();
+        return await _contentReadRepository.GetAllAsync();
     }
 
     public async Task<GetContentByIdResponse> GetByIdAsync(Guid id)
     {
-        var content= await _contentRepository.GetAsync(x=>x.Id == id);
-        return content.Adapt<GetContentByIdResponse>();
+        return await _contentReadRepository.GetById(id);
     }
 
     public async Task<GetContentListResponse> GetListAsync(GetPaginationListRequest request)
@@ -94,8 +95,13 @@ public sealed class ContentService : IContentService
     public async Task<List<SearchContentResponse>> SearchAsync(string searchText)
     {
         var contents = await _contentRepository.GetAllAsync(x =>
-            x.Name.Contains(searchText));
+            x.Name.ToLower().Contains(searchText.ToLower()));
         return contents.Adapt<List<SearchContentResponse>>();
+    }
+    public async Task<List<SearchContentResponse>> FullTextSearchAsync(string searchText)
+    {
+        var contents = await _contentReadRepository.FullTextSearchAsync(searchText);
+        return contents;
     }
 
     public async Task<UpdatedContentResponse> UpdateAsync(Guid id, UpdateContentRequest request)
