@@ -17,17 +17,22 @@ public static class CreateCategory
     {
         private readonly ICategoryService _categoryService;
         private readonly IAzureBlobStorageService _azureBlobStorageService;
+        private readonly IFileService _fileService;
 
-        public CommandHandler(ICategoryService categoryService, IAzureBlobStorageService azureBlobStorageService)
+        public CommandHandler(ICategoryService categoryService
+            , IAzureBlobStorageService azureBlobStorageService
+            , IFileService fileService)
         {
             _categoryService = categoryService;
             _azureBlobStorageService = azureBlobStorageService;
+            _fileService = fileService;
         }
 
         public async Task<DarwinResponse<CreatedCategoryResponse>> Handle(Command request, CancellationToken cancellationToken)
         {
-            BlobResponseDto uploadResponse= await _azureBlobStorageService.UploadAsync(request.Model.ImageFile,"categoryimages");
-            string imageUrl=uploadResponse.Blob.Url;
+            BlobResponseDto uploadResponse = await _azureBlobStorageService.UploadAsync(request.Model.ImageFile, "categoryimages");
+            string imageUrl = uploadResponse.Blob.Url;
+            //string imageUrl= await _fileService.UploadImage(request.Model.ImageFile);
 
             var createdCategoryResponse = await _categoryService.CreateAsync(request.Model, imageUrl);
             return DarwinResponse<CreatedCategoryResponse>.Success(createdCategoryResponse, 201);

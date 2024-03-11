@@ -1,6 +1,8 @@
-﻿using Darwin.Domain.Entities;
+﻿using Darwin.Application.Helper;
+using Darwin.Domain.Entities;
 using Darwin.Domain.RepositoryCore;
 using Darwin.Persistance.DbContexts;
+using Darwin.Persistance.Helper;
 using Darwin.Persistance.Interceptors;
 using Darwin.Persistance.Repository;
 using Microsoft.AspNetCore.Identity;
@@ -11,7 +13,7 @@ namespace Darwin.WebApi.Configurations;
 
 public static class PersistanceServiceInstaller
 {
-    public static void AddPersistanceServices(this IServiceCollection services,IConfiguration configuration)
+    public static void AddPersistanceServices(this IServiceCollection services, IConfiguration configuration)
     {
 
         services.AddSingleton<UpdateAuditableEntitiesInterceptor>();
@@ -36,5 +38,12 @@ public static class PersistanceServiceInstaller
 
 
         services.AddScoped(typeof(IGenericRepository<>), typeof(GenericRepository<>));
+
+
+
+        services.AddScoped<ILinkCreator, LinkCreator>();
+        services.AddScoped<ICurrentUser, CurrentUser>();
+
+
     }
 }

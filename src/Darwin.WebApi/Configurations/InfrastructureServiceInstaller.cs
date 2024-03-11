@@ -9,12 +9,11 @@ namespace Darwin.WebApi.Configurations;
 
 public static class InfrastructureServiceInstaller
 {
-    public static void AddInfrastructureServices(this IServiceCollection services,IConfiguration configuration)
+    public static void AddInfrastructureServices(this IServiceCollection services, IConfiguration configuration)
     {
         services.Configure<EmailSettings>(configuration.GetSection("EmailSettings"));
 
         var tokenOptions = configuration.GetSection("AppTokenOptions").Get<AppTokenOptions>();
-
 
         services.AddAuthentication(options =>
         {

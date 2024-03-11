@@ -10,11 +10,10 @@ namespace Darwin.WebApi.Configurations;
 
 public static class ApplicationServiceInstaller
 {
-    public static void AddApplicationServices(this IServiceCollection services,IConfiguration configuration)
+    public static void AddApplicationServices(this IServiceCollection services, IConfiguration configuration)
     {
         services.AddMediatR(cfg =>
         {
-
             cfg.RegisterServicesFromAssembly(typeof(ApplicationAssemblyReference).Assembly);
             cfg.AddOpenBehavior(typeof(UnitOfWorkBehavior<,>));
         });
@@ -29,7 +28,6 @@ public static class ApplicationServiceInstaller
             options.Configuration = configuration["RedisCacheSettings:InstanceName"];
         });
         services.Configure<RedisCacheSettings>(configuration.GetSection("RedisCacheSettings"));
-
 
 
         services.AddTransient(typeof(IPipelineBehavior<,>), typeof(RedisCacheBehavior<,>));
