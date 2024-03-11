@@ -1,6 +1,0 @@
-﻿
-EnableRateLimiting => Controller ya da action seviyesinde istenilen policy'i ratelimit'i devreye sokmamıza yarar.
-DisableRateLimiting =>	Action seviyesinde pasif etmemize yarayan attribute'dur.
-
-OnRejected Property => Herhangi bir req ratelimit tarafından boşa çıkarılıyorsa bu property devreye girer.Event mantığında çalışır.
-
