@@ -20,7 +20,7 @@ public static class FullTextSearchContents
 
         public async Task<DarwinResponse<List<SearchContentResponse>>> Handle(Query request, CancellationToken cancellationToken)
         {
-            
+
             var searchContentsResponse= await _contentService.FullTextSearchAsync(request.SearchText);
             return DarwinResponse<List<SearchContentResponse>>.Success(searchContentsResponse);
         }

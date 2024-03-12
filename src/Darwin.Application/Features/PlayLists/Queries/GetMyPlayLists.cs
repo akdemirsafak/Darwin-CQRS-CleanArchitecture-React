@@ -20,7 +20,7 @@ public static class GetMyPlayLists
 
         public async Task<DarwinResponse<List<GetPlayListResponse>>> Handle(Query request, CancellationToken cancellationToken)
         {
-            var myLists= await _playListService.GetAllListsOfUser(request.currentUserId);
+            var myLists= await _playListService.GetAllListsOfUserAsync(request.currentUserId);
             return DarwinResponse<List<GetPlayListResponse>>.Success(myLists);
         }
     }

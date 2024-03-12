@@ -3,7 +3,7 @@ using Darwin.Application.Services;
 using Darwin.Domain.Entities;
 using Darwin.Domain.RequestModels.Users;
 using Darwin.Domain.ResponseModels.Users;
-using Mapster;
+using Darwin.Persistance.Mapping;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 
@@ -13,7 +13,7 @@ public sealed class UserService : IUserService
 {
     private readonly UserManager<AppUser> _userManager;
     private readonly ICurrentUser _currentUser;
-
+    UserMapper mapper=new();
     public UserService(UserManager<AppUser> userManager, ICurrentUser currentUser)
     {
         _userManager = userManager;
@@ -29,13 +29,13 @@ public sealed class UserService : IUserService
     public async Task<List<GetUserResponse>> GetAllAsync()
     {
         var users= await _userManager.Users.ToListAsync();
-        return users.Adapt<List<GetUserResponse>>();
+        return mapper.AppUserListToGetUserResponseList(users);
     }
 
     public async Task<GetUserResponse> GetByIdAsync(string userId)
     {
         var user=await _userManager.FindByIdAsync(userId);
-        return user.Adapt<GetUserResponse>();
+        return mapper.AppUserToGetUserResponse(user);
     }
 
     public async Task ResetPasswordEmailVerify(string newPassword, string userId, string token)
@@ -79,7 +79,7 @@ public sealed class UserService : IUserService
         if (updateResult.Errors.Any())
             throw new Exception(updateResult.Errors.Select(x => x.Description).ToList().First());
 
-        return appUser.Adapt<GetUserResponse>();
+        return mapper.AppUserToGetUserResponse(appUser);
     }
 
     public async Task ConfirmEmailAsync(string userId, string token)

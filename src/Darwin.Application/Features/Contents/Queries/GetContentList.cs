@@ -9,12 +9,12 @@ namespace Darwin.Application.Features.Contents.Queries;
 
 public static class GetContentList
 {
-    public record Query(GetPaginationListRequest Model) : IQuery<DarwinResponse<GetContentListResponse>>, ICacheableQuery
-    {
-        public string CachingKey => "GetContentList";
+    public record Query(GetPaginationListRequest Model) : IQuery<DarwinResponse<GetContentListResponse>>;//, ICacheableQuery
+    //{
+    //    public string CachingKey => "GetContentList";
 
-        public double CacheTime => 0.5;
-    }
+    //    public double CacheTime => 0.5;
+    //}
 
     public class QueryHandler(IContentService _contentService) : IQueryHandler<Query, DarwinResponse<GetContentListResponse>>
     {

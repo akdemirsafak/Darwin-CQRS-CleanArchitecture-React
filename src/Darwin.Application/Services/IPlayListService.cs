@@ -9,10 +9,9 @@ public interface IPlayListService
     Task<UpdatedPlayListResponse> UpdateAsync(Guid id, UpdatePlayListRequest request, string creatorId);
     Task DeleteAsync(Guid id);
     Task<List<GetPlayListResponse>> GetAllAsync();
-    Task<List<GetPlayListResponse>> GetAllListsOfUser(string currentUserId);
+    Task<List<GetPlayListResponse>> GetAllListsOfUserAsync(string currentUserId);
 
     Task<GetPlayListByIdResponse> GetByIdAsync(Guid id);
-    Task<GetPlayListResponse> GetMyPlayListsByUserIdAsync(string userId);
     Task<GetPlayListByIdResponse> AddContentsToPlayList(AddContentsToPlayListRequest request);
     Task<GetPlayListByIdResponse> RemoveContentsFromPlayList(RemoveContentsFromPlayListRequest request);
 }

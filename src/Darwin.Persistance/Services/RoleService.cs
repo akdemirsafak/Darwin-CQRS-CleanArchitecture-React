@@ -1,7 +1,7 @@
 ﻿using Darwin.Application.Services;
 using Darwin.Domain.Entities;
 using Darwin.Domain.ResponseModels.Roles;
-using Mapster;
+using Darwin.Persistance.Mapping;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 
@@ -10,6 +10,7 @@ namespace Darwin.Persistance.Services;
 public sealed class RoleService : IRoleService
 {
     private readonly RoleManager<AppRole> _roleManager;
+    RoleMapper mapper=new();
 
     public RoleService(RoleManager<AppRole> roleManager)
     {
@@ -31,6 +32,6 @@ public sealed class RoleService : IRoleService
     public async Task<List<GetRoleResponse>> GetAllAsync()
     {
         var roles= await _roleManager.Roles.ToListAsync();
-        return roles.Adapt<List<GetRoleResponse>>();
+        return mapper.RoleListToGetRoleResponseList(roles);
     }
 }

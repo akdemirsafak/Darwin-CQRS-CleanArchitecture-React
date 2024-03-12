@@ -68,4 +68,32 @@ public sealed class ContentRepository : BaseRepository, IContentRepository
             );
         return contents.First();
     }
+    public async Task<List<SearchContentResponse>> SearchContentsByNameAsync(string searchText)
+    {
+        //var query= @"Select * from ""Contents"" where ""Name"" ILIKE '%@searchText%'";
+
+        var query= @"Select * from ""Contents"" where ""Name"" ILIKE '%' || @searchText || '%'";
+        var contents=await _dbConnection.QueryAsync<SearchContentResponse>(query,new {searchText});
+        return contents.ToList();
+    }
+    public async Task<List<GetContentResponse>> GetListAsync(int offset, int pageSize)
+    {
+
+        string query=@"SELECT *
+            FROM ""Contents"" ORDER BY ""CreatedOnUtc""
+            OFFSET @Offset LIMIT @PageSize";
+        DynamicParameters dynamicParameters = new DynamicParameters();
+        dynamicParameters.Add("Offset", offset);
+        dynamicParameters.Add("@PageSize", pageSize);
+        var response = await _dbConnection.QueryAsync<GetContentResponse>(query, dynamicParameters);
+        return response.ToList();
+    }
+    public async Task<int> GetTotalRowCountAsync()
+    {
+        string query=@"SELECT Count(*) FROM ""Contents"" ";
+        int totalRowCount = await _dbConnection.ExecuteScalarAsync<int>(query);
+        return totalRowCount;
+    }
+
+
 }

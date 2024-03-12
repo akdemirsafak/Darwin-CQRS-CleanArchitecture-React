@@ -4,8 +4,7 @@ using Darwin.Domain.RepositoryCore;
 using Darwin.Domain.RequestModels;
 using Darwin.Domain.RequestModels.Contents;
 using Darwin.Domain.ResponseModels.Contents;
-using Darwin.Persistance.Helper;
-using Mapster;
+using Darwin.Persistance.Mapping;
 using Microsoft.EntityFrameworkCore;
 
 namespace Darwin.Persistance.Services;
@@ -15,7 +14,9 @@ public sealed class ContentService : IContentService
     private readonly IGenericRepository<Content> _contentRepository;
     private readonly IGenericRepository<Category> _categoryRepository;
     private readonly IGenericRepository<Mood> _moodRepository;
+
     private readonly IContentRepository _contentReadRepository;
+    ContentMapper mapper= new ContentMapper();
 
     public ContentService(IGenericRepository<Content> contentRepository,
         IGenericRepository<Category> categoryRepository,
@@ -63,7 +64,8 @@ public sealed class ContentService : IContentService
 
         //SaveOperations
         await _contentRepository.CreateAsync(content);
-        return content.Adapt<CreatedContentResponse>();
+        //return content.Adapt<CreatedContentResponse>();
+        return mapper.ContentToCreatedContentResponse(content);
     }
 
     public async Task DeleteAsync(Guid id)
@@ -87,16 +89,41 @@ public sealed class ContentService : IContentService
 
     public async Task<GetContentListResponse> GetListAsync(GetPaginationListRequest request)
     {
-        var queryable=_contentRepository.GetList();
-        Paginate<Content> paginate= Paginate<Content>.ToPagedList(queryable,request.Page,request.PageSize);
-        return paginate.Adapt<GetContentListResponse>();
+        //EF CORE
+        //var queryable=_contentRepository.GetList();
+        //Paginate<Content> paginate= Paginate<Content>.ToPagedList(queryable,request.Page,request.PageSize);
+        //return paginate.Adapt<GetContentListResponse>();
+
+
+        //Dapper
+        var offset= (request.Page-1)*request.PageSize;
+        var totalRowCount= await _contentReadRepository.GetTotalRowCountAsync();
+        var datas= await _contentReadRepository.GetListAsync(offset,request.PageSize);
+
+        var totalPages = (int)Math.Ceiling(totalRowCount / (double)request.PageSize);
+        var getContentListResponse= new GetContentListResponse()
+        {
+            CurrentPage=request.Page,
+            Items=datas,
+            PageSize=request.PageSize,
+            TotalCount=totalRowCount,
+            TotalPages=totalPages,
+        };
+        return getContentListResponse;
+
+
+
     }
 
     public async Task<List<SearchContentResponse>> SearchAsync(string searchText)
     {
-        var contents = await _contentRepository.GetAllAsync(x =>
-            x.Name.ToLower().Contains(searchText.ToLower()));
-        return contents.Adapt<List<SearchContentResponse>>();
+        //EF CORE
+        //var contents = await _contentRepository.GetAllAsync(x =>
+        //    x.Name.ToLower().Contains(searchText.ToLower()));
+        //return contents.Adapt<List<SearchContentResponse>>();
+
+        //DAPPER
+        return await _contentReadRepository.SearchContentsByNameAsync(searchText);
     }
     public async Task<List<SearchContentResponse>> FullTextSearchAsync(string searchText)
     {
@@ -114,7 +141,7 @@ public sealed class ContentService : IContentService
         content.IsUsable = request.IsUsable;
 
         await _contentRepository.UpdateAsync(content);
-        return content.Adapt<UpdatedContentResponse>();
+        return mapper.ContentToUpdatedContentResponse(content);
     }
 
     public async Task<List<GetContentResponse>> GetNewContentsAsync(int size)
@@ -122,6 +149,6 @@ public sealed class ContentService : IContentService
         var queryable = _contentRepository.GetList();
         var contents=await queryable.OrderByDescending(x=>x.CreatedOnUtc).Take(size).ToListAsync();
 
-        return contents.Adapt<List<GetContentResponse>>();
+        return mapper.GetContentResponseListToContentList(contents);
     }
 }

@@ -42,6 +42,7 @@ public static class PersistanceServiceInstaller
         services.AddScoped<ICategoryRepository, CategoryRepository>();
         services.AddScoped<IContentRepository, ContentRepository>();
         services.AddScoped<IMoodRepository, MoodRepository>();
+        services.AddScoped<IPlayListRepository, PlayListRepository>();
 
 
 

@@ -5,8 +5,7 @@ using Darwin.Domain.RequestModels;
 using Darwin.Domain.RequestModels.Moods;
 using Darwin.Domain.ResponseModels.Moods;
 using Darwin.Model.Response.Moods;
-using Darwin.Persistance.Helper;
-using Mapster;
+using Darwin.Persistance.Mapping;
 
 namespace Darwin.Persistance.Services;
 
@@ -14,7 +13,7 @@ public sealed class MoodService : IMoodService
 {
     private readonly IGenericRepository<Mood> _moodRepository;
     private readonly IMoodRepository _moodReadRepository;
-
+    MoodMapper mapper=new();
     public MoodService(IGenericRepository<Mood> moodRepository, IMoodRepository moodReadRepository)
     {
         _moodRepository = moodRepository;
@@ -30,7 +29,7 @@ public sealed class MoodService : IMoodService
             IsUsable=isUsable
         };
         var createdMood=await _moodRepository.CreateAsync(mood);
-        return createdMood.Adapt<CreatedMoodResponse>();
+        return mapper.MoodToCreatedMoodResponse(createdMood);
     }
 
     public async Task<List<GetMoodResponse>> GetAllAsync()
@@ -45,7 +44,7 @@ public sealed class MoodService : IMoodService
         //Dapper
         var offset= (request.Page-1)*request.PageSize;
         var totalRowCount= await _moodReadRepository.GetTotalRowCountAsync();
-        var datas= await _moodReadRepository.GetAsync(offset,request.PageSize);
+        var datas= await _moodReadRepository.GetListAsync(offset,request.PageSize);
 
         var totalPages = (int)Math.Ceiling(totalRowCount / (double)request.PageSize);
         var getMoodListResponse= new GetMoodListResponse()
@@ -72,7 +71,7 @@ public sealed class MoodService : IMoodService
         mood.Name = request.Name;
         mood.IsUsable = request.IsUsable;
         await _moodRepository.UpdateAsync(mood);
-        return mood.Adapt<UpdatedMoodResponse>();
+        return mapper.MoodToUpdatedMoodResponse(mood);
     }
 
 }
