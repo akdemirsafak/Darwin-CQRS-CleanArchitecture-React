@@ -3,7 +3,7 @@ using Darwin.Domain.Entities;
 using Darwin.Domain.RepositoryCore;
 using Darwin.Domain.RequestModels.PlayLists;
 using Darwin.Domain.ResponseModels.PlayLists;
-using Mapster;
+using Darwin.Persistance.Mapping;
 
 namespace Darwin.Persistance.Services;
 
@@ -11,11 +11,13 @@ public sealed class PlayListService : IPlayListService
 {
     private readonly IGenericRepository<PlayList> _playListRepository;
     private readonly IGenericRepository<Content> _contentRepository;
-
-    public PlayListService(IGenericRepository<PlayList> playListRepository, IGenericRepository<Content> contentRepository)
+    private readonly IPlayListRepository _playListReadRepository;
+    PlayListMapper mapper= new PlayListMapper();
+    public PlayListService(IGenericRepository<PlayList> playListRepository, IGenericRepository<Content> contentRepository, IPlayListRepository playListReadRepository)
     {
         _playListRepository = playListRepository;
         _contentRepository = contentRepository;
+        _playListReadRepository = playListReadRepository;
     }
 
     public async Task<GetPlayListByIdResponse> AddContentsToPlayList(AddContentsToPlayListRequest request)
@@ -36,16 +38,17 @@ public sealed class PlayListService : IPlayListService
         }
 
         await _playListRepository.UpdateAsync(hasPlayList);
-        return hasPlayList.Adapt<GetPlayListByIdResponse>();
+
+        return mapper.PlayListToGetPlayListByIdResponse(hasPlayList);
     }
 
     public async Task<CreatedPlayListResponse> CreateAsync(CreatePlayListRequest request, string creatorId)
     {
-        var entity= request.Adapt<PlayList>();
+        var entity= mapper.CreatePlayListRequestToPlayList(request);
         entity.CreatorId = creatorId;
         await _playListRepository.CreateAsync(entity);
 
-        return entity.Adapt<CreatedPlayListResponse>();
+        return mapper.PlayListToCreatedPlayListResponse(entity);
     }
 
     public async Task DeleteAsync(Guid id)
@@ -64,14 +67,13 @@ public sealed class PlayListService : IPlayListService
 
     public async Task<List<GetPlayListResponse>> GetAllAsync()
     {
-        var myLists= await _playListRepository.GetAllAsync();
-        return myLists.Adapt<List<GetPlayListResponse>>();
+        return await _playListReadRepository.GetAllAsync();
     }
 
-    public async Task<List<GetPlayListResponse>> GetAllListsOfUser(string currentUserId)
+    public async Task<List<GetPlayListResponse>> GetAllListsOfUserAsync(string currentUserId)
     {
-        var myLists= await _playListRepository.GetAllAsync(x=>x.CreatorId==currentUserId);
-        return myLists.Adapt<List<GetPlayListResponse>>();
+        var myLists= await _playListReadRepository.GetAllListsOfUserAsync(currentUserId);
+        return myLists;
     }
 
     public async Task<GetPlayListByIdResponse> GetByIdAsync(Guid id)
@@ -80,13 +82,9 @@ public sealed class PlayListService : IPlayListService
         if (playList is null)
             throw new Exception("Çalma listesi bulunamadı.");
 
-        return playList.Adapt<GetPlayListByIdResponse>();
+        return mapper.PlayListToGetPlayListByIdResponse(playList);
     }
 
-    public Task<GetPlayListResponse> GetMyPlayListsByUserIdAsync(string userId)
-    {
-        throw new NotImplementedException();
-    }
 
     public async Task<GetPlayListByIdResponse> RemoveContentsFromPlayList(RemoveContentsFromPlayListRequest request)
     {
@@ -99,7 +97,7 @@ public sealed class PlayListService : IPlayListService
             var content = await _contentRepository.GetAsync(x => x.Id == requestContentId);
             existPlayList.Contents.Remove(content);
         }
-        return existPlayList.Adapt<GetPlayListByIdResponse>();
+        return mapper.PlayListToGetPlayListByIdResponse(existPlayList);
     }
 
     public async Task<UpdatedPlayListResponse> UpdateAsync(Guid id, UpdatePlayListRequest request, string creatorId)
@@ -116,6 +114,6 @@ public sealed class PlayListService : IPlayListService
         hasList.IsPublic = request.IsPublic;
 
         await _playListRepository.UpdateAsync(hasList);
-        return hasList.Adapt<UpdatedPlayListResponse>();
+        return mapper.PlayListToUpdatedPlayListResponse(hasList);
     }
 }

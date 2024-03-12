@@ -18,7 +18,7 @@ public sealed class MoodRepository : BaseRepository, IMoodRepository
         return moods.ToList();
     }
 
-    public async Task<List<GetMoodResponse>> GetAsync(int offset, int pageSize)
+    public async Task<List<GetMoodResponse>> GetListAsync(int offset, int pageSize)
     {
         string query=@"SELECT *
             FROM ""Moods"" ORDER BY ""CreatedOnUtc""
