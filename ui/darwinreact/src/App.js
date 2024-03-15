@@ -1,8 +1,9 @@
 import './App.css';
+//import Signin from './components/Signin';
+import Register from './components/Register'
 
 //import CategoryList from './components/Category/CategoryList';
-//import CreateCategory from './components/Category/CreateCategory';
-import CreateMood from './components/mood/CreateMood'; 
+//import CreateCategory from './components/Category/CreateCategory'; 
 //import MoodList from './components/mood/MoodList';
 
 function App() {
@@ -10,8 +11,10 @@ function App() {
     <div className="App">
       {/* <CategoryList></CategoryList>  */}
       {/* <CreateCategory></CreateCategory> */}
-       <CreateMood></CreateMood>
+       {/* <CreateMood></CreateMood> */}
       {/* <MoodList></MoodList> */}
+      {/* <Signin></Signin> */}
+      <Register></Register>
     </div>
   );
 }
