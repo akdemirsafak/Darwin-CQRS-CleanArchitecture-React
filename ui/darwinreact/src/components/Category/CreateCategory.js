@@ -2,12 +2,7 @@ import { useState } from 'react';
 import { newCategory } from '../../services/category';
 
 
-
-
 export default function CreateCategory(){
-
- 
-
     const addCategory = (data,token) => {
         const formData=new FormData();
  
