@@ -1,12 +1,11 @@
 
 export default function CategoryListItem(props){
     return(
-
             <tr>
                 <td>{props.categoryItem.id}</td>
                 <td>{props.categoryItem.name}</td>
-                <td>{props.categoryItem.isUsable}</td>
-                <td><img src={props.categoryItem.imageUrl} className="" width={128}/></td>
+                <td>{props.categoryItem.isUsable.toString()}</td>
+                <td><img src={props.categoryItem.imageUrl} className="" width={64}/></td>
                 <td><button className="btn btn-outline-warning">Update</button></td>
                 <td><button className="btn btn-outline-danger">Delete</button></td>
             </tr>

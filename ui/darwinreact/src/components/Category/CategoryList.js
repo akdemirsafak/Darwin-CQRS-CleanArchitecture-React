@@ -17,7 +17,6 @@ export default function CategoryList(){
                 console.log(data)
             })
             .catch((error) => console.log("Error:" + error));
-        console.log("CategoryList")
     }, [])  
 
 
@@ -46,7 +45,7 @@ export default function CategoryList(){
                         <tbody>
                         {categories && categories.map((category, index) =>  (
                             
-                                    <CategoryListItem categoryItem={{id:category.id, name:category.name, isUsable:category.isUsable, imageUrl:category.imageUrl}} > </CategoryListItem>
+                                    <CategoryListItem key={index} categoryItem={{id:category.id, name:category.name, isUsable:category.isUsable, imageUrl:category.imageUrl}} > </CategoryListItem>
                             
                             ))}
                         </tbody>
