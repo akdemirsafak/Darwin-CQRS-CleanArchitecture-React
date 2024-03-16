@@ -12,7 +12,7 @@ export const getCategories=()=>{
 
 }
 export const getCategoryList=(paginationData)=>{
-    fetch(`${BASE_URL}/category/list`,
+    return fetch(`${BASE_URL}/category/list`,
     {
         method: 'POST',
         headers: {
@@ -24,7 +24,7 @@ export const getCategoryList=(paginationData)=>{
 }
 
 export const getCategoryDetail= (id) =>{
-    fetch(`${BASE_URL}/category/${id}`,
+    return fetch(`${BASE_URL}/category/${id}`,
     {
         method: 'GET',
         headers: {
@@ -45,7 +45,7 @@ export const newCategory =(data,token) =>{
      })
 }
 export const updateCategory=(id,data,token) =>{
-   fetch(`${BASE_URL}/category/${id}`,{
+   return fetch(`${BASE_URL}/category/${id}`,{
     method: 'PUT',
     headers: {
         "Content-Type": "application/json",

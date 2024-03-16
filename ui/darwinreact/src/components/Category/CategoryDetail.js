@@ -25,7 +25,7 @@ useEffect(()=>{
             <div className='col-md-12'>
                 <div className='card'>
                     <div className='card-body'>
-                        <image className='card-img-top' src={category.imageUrl} alt='Card image cap' />
+                        <img className='card-img-top' src={category.imageUrl} alt='Card image cap' />
                         <h5 className='card-title'>{category.name}</h5>
                         
                         <p>Bu kategori {category.isUsable? 'kullanılabilir':'kullanılamaz.'}</p>
