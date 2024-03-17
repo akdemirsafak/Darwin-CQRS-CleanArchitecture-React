@@ -7,7 +7,6 @@ import {
     CardMedia,
     CardContent,
     TextField, Typography } from "@mui/material";
-import  logo from "../attachment_logo.png";
 import darwin from "../darwin.png";
 
 export default function Register(){

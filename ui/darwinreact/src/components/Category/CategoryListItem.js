@@ -11,11 +11,5 @@ export default function CategoryListItem(props){
                 <td><Button variant='outlined'  size='small' color='inherit' startIcon={<EditIcon/>}>Update</Button></td>
                 <td><Button variant='outlined' color='error' size='small' startIcon={<DeleteIcon />}>Delete</Button></td>
             </tr>
-       /* { <div className='container'>
-            <p>{props.categoryItem.id}</p>
-            <h5>Adı {props.categoryItem.name}</h5>
-            <p>{props.categoryItem.isUsable}</p>
-            <img src={props.categoryItem.imageUrl} className="img img-thumbnail" width={128} height={128}/>
-        </div> }*/
     )
 }

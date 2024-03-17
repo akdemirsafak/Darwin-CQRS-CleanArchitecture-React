@@ -32,33 +32,34 @@ export const getCategoryDetail= (id) =>{
         }
     })
 }
-export const newCategory =(data,token) =>{
+export const newCategory =(data) =>{
     return fetch(`${BASE_URL}/category`,
      {
         method: 'POST',
         headers: {
             //"Content-Type": "application/json",
             //'Content-Type': 'multipart/form-data',
-             Authorization : `Bearer ${token}`
+             Authorization : `Bearer ${localStorage.getItem('token')}`
          },
          body:data
      })
 }
-export const updateCategory=(id,data,token) =>{
+export const updateCategory=(id,data) =>{
    return fetch(`${BASE_URL}/category/${id}`,{
     method: 'PUT',
     headers: {
         "Content-Type": "application/json",
-        Authorization:"Bearer "+ token 
+        Authorization:`Bearer ${localStorage.getItem('token')}` 
     },
     body:data
    })
-
 }
 
-export const deleteCategory=(id,token) =>{
+export const deleteCategory=(id) =>{
     return fetch(`${BASE_URL}/category/${id}`,{
         method:'DELETE',
-        headers:{Authorization:`Bearer ${token}`}
+        headers:{
+            Authorization:`Bearer ${localStorage.getItem('token')}`
+        }
     })
 }

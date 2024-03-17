@@ -1,15 +1,5 @@
 import { useEffect, useState } from "react";
 import { getContentById } from "../../services/content";
-// import {Card, 
-//     Typography, 
-//     CardMedia, 
-//     CardContent, 
-//     CardActions, 
-//     Button,
-//     CardActionArea } from '@mui/material'
-// import DeleteIcon from '@mui/icons-material/Delete';
-// import UpdateIcon from '@mui/icons-material/Update';
-
 import 'bootstrap/dist/css/bootstrap.min.css';
 
 export default function ContentDetail(id){
@@ -28,7 +18,6 @@ useEffect(()=>{
         })
         .catch((err)=>console.error('Error:', err))
     },[])
-     console.log(content.moods)
     return (
         <>
             <h2>Content Details</h2>
@@ -56,8 +45,6 @@ useEffect(()=>{
                     </div>
                 </div>
             </div> 
-            
-       
         </>
     )
 }

@@ -20,8 +20,6 @@ export default function MoodList(){
             .catch((error) => console.log("Error:" + error));
     }, [])  
 
-
-
     return(
         <>
         <div className="container">

@@ -3,22 +3,22 @@ import './App.css';
 //import PlayListDetail from './components/Playlist/PlayListDetail';
 import Signin from './components/Signin';
 import Register from './components/Register'
-//import ContentIndex from './components/Content/Index';
-//import CreateContent from './components/Content/CreateContent';
-//import ContentDetail from './components/Content/ContentDetail';
-//import CategoryDetail from './components/Category/CategoryDetail';
-//import CategoryList from './components/Category/CategoryList';
-//import CreateCategory from './components/Category/CreateCategory'; 
-//import MoodList from './components/mood/MoodList';
-//import PlayListIndex from './components/Playlist/Index'
+// import ContentIndex from './components/Content/Index';
+// import CreateContent from './components/Content/CreateContent';
+// import ContentDetail from './components/Content/ContentDetail';
+// import CategoryDetail from './components/Category/CategoryDetail';
+// import CategoryIndex from './components/Category/Index';
+// import CreateCategory from './components/Category/CreateCategory'; 
+// import MoodIndex from './components/Mood/Index';
+// import PlayListIndex from './components/Playlist/Index'
 
 function App() {
   return (
     <div className="App">
-      {/* <CategoryList></CategoryList>  */}
+      {/* <CategoryIndex></CategoryIndex>  */}
       {/* <CreateCategory></CreateCategory> */}
        {/* <CreateMood></CreateMood> */}
-      {/* <MoodList></MoodList> */}
+      {/* <MoodIndex></MoodIndex> */}
        <Signin></Signin> 
        <hr/>
       <Register></Register>

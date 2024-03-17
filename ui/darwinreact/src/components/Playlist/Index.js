@@ -23,5 +23,4 @@ export default function Index() {
             </ul>
         </div>
     )
-
 }

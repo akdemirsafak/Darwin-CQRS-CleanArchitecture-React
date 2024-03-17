@@ -27,11 +27,6 @@ export default function CategoryList(){
             <h1>Categories</h1>
             <div className="row">
                 <div className="col-md-12">
-                    {/* <ul>
-                        {categories && categories.map((category, index) => (
-                            <li key={index}>{category.name} - {category.id}</li>
-                        ))} 
-                    </ul> */}
                     <table>
                         <thead>
                             <tr>
@@ -45,9 +40,9 @@ export default function CategoryList(){
                         <tbody>
                         {categories && categories.map((category, index) =>  (
                             
-                                    <CategoryListItem key={index} categoryItem={{id:category.id, name:category.name, isUsable:category.isUsable, imageUrl:category.imageUrl}} > </CategoryListItem>
+                            <CategoryListItem key={index} categoryItem={{id:category.id, name:category.name, isUsable:category.isUsable, imageUrl:category.imageUrl}} > </CategoryListItem>
                             
-                            ))}
+                        ))}
                         </tbody>
                     </table>  
                 </div>

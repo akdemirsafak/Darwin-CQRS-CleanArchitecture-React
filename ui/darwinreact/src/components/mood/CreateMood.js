@@ -81,10 +81,6 @@ export default function CreateMood() {
                 </div>
                 <Button variant="contained" type="submit">Create Mood</Button>
             </form>
-        
         </>
     )
-
-
-
 }

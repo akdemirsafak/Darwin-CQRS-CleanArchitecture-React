@@ -103,9 +103,7 @@ export default function CreateContent() {
                     </Select>
                 </FormControl>                   
                 </div>
-
-
-                           <div className="form-group">
+                <div className="form-group">
                 <FormControl sx={{ m: 1, minWidth: 120 }}>
                     <InputLabel id="demo-multiple-select-label">modlar</InputLabel>
                     <Select
