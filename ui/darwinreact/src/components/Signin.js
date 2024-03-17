@@ -1,9 +1,11 @@
 import { useState } from "react";
 import { login } from "../services/auth";
-import {Typography, 
+import  logo from "../attachment_logo.png";
+import {
     Button,
-    Box,
-    TextField } from "@mui/material";
+    TextField,
+    Card,
+    CardMedia,CardContent,CardActions } from "@mui/material";
 
 export default function Signin(){
 
@@ -20,21 +22,48 @@ export default function Signin(){
                 if(res.ok && res.status === 200){
                     return res.json()
                 }
-            }).then(data=>{localStorage.setItem("token",data.data.accessToken);})
-            .catch(err=>console.error(err))
+            })
+            .then(data=>
+            {
+                setEmail('')
+                setPassword('')
+                localStorage.setItem("token",data.data.accessToken);
+            }).catch(err=>console.error(err))
     }
 
         return(
         <div>
-            <h1>Login</h1>
+            <h1>Hoşgeldiniz</h1>
             <form onSubmit={handleSubmit}>
-                <Box>
-                    <Typography>Email</Typography>
-                    <TextField type="text" variant="outlined" value={email} onChange={(e)=>setEmail(e.target.value)}></TextField><br/>
-                    <Typography>Password</Typography>
-                    <TextField type="password" value={password} onChange={(e)=>setPassword(e.target.value)}></TextField><br/>
-                    <Button type="submit" variant="contained">Login</Button>
-                </Box>
+                    <Card sx={{
+                    width: '25%',
+                    display: 'block',
+                    justifyContent: 'center',
+                    m: 'auto',
+                    textAlign: 'center'
+                }}>
+                    <CardMedia component='img' sx={{
+                        width:'128px',
+                        height:'128px',
+                        objectFit: 'cover',
+                        m: '1rem auto 0 auto',
+                        textAlign: 'center'
+                    }} image={logo}/>
+                    <CardContent >
+                        <TextField sx={{
+                            width: '100%',
+                            margin: '1rem auto'
+                        }} type="text" variant="outlined" label="Email" value={email} onChange={(e)=>setEmail(e.target.value)}></TextField><br/>
+                        <TextField 
+                        sx={{width:'100%'}}
+                        type="password" value={password} label="Şifre" onChange={(e)=>setPassword(e.target.value)}></TextField>
+                    </CardContent>
+                    <CardActions sx={{display: "block"}}>
+                        <Button type="submit" sx={{
+                            alignSelf: 'center'
+                        }} variant="contained">Giriş yap</Button>
+                    </CardActions>
+                </Card>
             </form>
         </div>
     )

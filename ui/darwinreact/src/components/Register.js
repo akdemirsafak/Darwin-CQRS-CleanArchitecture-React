@@ -1,58 +1,82 @@
 import { useState } from "react";
 import { register } from "../services/auth";
-import {Typography, 
+import {
     Button,
-    Stack,
-    Box,
-    TextField } from "@mui/material";
+    Card,
+    CardActions,
+    CardMedia,
+    CardContent,
+    TextField, Typography } from "@mui/material";
+import  logo from "../attachment_logo.png";
+import darwin from "../darwin.png";
 
 export default function Register(){
 
     const[email,setEmail]=useState('');
     const[password,setPassword]=useState('');
     const[confirmPassword,setConfirmPassword]=useState('');
+    const[isActive,setIsActive]=useState(true);
 
     function handleSubmit(e){
         e.preventDefault();
         userRegister(email,password,confirmPassword);
     }
     const userRegister = (email,password,confirmPassword) => {
+        setIsActive(false)
         register({email,password,confirmPassword})
             .then(res=>{
-                if(res.ok && res.status === 200){
+                if(res.ok && res.status === 201){
                     return res.json()
                 }
-            }).then(data=>console.log(data.data))            
+            }).then(data=>{
+                alert("Aramıza hoşgeldin.")
+                setEmail('')
+                setPassword('')
+                setConfirmPassword('')
+                setIsActive(true)
+            })            
             .catch(err=>console.error(err))
     }
 
         return(
         <div className="container">
-            <h1>Kayıt ol</h1>
+           
+            <Typography variant="h4"  color="initial">Darwin'e Kayıt ol </Typography>
+
             <form onSubmit={handleSubmit}>
-                <Box sx={{
-                    width: '40%',
+                  <form onSubmit={handleSubmit}>
+                    <Card sx={{
+                    width: '25%',
                     display: 'block',
                     justifyContent: 'center',
                     m: 'auto',
-                    textAlign: 'center',
-
+                    textAlign: 'center'
                 }}>
-                    <Stack spacing={2}>
-                        <Typography>Email</Typography>
-                        <TextField type="text" variant="outlined" value={email} onChange={(e)=>setEmail(e.target.value)}></TextField><br/>
-                    </Stack>
-                    <Stack spacing={2}>
-                        <Typography>Şifre</Typography>
-                        <TextField type="password" value={password} onChange={(e)=>setPassword(e.target.value)}></TextField><br/>
-                    </Stack>
-
-                    <Stack spacing={2}>
-                        <Typography>Şifreyi onaylayın</Typography>
-                        <TextField type="password" value={confirmPassword} onChange={(e)=>setConfirmPassword(e.target.value)}></TextField><br/>
-                    </Stack>
-                    <Button type="submit" variant="contained" >Kayıt ol</Button>
-                </Box>
+                    <CardMedia component='img' sx={{
+                        width:'96px',
+                        height:'96px',
+                        objectFit: 'cover',
+                        m: '1rem auto 0 auto',
+                        textAlign: 'center'
+                    }} image={darwin}/>
+                    <CardContent  >
+                        <TextField sx={{
+                            width: '100%'
+                        }} type="text" variant="outlined" label="Email" value={email} onChange={(e)=>setEmail(e.target.value)}></TextField><br/>
+                        <TextField 
+                        sx={{width:'100%',  margin: '1rem auto'}}
+                        type="password" value={password} label="Şifre" onChange={(e)=>setPassword(e.target.value)}></TextField>
+                         <TextField 
+                        sx={{width:'100%'}}
+                        type="password" value={confirmPassword} label="Şifreyi doğrulayın" onChange={(e)=>setConfirmPassword(e.target.value)}></TextField>
+                    </CardContent>
+                    <CardActions sx={{display: "block"}}>
+                        <Button type="submit" sx={{
+                            alignSelf: 'center'
+                        }} variant="contained">Kayıt ol</Button>
+                    </CardActions>
+                </Card>
+            </form>
             </form>
         </div>
     )
