@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
 import { getContents } from "../../services/content";
+import { Helmet } from "react-helmet";
 
 export default function Contents(){
 
@@ -17,7 +18,11 @@ export default function Contents(){
             .catch((err)=>console.log(err))
     },[])
 
-    return (
+    return (<>
+    
+        <Helmet>
+            <title> İçerikler </title>
+        </Helmet>
         <div className="container">
             <h1>Content index</h1>
 
@@ -32,5 +37,6 @@ export default function Contents(){
                 </div>
             ))}
         </div>
+        </>
     );
 }

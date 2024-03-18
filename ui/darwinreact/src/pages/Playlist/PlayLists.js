@@ -1,5 +1,6 @@
 import { getPlayLists } from "../../services/playlist";
 import { useState, useEffect } from "react";
+import { Helmet } from "react-helmet";
 
 export default function PlayLists() {
     const [playlists, setPlaylists] = useState([]);
@@ -13,13 +14,18 @@ export default function PlayLists() {
          .then(data => setPlaylists(data.data));
     }, []);
     return (
-        <div>
-            <h1>İçerik listeleri</h1>
-            <ul style={{ listStyleType: 'none' }}>
-                {playlists.map(playlist => (
-                    <li key={playlist.id}>{playlist.name} - {playlist.description} - { playlist.isPublic ?  "Bu playlist'i herkes görebilir." : "Bu playlist'i kişiye özeldir."} </li>
-                ))}
-            </ul>
-        </div>
+        <>
+            <Helmet>
+                <title>Playlists</title>
+            </Helmet>
+            <div>
+                <h1>İçerik listeleri</h1>
+                <ul style={{ listStyleType: 'none' }}>
+                    {playlists.map(playlist => (
+                        <li key={playlist.id}>{playlist.name} - {playlist.description} - { playlist.isPublic ?  "Bu playlist'i herkes görebilir." : "Bu playlist'i kişiye özeldir."} </li>
+                    ))}
+                </ul>
+            </div>
+        </>
     )
 }

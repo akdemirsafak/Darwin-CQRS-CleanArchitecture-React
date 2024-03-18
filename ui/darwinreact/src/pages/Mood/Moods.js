@@ -1,4 +1,5 @@
 import { useEffect,useState } from "react"
+import { Helmet } from "react-helmet";
 import { getMoods } from "../../services/mood";
 
 export default function Moods(){
@@ -19,6 +20,9 @@ export default function Moods(){
     }, [])  
     return(
         <>
+        <Helmet>
+            <title> Ruh hali </title>
+        </Helmet>
         <div className="container">
             <h1>Moods</h1>
             <div className="row">
