@@ -1,8 +1,8 @@
 import { useEffect,useState } from "react"
 import { getCategories } from "../../services/category";
-import CategoryListItem from "./CategoryListItem";
+import CategoryListItem from "../../components/Category/CategoryListItem";
 
-export default function CategoryList(){
+export default function Categories(){
 
     const [categories, setCategories] = useState(false)
 
@@ -14,7 +14,6 @@ export default function CategoryList(){
                 }
             }).then(data => {
                 setCategories(data.data)
-                console.log(data)
             })
             .catch((error) => console.log("Error:" + error));
     }, [])  
@@ -23,7 +22,7 @@ export default function CategoryList(){
 
     return(
         <>
-        <div className="container">
+   <div className="container">
             <h1>Categories</h1>
             <div className="row">
                 <div className="col-md-12">
@@ -47,7 +46,7 @@ export default function CategoryList(){
                     </table>  
                 </div>
             </div>
-        </div>
+        </div> 
         </>
     )
 }

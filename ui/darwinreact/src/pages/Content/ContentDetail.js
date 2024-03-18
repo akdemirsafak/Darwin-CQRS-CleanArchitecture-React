@@ -1,8 +1,12 @@
 import { useEffect, useState } from "react";
+import { useParams } from "react-router-dom";
 import { getContentById } from "../../services/content";
 import 'bootstrap/dist/css/bootstrap.min.css';
 
-export default function ContentDetail(id){
+export default function ContentDetail(){
+
+const {id} = useParams()
+
 
 const [content,setContent] = useState({})
  

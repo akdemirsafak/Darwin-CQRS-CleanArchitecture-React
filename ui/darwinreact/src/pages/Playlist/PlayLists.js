@@ -1,7 +1,7 @@
 import { getPlayLists } from "../../services/playlist";
 import { useState, useEffect } from "react";
 
-export default function Index() {
+export default function PlayLists() {
     const [playlists, setPlaylists] = useState([]);
     useEffect(() => {
         getPlayLists()
@@ -12,10 +12,9 @@ export default function Index() {
             })
          .then(data => setPlaylists(data.data));
     }, []);
-    console.log(playlists)
     return (
         <div>
-            <h1>Playlists</h1>
+            <h1>İçerik listeleri</h1>
             <ul style={{ listStyleType: 'none' }}>
                 {playlists.map(playlist => (
                     <li key={playlist.id}>{playlist.name} - {playlist.description} - { playlist.isPublic ?  "Bu playlist'i herkes görebilir." : "Bu playlist'i kişiye özeldir."} </li>

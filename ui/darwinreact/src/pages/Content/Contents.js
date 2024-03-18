@@ -1,7 +1,8 @@
 import { useState, useEffect } from "react";
 import { getContents } from "../../services/content";
 
-export default function Index(){
+export default function Contents(){
+
     const[contents,setContents]=useState(false)
 
     useEffect(()=>{
@@ -12,7 +13,6 @@ export default function Index(){
                 }
             }).then(data=>{ 
                 setContents(data.data)
-                console.log(data.data) 
             })
             .catch((err)=>console.log(err))
     },[])
@@ -23,9 +23,8 @@ export default function Index(){
 
             {contents && contents.map((content,index)=>(
                 <div key={index}>
-             
                     <span>{content.id}</span>
-                    <img src={content.imageUrl}/>
+                    <img src={content.imageUrl} alt="görsel"/>
                     <h2>{content.name}</h2>
                     <p>{content.lyrics}</p>
                     <p>{content.isUsable.toString()}</p>

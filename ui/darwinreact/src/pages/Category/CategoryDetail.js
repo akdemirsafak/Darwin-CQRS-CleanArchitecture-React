@@ -1,9 +1,11 @@
 import { useEffect, useState } from "react"
 import { getCategoryDetail } from "../../services/category"
+import { useParams } from "react-router-dom"
 
-export default function CategoryDetail(id){
+export default function CategoryDetail(){
 
 const[category,setCategory]=useState({});
+const { id }= useParams();
 
 useEffect(()=>{
     getCategoryDetail(id).then((result) => {

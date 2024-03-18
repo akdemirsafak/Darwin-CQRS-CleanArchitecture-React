@@ -42,7 +42,6 @@ export default function Register(){
            
             <Typography variant="h4"  color="initial">Darwin'e Kayıt ol </Typography>
 
-            <form onSubmit={handleSubmit}>
                   <form onSubmit={handleSubmit}>
                     <Card sx={{
                     width: '25%',
@@ -75,7 +74,6 @@ export default function Register(){
                         }} variant="contained">Kayıt ol</Button>
                     </CardActions>
                 </Card>
-            </form>
             </form>
         </div>
     )

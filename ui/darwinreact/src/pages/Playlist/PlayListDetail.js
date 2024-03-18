@@ -1,7 +1,9 @@
 import { useState, useEffect } from "react";
+import { useParams} from "react-router-dom";
 import { getPlaylistById } from "../../services/playlist";
-export default function PlayListDetail(id) 
+export default function PlayListDetail() 
 {
+    const {id} = useParams();
     const [playlist, setPlaylist] = useState({});
     
     useEffect(()=>{
