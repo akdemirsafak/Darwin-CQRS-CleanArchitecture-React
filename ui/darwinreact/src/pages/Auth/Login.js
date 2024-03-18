@@ -1,13 +1,23 @@
 import { useState } from "react";
-import { login } from "../services/auth";
-import  logo from "../attachment_logo.png";
+import { login } from "../../services/auth";
+import  logo from "../../attachment_logo.png";
 import {
     Button,
     TextField,
     Card,
     CardMedia,CardContent,CardActions } from "@mui/material";
 
-export default function Signin(){
+import { useAuth } from "../../contexts/AuthContext";
+import { useNavigate, useLocation } from "react-router-dom"; //Use location girişten sonra yönlendirme işlemi için dahil edilir.
+
+
+export default function Login(){
+
+
+const navigate= useNavigate();
+const location = useLocation();
+const {setUser}=useAuth();
+
 
     const[email,setEmail]=useState('');
     const[password,setPassword]=useState('');
@@ -15,6 +25,10 @@ export default function Signin(){
     function handleSubmit(e){
         e.preventDefault();
         userLogin(email,password);
+        setUser({
+                username:'yalandan'
+        });
+        navigate(location?.state?.return_url || '/')
     }
     const userLogin = (email,password) => {
         login({email,password})
@@ -28,6 +42,8 @@ export default function Signin(){
                 setEmail('')
                 setPassword('')
                 localStorage.setItem("token",data.data.accessToken);
+              
+                
             }).catch(err=>console.error(err))
     }
 

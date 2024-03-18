@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { register } from "../services/auth";
+import { register } from "../../services/auth";
 import {
     Button,
     Card,
@@ -7,7 +7,7 @@ import {
     CardMedia,
     CardContent,
     TextField, Typography } from "@mui/material";
-import darwin from "../darwin.png";
+import darwin from "../../darwin.png";
 
 export default function Register(){
 
