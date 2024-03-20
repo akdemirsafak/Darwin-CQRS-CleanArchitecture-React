@@ -44,14 +44,14 @@ public static class Register
 
 
             //Create confirmation link
-            var confirmationToken = await _userService.GenerateEmailConfirmationTokenAsyncByUserIdAsync(appUser.Id);
-            var confirmationUrl = await _linkCreator.CreateTokenMailUrl("ConfirmEmail", "User", appUser.Id, confirmationToken);
+            //var confirmationToken = await _userService.GenerateEmailConfirmationTokenAsyncByUserIdAsync(appUser.Id);
+            //var confirmationUrl = await _linkCreator.CreateTokenMailUrl("ConfirmEmail", "User", appUser.Id, confirmationToken);
 
 
 
-            //Send welcome message with confirmation link
-            var userCreatedEventModel = new UserCreatedMailModel(appUser.Email!, confirmationUrl, appUser.CreatedOnUtc);
-            await _publisher.Publish(new UserCreatedSendMailEvent(userCreatedEventModel));
+            ////Send welcome message with confirmation link
+            //var userCreatedEventModel = new UserCreatedMailModel(appUser.Email!, confirmationUrl, appUser.CreatedOnUtc);
+            //await _publisher.Publish(new UserCreatedSendMailEvent(userCreatedEventModel));
 
             return DarwinResponse<NoContent>.Success(201);
         }

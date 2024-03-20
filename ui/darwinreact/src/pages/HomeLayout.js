@@ -11,9 +11,10 @@ export default function HomeLayout(){
         <NavLink to="/contents">İçerikler</NavLink>
         <NavLink to="/moods">Ruh hali</NavLink>
         <NavLink to="/playlists">İçerik listeleri</NavLink>
-{/*         
-        <NavLink to="/login">Login</NavLink>
-        <NavLink to="/register">Register</NavLink> */}
+        
+        <NavLink to="/auth/login">Login</NavLink>
+        <NavLink to="/auth/register">Register</NavLink>
+
         <NavLink to="/profile">Profil</NavLink>
       </nav>
       <Outlet />

@@ -1,80 +1,110 @@
-import { useState } from "react";
-import { register } from "../../services/auth";
-import {
-    Button,
-    Card,
-    CardActions,
-    CardMedia,
-    CardContent,
-    TextField, Typography } from "@mui/material";
-import darwin from "../../darwin.png";
+import { Form, Formik } from 'formik';
+import { RegisterScheme } from '../../validations/RegisterScheme'
+import * as React from 'react';
+import TextField from '@mui/material/TextField'
+import Button from '@mui/material/Button'
+import Stack from '@mui/material/Stack'
+import { register } from '../../services/auth';
+
+
 
 export default function Register(){
 
-    const[email,setEmail]=useState('');
-    const[password,setPassword]=useState('');
-    const[confirmPassword,setConfirmPassword]=useState('');
-    const[isActive,setIsActive]=useState(true);
+    const logo=require("../../attachment_logo.png");
 
-    function handleSubmit(e){
-        e.preventDefault();
-        userRegister(email,password,confirmPassword);
-    }
-    const userRegister = (email,password,confirmPassword) => {
-        setIsActive(false)
-        register({email,password,confirmPassword})
-            .then(res=>{
-                if(res.ok && res.status === 201){
-                    return res.json()
-                }
-            }).then(data=>{
-                alert("Aramıza hoşgeldin.")
-                setEmail('')
-                setPassword('')
-                setConfirmPassword('')
-                setIsActive(true)
-            })            
-            .catch(err=>console.error(err))
-    }
+    const initialValues= {
+        email: '',
+        password: '',
+        confirmPassword:''
+    };
 
-        return(
-        <div className="container">
-           
-            <Typography variant="h4"  color="initial">Darwin'e Kayıt ol </Typography>
 
-                  <form onSubmit={handleSubmit}>
-                    <Card sx={{
-                    width: '25%',
-                    display: 'block',
-                    justifyContent: 'center',
-                    m: 'auto',
-                    textAlign: 'center'
-                }}>
-                    <CardMedia component='img' sx={{
-                        width:'96px',
-                        height:'96px',
-                        objectFit: 'cover',
-                        m: '1rem auto 0 auto',
-                        textAlign: 'center'
-                    }} image={darwin}/>
-                    <CardContent  >
-                        <TextField sx={{
-                            width: '100%'
-                        }} type="text" variant="outlined" label="Email" value={email} onChange={(e)=>setEmail(e.target.value)}></TextField><br/>
-                        <TextField 
-                        sx={{width:'100%',  margin: '1rem auto'}}
-                        type="password" value={password} label="Şifre" onChange={(e)=>setPassword(e.target.value)}></TextField>
-                         <TextField 
-                        sx={{width:'100%'}}
-                        type="password" value={confirmPassword} label="Şifreyi doğrulayın" onChange={(e)=>setConfirmPassword(e.target.value)}></TextField>
-                    </CardContent>
-                    <CardActions sx={{display: "block"}}>
-                        <Button type="submit" sx={{
-                            alignSelf: 'center'
-                        }} variant="contained">Kayıt ol</Button>
-                    </CardActions>
-                </Card>
-            </form>
+    return(
+
+        <>    
+        <div className='d-flex justify-content-center mt-5'>
+            <img src={logo} alt='Logo' width={128} />
         </div>
+        <div className='row'>
+
+            <div className='col-4 offset-4'>
+                <Formik
+                initialValues={initialValues}
+                validationSchema={RegisterScheme}
+                onSubmit={(values, actions)=>{
+                    actions.setSubmitting(true)
+                    register({email:values.email,
+                        password:values.password,
+                        confirmPassword:values.confirmPassword})
+                        .then((res)=>{
+                            if(res.ok && res.status === 201){
+                                values.email=''
+                                values.password=''
+                                values.confirmPassword=''
+                                alert('Registration Successful!')
+                                actions.setSubmitting(false);
+                            }else{
+                                actions.setSubmitting(false);
+                                alert('Registration Failed!')
+                                //throw new Error('Registration Failed!')
+                            }                            
+                        })
+                }}
+            >
+            {({values, errors, touched, isSubmitting, handleChange, handleReset})=>(
+            
+            <Form>
+                <Stack direction='column'  alignItems='center' padding={1} spacing={1}> 
+                    <TextField fullWidth
+                        id="email"
+                        label="Email"
+                        name='email'
+                        onChange={handleChange}
+                        value={values.email}
+                        error={touched.email && Boolean(errors.email)}
+                        helperText={touched.email && errors.email}
+                    />                   
+
+                    <TextField fullWidth
+                        id="password"
+                        label="Password"
+                        name='password'
+                        type='password'
+                        value={values.password}
+                        onChange={handleChange}
+                        error={touched.password && Boolean(errors.password)}
+                        helperText={touched.password && errors.password}
+                    />
+                    
+                    <TextField fullWidth
+                        id="confirmPassword"
+                        label="Confirm Password"
+                        name='confirmPassword'
+                        type='password'
+                        value={values.confirmPassword}
+                        onChange={handleChange}
+                        error={touched.confirmPassword && Boolean(errors.confirmPassword)}
+                        helperText={touched.confirmPassword && errors.confirmPassword}
+                    />
+                        
+                    <Button type='reset' variant='outlined' onClick={handleReset} disabled={isSubmitting}  fullWidth color='error'>Reset</Button>
+                    <Button type='submit' variant='outlined' disabled={isSubmitting} fullWidth> 
+                     {isSubmitting? 'Registering..' : 'Register'}</Button>
+                </Stack>
+
+            </Form>
+            )}
+            </Formik> 
+            </div>
+        </div>
+    </>   
     )
 }
+
+
+
+
+
+                     
+
+                    
