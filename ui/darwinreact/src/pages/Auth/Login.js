@@ -9,6 +9,10 @@ import {
 
 import { useAuth } from "../../contexts/AuthContext";
 import { useNavigate, useLocation } from "react-router-dom"; //Use location girişten sonra yönlendirme işlemi için dahil edilir.
+import { Formik,Form, Field } from "formik";
+import File from '../../components/File';
+import Checkbox from "../../components/Checkbox";
+
 
 
 export default function Login(){
@@ -18,18 +22,7 @@ const navigate= useNavigate();
 const location = useLocation();
 const {setUser}=useAuth();
 
-
-    const[email,setEmail]=useState('');
-    const[password,setPassword]=useState('');
-
-    function handleSubmit(e){
-        e.preventDefault();
-        userLogin(email,password);
-        setUser({
-                username:'yalandan'
-        });
-        navigate(location?.state?.return_url || '/')
-    }
+   
     const userLogin = (email,password) => {
         login({email,password})
             .then(res=>{
@@ -39,18 +32,53 @@ const {setUser}=useAuth();
             })
             .then(data=>
             {
-                setEmail('')
-                setPassword('')
                 localStorage.setItem("token",data.data.accessToken);
-              
-                
+
             }).catch(err=>console.error(err))
     }
+
 
         return(
         <div>
             <h1>Hoşgeldiniz</h1>
-            <form onSubmit={handleSubmit}>
+
+            <Formik 
+            
+                initialValues={{
+                    email:'akdemirsafak@gmail.com',
+                    password:'Deneme_1234',
+                    photo:'',
+                    agree:true
+
+                }}
+                onSubmit={values=>{
+                    userLogin(values.email,values.password)
+                    setUser(values)
+                    navigate(location?.state?.return_url || '/',{ replace: true })
+                }}
+            >
+
+            
+                {({values})=>(
+                    <Form>
+                        <label>
+                            Email address
+                        <Field  name='email' type='email'/>
+                        </label><br/>
+                        <Field  name='password' type='password'/><br/>
+                        <File name='photo' label="Upload Image"/><br/>
+                        <Checkbox name='agree' label="I agree!"/><br/><br/>
+                        <button type="submit">Giriş yap</button>
+                    </Form>
+                )}
+                
+
+            </Formik>
+
+
+
+
+            {/* <form onSubmit={handleSubmit}>
                     <Card sx={{
                     width: '25%',
                     display: 'block',
@@ -80,7 +108,7 @@ const {setUser}=useAuth();
                         }} variant="contained">Giriş yap</Button>
                     </CardActions>
                 </Card>
-            </form>
+            </form> */}
         </div>
     )
 }
