@@ -6,6 +6,7 @@ import reportWebVitals from './reportWebVitals';
 import { BrowserRouter } from'react-router-dom';
 import './style.css'
 import { AuthProvider } from './contexts/AuthContext';
+export { LoginSchema } from './validations/LoginSchema';
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(

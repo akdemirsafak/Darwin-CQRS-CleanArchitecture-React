@@ -1,17 +1,18 @@
-import { useState } from "react";
+//import { useState } from "react";
 import { login } from "../../services/auth";
-import  logo from "../../attachment_logo.png";
-import {
-    Button,
-    TextField,
-    Card,
-    CardMedia,CardContent,CardActions } from "@mui/material";
+// import  logo from "../../attachment_logo.png";
+// import {
+//     Button,
+//     TextField,
+//     Card,
+//     CardMedia,CardContent,CardActions } from "@mui/material";
 
 import { useAuth } from "../../contexts/AuthContext";
 import { useNavigate, useLocation } from "react-router-dom"; //Use location girişten sonra yönlendirme işlemi için dahil edilir.
-import { Formik,Form, Field } from "formik";
-import File from '../../components/File';
-import Checkbox from "../../components/Checkbox";
+import { Formik, Form, Field, getFieldProps  } from "formik";
+import { LoginSchema } from "../../validations/LoginSchema";
+import classNames from "classnames";
+
 
 
 
@@ -27,11 +28,17 @@ const {setUser}=useAuth();
         login({email,password})
             .then(res=>{
                 if(res.ok && res.status === 200){
+                    console.log("Response : ",res)
                     return res.json()
+                }else{
+                    console.log("Response : ",res.json().data)
+                    throw new Error('Authentication Failed!')
                 }
             })
             .then(data=>
             {
+                console.log("Datanın datası : ",data.data)
+                console.log(data.data.accessToken)
                 localStorage.setItem("token",data.data.accessToken);
 
             }).catch(err=>console.error(err))
@@ -45,34 +52,57 @@ const {setUser}=useAuth();
             <Formik 
             
                 initialValues={{
-                    email:'akdemirsafak@gmail.com',
-                    password:'Deneme_1234',
-                    photo:'',
-                    agree:true
+                    email:'',
+                    password:'',
 
                 }}
-                onSubmit={values=>{
+                validationSchema={LoginSchema}
+                onSubmit={(values,actions)=>{
                     userLogin(values.email,values.password)
-                    setUser(values)
-                    navigate(location?.state?.return_url || '/',{ replace: true })
+                    // setUser(values)
+                    // navigate(location?.state?.return_url || '/',{ replace: true })
+
+                    //Value'lar api'a gönderilir. api cevap verdiğinde buton tıklanılabilir hale gelir. Api'ın 3 saniyede cevap verdiğini varsaydık.
+
+                    setTimeout(()=>
+                    {
+                        actions.setSubmitting(false)
+                        actions.resetForm()
+                    },3000)
                 }}
             >
-
             
-                {({values})=>(
+                {({values, errors, touched, isSubmitting})=>(
                     <Form>
                         <label>
                             Email address
-                        <Field  name='email' type='email'/>
+                        <Field  name='email'
+                         type='email'
+
+                        />
+                        {errors.email && touched.email && <div className="text-danger small">{errors.email}</div>}
+                      
                         </label><br/>
-                        <Field  name='password' type='password'/><br/>
-                        <File name='photo' label="Upload Image"/><br/>
-                        <Checkbox name='agree' label="I agree!"/><br/><br/>
-                        <button type="submit">Giriş yap</button>
+                        <label>
+                            Password
+                        <Field  name='password' type='password'
+                        />
+                        </label><br/>
+                          {errors.password && touched.password && <div className="text-danger small">{errors.password}</div>}
+                        
+                        <button type="reset" className="btn btn-outline-danger btn-sm mx-3">Resetle</button>
+                        <button type="submit" className={
+                            classNames(
+                            {
+                                "btn my-3":true,
+                                "btn-secondary": isSubmitting,
+                                "btn-primary":!isSubmitting
+                            }
+                        )
+                    } 
+                        disabled={isSubmitting}>Giriş yap</button>
                     </Form>
                 )}
-                
-
             </Formik>
 
 
