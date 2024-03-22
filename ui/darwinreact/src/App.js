@@ -4,8 +4,6 @@ import routes from './routes';
 
 function App() {
 
-
-  console.log(generatePath(''))
   // return (
   //   <div className="App">
   

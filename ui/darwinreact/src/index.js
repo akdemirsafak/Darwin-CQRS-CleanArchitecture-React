@@ -8,13 +8,18 @@ import './style.css'
 import { AuthProvider } from './contexts/AuthContext';
 export { LoginSchema } from './validations/LoginSchema';
 
+
+
+
+
+
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
-    <BrowserRouter>
-        <AuthProvider>
-            <App />
-        </AuthProvider>
-    </BrowserRouter>
+        <BrowserRouter>
+            <AuthProvider>
+                <App />
+            </AuthProvider>
+        </BrowserRouter>
 );
 
 // If you want to start measuring performance in your app, pass a function

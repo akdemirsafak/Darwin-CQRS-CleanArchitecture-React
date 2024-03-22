@@ -18,23 +18,23 @@ export const getMoodList=(paginationDatas)=>{
         body:  paginationDatas
     })
 }
-export const newMood=(data,token)=>{
+export const newMood=(data)=>{
     return fetch(`${Base_Url}/mood`,
     {
         method:'post',
         headers: {
             //'Content-Type': 'application/json'
-            Authorization:`Bearer ${token}`
+            Authorization:`Bearer ${localStorage.getItem('token')}`
         }, body:data
         
     })
 }
-export const updateMood=(id,data,token)=>{
+export const updateMood=(id,data)=>{
     fetch(`${Base_Url}/mood/${id}`,{
         method: 'PUT',
         headers: {
             'Content-Type': 'application/json', //Şuan api'da görsel güncelleme olmadığı için content-type: application/json olarak belirlendi.
-            Authorization:`Bearer ${token}`
+            Authorization:`Bearer ${localStorage.getItem('token')}`
         },
         body:data
     })
