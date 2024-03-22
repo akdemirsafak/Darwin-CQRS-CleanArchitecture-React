@@ -4,4 +4,4 @@ namespace Darwin.Domain.RequestModels.Categories;
 
 public record CreateCategoryRequest(string Name,
     IFormFile ImageFile,
-    bool IsUsable);
+    bool? IsUsable=true);
