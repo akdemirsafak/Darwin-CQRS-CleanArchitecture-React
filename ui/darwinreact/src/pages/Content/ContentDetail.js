@@ -2,6 +2,15 @@ import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import { getContentById } from "../../services/content";
 import 'bootstrap/dist/css/bootstrap.min.css';
+import {
+    Grid,
+    Card,
+    CardContent,
+    Typography,
+    CardMedia,
+    CardActions,
+    Button
+} from "@mui/material";
 
 export default function ContentDetail(){
 
@@ -24,31 +33,47 @@ useEffect(()=>{
     },[])
     return (
         <>
-            <h2>Content Details</h2>
-               <div className="card">
-                <img className="card-img-top" src={content.imageUrl}/>
-                <div className="card-body">
-                    <h3 className="card-title">{content.name}</h3>
-                    <p className="card-text">{content.lyrics}</p>
-                    <hr/>
-                    <strong className="card-text d-block">{content.isUsable ? "Kullanılabilir":"Kullanılamaz"}</strong>
-                    <p>
-                        Modlar : {
-                            content.moods && content.moods.map((mood) => mood && mood.name).join(', ')
-                            }
-                    </p>
-                        <p>
-                        Kategoriler : {
-                            content.categories && content.categories.map((category) => category && category.name).join(', ')
-                            }
-                    </p>
+             <Grid key={content.id} item sx={{marginTop:10}}  >
+                    <Card className="col-4 offset-4" >
+                        <CardMedia
+                            sx={{ height: 512 }}
+                            image={content.imageUrl}
+                            title={content.name}
+                            component='img'
+                        />
 
-                    <div className="card-footer">
-                        <a href="#" className="btn btn-warning btn-sm me-2">Update</a>
-                        <a href="#" className="btn btn-danger btn-sm">Delete</a>
-                    </div>
-                </div>
-            </div> 
+                        <CardContent>
+                            <Typography gutterBottom variant="h4" color='black' component="div">
+                                {content.name}
+                            </Typography>
+                            <Typography>
+                                Modlar : {
+                                    content.moods && content.moods.map((mood) => mood && mood.name).join(', ')
+                                    }
+                            </Typography>
+                            <Typography >
+                                Kategoriler : {
+                                    content.categories && content.categories.map((category) => category && category.name).join(', ')
+                                    }
+                            </Typography>
+                        </CardContent>
+
+                        <CardActions>
+                            <Button variant="contained" color="error">
+                                {/* <NavLink to={`/categories/${category.id}`}>Sil</NavLink> */} 
+                                    Sil
+                                </Button>
+                                <Button variant="contained" color="warning" >
+                                {/* <NavLink to={`/categories/${category.id}`}>Güncelle</NavLink> */}
+                                    Güncelle
+                                </Button>
+                        </CardActions>
+
+                    </Card>
+            
+            </Grid>                   
+
+            
         </>
     )
 }

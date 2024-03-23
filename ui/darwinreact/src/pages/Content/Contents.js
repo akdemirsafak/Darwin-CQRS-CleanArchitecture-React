@@ -1,42 +1,53 @@
 import { useState, useEffect } from "react";
 import { getContents } from "../../services/content";
 import { Helmet } from "react-helmet";
+import {  Grid  } from '@mui/material'
+        import ContentCardItem from "../../components/Contents/ContentCardItem";
+import { useNavigate, useLocation } from "react-router-dom";
 
 export default function Contents(){
+
+    const navigate= useNavigate();
+    const location = useLocation();
 
     const[contents,setContents]=useState(false)
 
     useEffect(()=>{
+        if(!localStorage.getItem('token')){
+            console.log("storage boş")
+        }
         getContents()
             .then((res)=>{
                 if(res.ok && res.status === 200){
                     return res.json()
+                }else if(res.status === 401){
+                    console.log("missing.token")
+                    localStorage.removeItem("token")
+                    navigate(location?.state?.return_url || '/',{ replace: true })
+
                 }
             }).then(data=>{ 
+                console.log(data.data)
                 setContents(data.data)
             })
             .catch((err)=>console.log(err))
     },[])
 
-    return (<>
-    
+    return (
+    <>
         <Helmet>
             <title> İçerikler </title>
         </Helmet>
-        <div className="container">
-            <h1>Content index</h1>
-
-            {contents && contents.map((content,index)=>(
-                <div key={index}>
-                    <span>{content.id}</span>
-                    <img src={content.imageUrl} alt="görsel"/>
-                    <h2>{content.name}</h2>
-                    <p>{content.lyrics}</p>
-                    <p>{content.isUsable.toString()}</p>
-                    
-                </div>
-            ))}
+            <div className="container mt-5">
+            <Grid direction='row' container spacing={3}>
+        {
+            contents && contents.map((content, index) => (
+                <ContentCardItem key={index} content={content} />
+            ))
+        }
+            </Grid>
         </div>
-        </>
+
+    </>
     );
 }
