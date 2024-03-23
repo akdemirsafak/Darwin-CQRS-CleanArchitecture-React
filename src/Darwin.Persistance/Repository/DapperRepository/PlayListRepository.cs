@@ -36,17 +36,30 @@ public sealed class PlayListRepository : BaseRepository, IPlayListRepository
                     ""ContentPlayList"" cp ON p.""Id"" = cp.""PlayListsId""
                 FULL JOIN 
                     ""Contents"" c ON c.""Id"" = cp.""ContentsId""
-                        where ""Id""=@id";
-        var playList = await _dbConnection.QueryAsync<GetPlayListByIdResponse, GetContentResponse, GetPlayListByIdResponse>(query,
-             (pl, content) =>
-             {
-                 pl.Contents = new List<GetContentResponse>();
-                 pl.Contents.Add(content);
+                        where p.""Id""=@id";
 
-                 return pl;
-             },
-            splitOn: "Id",
-            param: new { @id = id });
-        return playList.First();
+        var lookup = new Dictionary<Guid, GetPlayListByIdResponse>();
+
+        var playList = await _dbConnection.QueryAsync<GetPlayListByIdResponse, GetContentResponse, GetPlayListByIdResponse>(
+    query,
+    (playlist, content) =>
+    {
+        if (!lookup.TryGetValue(playlist.Id, out var playlistEntry))
+        {
+            playlistEntry = playlist;
+            playlistEntry.Contents = new List<GetContentResponse>();
+            lookup.Add(playlistEntry.Id, playlistEntry);
+        }
+
+        if (content != null)
+            playlistEntry.Contents.Add(content);
+
+        return playlistEntry;
+    },
+    splitOn: "Id",
+    param: new { id }
+);
+
+        return playList.Distinct().FirstOrDefault();
     }
 }

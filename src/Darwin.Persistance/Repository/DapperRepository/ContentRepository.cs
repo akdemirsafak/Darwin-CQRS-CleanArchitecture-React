@@ -19,7 +19,7 @@ public sealed class ContentRepository : BaseRepository, IContentRepository
 
         var query = @$"SELECT * FROM ""Contents"" WHERE to_tsvector('english', ""Name"") @@ to_tsquery('english', @searchText);";
 
-        var response= await _dbConnection.QueryAsync<SearchContentResponse>(query, new { searchText });
+        var response = await _dbConnection.QueryAsync<SearchContentResponse>(query, new { searchText });
 
         return response.ToList();
         //throw new NotImplementedException();
@@ -27,8 +27,8 @@ public sealed class ContentRepository : BaseRepository, IContentRepository
 
     public async Task<List<GetContentResponse>> GetAllAsync()
     {
-        var query= "Select * from \"Contents\"";
-        var response= await _dbConnection.QueryAsync<GetContentResponse>(query);
+        var query = "Select * from \"Contents\"";
+        var response = await _dbConnection.QueryAsync<GetContentResponse>(query);
         return response.ToList();
     }
 
@@ -41,45 +41,57 @@ public sealed class ContentRepository : BaseRepository, IContentRepository
                 cat.*
             FROM 
                 ""Contents"" c
-            FULL JOIN 
+            JOIN 
                 ""ContentMood"" cm ON c.""Id"" = cm.""ContentsId""
-            FULL JOIN 
+            JOIN 
                 ""Moods"" m ON m.""Id"" = cm.""MoodsId""
-            FULL JOIN
+            JOIN
                 ""CategoryContent"" cc ON c.""Id"" = cc.""ContentsId""
-            FULL JOIN
+            JOIN
                 ""Categories"" cat ON cat.""Id"" = cc.""CategoriesId""
             WHERE 
                 c.""Id"" = @id;";
 
+        var lookup = new Dictionary<Guid, GetContentByIdResponse>();
 
-        var contents = await _dbConnection.QueryAsync<GetContentByIdResponse,GetMoodResponse,GetCategoryResponse,GetContentByIdResponse>(query,
-
-            (content,mood,category)=>
+        var contents = await _dbConnection.QueryAsync<GetContentByIdResponse, GetMoodResponse, GetCategoryResponse, GetContentByIdResponse>(
+        query,
+        (content, mood, category) =>
+        {
+            if (!lookup.TryGetValue(content.Id, out var contentEntry))
             {
-                content.Moods=new List<GetMoodResponse>();
-                content.Categories=new List<GetCategoryResponse>();
-                content.Moods.Add(mood);
-                content.Categories.Add(category);
-                return content;
-            },
-            splitOn:"Id",
-            param:new { @id=id }
-            );
-        return contents.First();
+                contentEntry = content;
+                contentEntry.Moods = new List<GetMoodResponse>();
+                contentEntry.Categories = new List<GetCategoryResponse>();
+                lookup.Add(contentEntry.Id, contentEntry);
+            }
+
+            if (mood != null && !contentEntry.Moods.Any(m => m.Id == mood.Id))
+                contentEntry.Moods.Add(mood);
+
+            if (category != null && !contentEntry.Categories.Any(c => c.Id == category.Id))
+                contentEntry.Categories.Add(category);
+
+            return contentEntry;
+        },
+        splitOn: "Id",
+        param: new { id }
+    );
+
+        return contents.Distinct().FirstOrDefault();
     }
     public async Task<List<SearchContentResponse>> SearchContentsByNameAsync(string searchText)
     {
         //var query= @"Select * from ""Contents"" where ""Name"" ILIKE '%@searchText%'";
 
-        var query= @"Select * from ""Contents"" where ""Name"" ILIKE '%' || @searchText || '%'";
-        var contents=await _dbConnection.QueryAsync<SearchContentResponse>(query,new {searchText});
+        var query = @"Select * from ""Contents"" where ""Name"" ILIKE '%' || @searchText || '%'";
+        var contents = await _dbConnection.QueryAsync<SearchContentResponse>(query, new { searchText });
         return contents.ToList();
     }
     public async Task<List<GetContentResponse>> GetListAsync(int offset, int pageSize)
     {
 
-        string query=@"SELECT *
+        string query = @"SELECT *
             FROM ""Contents"" ORDER BY ""CreatedOnUtc""
             OFFSET @Offset LIMIT @PageSize";
         DynamicParameters dynamicParameters = new DynamicParameters();
@@ -90,7 +102,7 @@ public sealed class ContentRepository : BaseRepository, IContentRepository
     }
     public async Task<int> GetTotalRowCountAsync()
     {
-        string query=@"SELECT Count(*) FROM ""Contents"" ";
+        string query = @"SELECT Count(*) FROM ""Contents"" ";
         int totalRowCount = await _dbConnection.ExecuteScalarAsync<int>(query);
         return totalRowCount;
     }
