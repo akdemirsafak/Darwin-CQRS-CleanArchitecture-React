@@ -119,8 +119,7 @@ const routes=[
             {
                 name:'playlists',
                 path:"playlists", 
-                element: <PlaylistLayout/>,
-                auth:true,
+                element: <PlaylistLayout/>,            
                 children:[
                     {
                         name:'index',
@@ -135,7 +134,8 @@ const routes=[
                     {
                         name:'CreatePlayList',
                         path:'create',
-                        element:<CreatePlayList />
+                        element:<CreatePlayList />,
+                        auth:true,
                     }
                 ]
             },
@@ -144,7 +144,7 @@ const routes=[
                 name:'profile',
                 path:'/profile',
                 element:<Profile/>,
-                auth:true
+                auth:true,
             },
 
         ]
