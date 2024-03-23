@@ -1,86 +1,118 @@
 import { newMood } from "../../services/mood";
-import {useState} from "react";
-import {Typography, 
-    Button,
-    TextField, 
-    FormControlLabel,
-    Checkbox, 
-    Box,
-    Icon } from "@mui/material";
+import {
+    Card,
+    CardMedia,
+    TextField,
+    Button,CardContent,
+    Stack, Typography    
+} from "@mui/material";
+import { MoodSchema } from "../../validations/MoodSchema";
+import CloudUploadIcon from '@mui/icons-material/CloudUpload';
+import { Formik, Form } from "formik";
+import { styled } from '@mui/material/styles';
+
+
+
+
+
+const VisuallyHiddenInput = styled('input')({
+  clip: 'rect(0 0 0 0)',
+  clipPath: 'inset(50%)',
+  height: 1,
+  overflow: 'hidden',
+  position: 'absolute',
+  bottom: 0,
+  left: 0,
+  whiteSpace: 'nowrap',
+  width: 1,
+});
+
+
+
+
 export default function CreateMood() {
-
-    const addMood = (data,token) => {
-        const formData=new FormData();
-        for(let [key,value] of Object.entries(data)){
-            formData.append(key,value);
-        };
-        newMood(formData,token).then(res =>{
-            if(res.ok && res.status === 201){ 
-                alert("Mood created successfully");
-                setName('');
-                setImageFile(null);
-                setIsUsable(false);
-            }
-         })
-         .catch((error)=>alert("Error: "+ error));
-    }
-
-    function submitHandle(e) {
-        e.preventDefault();
-        addMood({name,imageFile,isUsable},"eyJhbGciOiJodHRwOi8vd3d3LnczLm9yZy8yMDAxLzA0L3htbGRzaWctbW9yZSNobWFjLXNoYTI1NiIsInR5cCI6IkpXVCJ9.eyJodHRwOi8vc2NoZW1hcy54bWxzb2FwLm9yZy93cy8yMDA1LzA1L2lkZW50aXR5L2NsYWltcy9uYW1laWRlbnRpZmllciI6IjY0N2Q1YzE2LThiODQtNDI2YS04ZWNmLTU1ZGZhZDIzZjdhZSIsImVtYWlsIjoiYWtkZW1pcnNhZmFrQGdtYWlsLmNvbSIsImp0aSI6ImM1ZmUwMGViLWY0ZjMtNGYxYy04OWIwLWE5ZjA2MWM3YTVlMyIsImF1ZCI6WyJodHRwczovL2xvY2FsaG9zdDo3MTE2IiwiaHR0cHM6Ly9sb2NhbGhvc3Q6NzExNyJdLCJodHRwOi8vc2NoZW1hcy5taWNyb3NvZnQuY29tL3dzLzIwMDgvMDYvaWRlbnRpdHkvY2xhaW1zL3JvbGUiOiJVc2VyIiwibmJmIjoxNzEwNTA5NjcxLCJleHAiOjE3MTA1MTE0NzEsImlzcyI6Imh0dHBzOi8vbG9jYWxob3N0OjcxMTYifQ.y7WUB75cGrNvquiEP1WgnSI5DGEDsBDYLm31i1OmFgY")        
-    }
-
-    const[name, setName]=useState('');
-    const[imageFile, setImageFile]=useState(false);
-    const[isUsable, setIsUsable]=useState(false);
+    const initialValues= {
+        name: '',
+        imageFile:''
+    };
 
     return(
-        <>
-        <h1>Create Mood</h1>
-            <form onSubmit={submitHandle}>
+        <div className='container'>
+            <div className='row'>
+                <div className='col-6 offset-3'>
+                    <Card>
+                        <Typography variant="h3" color="initial" className='text-center my-2'>Mood oluştur</Typography>
+                        <div className='align-content-center justify-content-center d-flex'>
+                            <CardMedia component='img' image={require("../../attachment_logo.png")}   className='align-self-center w-25' />
+                        </div>
+                        <CardContent>
+                            <Formik
+                                initialValues={initialValues}
+                                validationSchema={MoodSchema}
+                                onSubmit={(values,actions)=>
+                                    {
+                                        const formData=new FormData();
+                                        console.log(localStorage.getItem('token'))
+                                        for(let [key,value] of Object.entries(values)){
+                                            formData.append(key,value);
+                                        }
+                                        newMood(formData).then((res)=>{
+                                            if(res.ok && res.status === 201){ 
+                                                values.name=''
+                                                values.imageFile=''
+                                                actions.setSubmitting(false);
+                                            }else{
+                                                actions.setSubmitting(false);
+                                            }
+                                        })
+                                    }}
+                            >
+                                {({values,errors,touched,isSubmitting,handleChange,handleReset})=>(
 
-                <div className="form-group row" style={{margin:25}}>
-                    <TextField id="standard-basic" label="Name" variant="standard" onChange={e=>setName(e.target.value)} />   
+                                    <Form>
+                                        <Stack direction='column'  alignItems='center' padding={1} spacing={1}> 
+                                            <TextField fullWidth
+                                                id="name"
+                                                label="Name"
+                                                name='name'
+                                                onChange={handleChange}
+                                                value={values.name}
+                                                error={touched.name && Boolean(errors.name)}
+                                                helperText={touched.name && errors.name}
+                                            />
+                                            
+                                            <Button
+                                                component="label"
+                                                role={undefined}
+                                                variant="contained"
+                                                tabIndex={-1}
+                                                fullWidth
+                                                className='mb-5'
+                                                startIcon={<CloudUploadIcon />}
+                                                >
+                                                Upload
+                                                <VisuallyHiddenInput type="file" name='imageFile'
+                                                    onChange={e=>values.imageFile=e.target.files[0]}
+                                                />
+                                                </Button> 
+                                                
+                                                 {errors.imageFile && touched.imageFile && (
+                                                    <div className='alert alert-danger'>
+                                                        {errors.imageFile}
+                                                    </div>
+                                                )} 
+
+
+                                            <Button type='reset' variant='outlined' color='error' onClick={handleReset} disabled={isSubmitting} fullWidth>Reset</Button>
+                                            <Button type='submit' variant='outlined' disabled={isSubmitting} fullWidth>Create</Button>                   
+                                        </Stack>
+                                    </Form>
+                                )}  
+                            </Formik>
+                        </CardContent>
+                    </Card>
                 </div>
-                <div className="form-group row">
-                   <Box>
-                        <input
-                            type="file"
-                            accept=".jpg, .png, .jpeg"
-                            onChange={event=>setImageFile(event.target.files[0])}
-                            style={{ display: 'none' }}
-                            id="file-upload"
-                        />
-                        <label htmlFor="file-upload">
-                            <Button variant="outlined" component="span" startIcon={<Icon variant="file_upload"/>}>
-                            Görseli seçin:
-                            </Button>
-                        </label>
-                        {imageFile && (
-                            <Typography variant="body1" component="p">
-                            Selected File: {imageFile.name}
-                            </Typography>
-                        )}
-                    </Box>
-                </div>
-
-
-                <div className="form-group row">
-                    <FormControlLabel
-                      label="IsUsable"
-
-                      control={
-                        <Checkbox
-                          value={isUsable}
-                          checked={isUsable}
-                          onChange={e=>setIsUsable(e.target.checked)}
-                          color="primary"
-                        />
-                      }
-                    />
-                </div>
-                <Button variant="contained" type="submit">Create Mood</Button>
-            </form>
-        </>
+            </div>
+        </div>
     )
 }

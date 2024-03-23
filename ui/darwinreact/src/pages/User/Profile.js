@@ -7,6 +7,7 @@ export default function Profile() {
     
     const {setUser,user }=useAuth()
     const logoutHandle=()=>{
+        localStorage.removeItem("token");
         setUser(false)
     }
     

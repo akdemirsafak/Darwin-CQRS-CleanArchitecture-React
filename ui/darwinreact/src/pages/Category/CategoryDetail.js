@@ -1,6 +1,14 @@
 import { useEffect, useState } from "react"
 import { getCategoryDetail } from "../../services/category"
 import { useParams } from "react-router-dom"
+import {
+    Grid,
+    Card,
+    CardContent,
+    CardActions,
+    Button,
+    Typography,
+    CardMedia} from '@mui/material';
 
 export default function CategoryDetail(){
 
@@ -21,25 +29,35 @@ useEffect(()=>{
     
     return(
         <>
-        <div className='container'>
-            <h1>Category Detail</h1>
-        <div className='row'>
-            <div className='col-md-12'>
-                <div className='card'>
-                    <div className='card-body'>
-                        <img className='card-img-top' src={category.imageUrl} alt='Card image cap' />
-                        <h5 className='card-title'>{category.name}</h5>
-                        
-                        <p>Bu kategori {category.isUsable? 'kullanılabilir':'kullanılamaz.'}</p>
-                        <div className="card-footer">
-                            <button className="btn btn-warning">Güncelle</button>
-                            <button className="btn btn-danger">Sil</button>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-        </div>
+            <Grid key={category.id} item sx={{marginTop:10}}  >
+                    <Card className="col-4 offset-4" >
+                        <CardMedia
+                            sx={{ height: 512 }}
+                            image={category.imageUrl}
+                            title={category.name}
+                            component='img'
+                        />
+
+                        <CardContent>
+                            <Typography gutterBottom variant="h4" color='black' component="div">
+                                {category.name}
+                            </Typography>
+                        </CardContent>
+
+                        <CardActions>
+                            <Button variant="contained" color="error">
+                                {/* <NavLink to={`/categories/${category.id}`}>Sil</NavLink> */} 
+                                    Sil
+                                </Button>
+                                <Button variant="contained" color="warning" >
+                                {/* <NavLink to={`/categories/${category.id}`}>Güncelle</NavLink> */}
+                                    Güncelle
+                                </Button>
+                        </CardActions>
+
+                    </Card>
+            
+            </Grid>
         </>
     )
   

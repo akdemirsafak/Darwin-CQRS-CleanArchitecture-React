@@ -2,6 +2,9 @@ import { useEffect,useState } from "react"
 import { Helmet } from "react-helmet";
 import { getCategories } from "../../services/category";
 import CategoryListItem from "../../components/Category/CategoryListItem";
+import {Grid,Button} from "@mui/material";
+import { NavLink } from "react-router-dom";
+
 
 export default function Categories(){
 
@@ -28,31 +31,32 @@ export default function Categories(){
             </Helmet>
 
 
-            <div className="container">
-                <h1>Categories</h1>
-                <div className="row">
-                    <div className="col-md-12">
-                        <table>
-                            <thead>
-                                <tr>
-                                    <th>id</th>
-                                    <th>name</th>
-                                    <th>isUsable</th>
-                                    <th>image</th>
-                                </tr>
+    <div className="container mt-5">
+        <h3> Kategoriler</h3>
+        <Grid container justifyContent='end' className="mb-5">
+            <Button variant="contained" color="primary" component={NavLink} to={`/categories/create`}>
+                
+                Yeni kategori ekle
 
-                            </thead>
-                            <tbody>
-                            {categories && categories.map((category, index) =>  (
-                                
-                                <CategoryListItem key={index} categoryItem={{id:category.id, name:category.name, isUsable:category.isUsable, imageUrl:category.imageUrl}} > </CategoryListItem>
-                                
-                            ))}
-                            </tbody>
-                        </table>  
-                    </div>
-                </div>
-            </div> 
+            </Button>
+        </Grid>    
+            
+            <Grid direction='row' container spacing={3}>
+                
+
+                {categories && categories.map((category, index) =>  (
+                    
+                    <CategoryListItem
+                    key={index}
+                        category={{id:category.id, 
+                        name:category.name, 
+                        isUsable:category.isUsable, 
+                        imageUrl:category.imageUrl}} />
+                    ))
+                }
+            </Grid>
+        </div>
+                          
         </>
     )
 }
