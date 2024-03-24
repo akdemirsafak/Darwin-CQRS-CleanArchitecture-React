@@ -1,28 +1,29 @@
 # Darwin
 
 1. Asp.net Core 7 Upgraded .Net 8
-2. N Layer Architecture
+2. N Layer Clean Architecture
 3. Cqrs Pattern with Mediatr. Commands, Queries, Notifications and anothers
-4. Redis Distributed Caching
-5. Repository Pattern
-6. Options pattern for Jwt
-7. EntityFramework Core 7, Entity Audit Logging used Interceptors
-8. PostgreSql Npgsql.EntityFrameworkCore.Postgresql
-9. Mapster
-10. Attribute Based Entity Configurations (Fluent)
-11. Fluent Validation for Request's
-12. Identity Authentication / Authorization, confirmation token mails..
-13. Polly for User Created Send mail event 
-14. Identity Error Describer
-15. Policy and Role based Authorization
-16. Identity Localization
-17. Json Web Token / JwtBearer
-18. RateLimiter -> TokenBucket
-19. Sentry.io for Log Monitoring
-20. Serilog / Seq
-21. Email Sender, Created Account and Weekly Summary
-22. xUnit and NSubstitute Mock for Unit tests 
-23. CronJobs with Hangfire and SqlServerStorage
-24. Cors
-25. File Upload
-26. Azure Blob Storage => AzureBlobStorage Branch
+4. Redis ile Cache
+5. Azure Blob storage ile file upload
+6. File upload Static
+7. CronJobs with Hangfire and SqlServerStorage
+8. Serilog Database and file log / Seq
+9. Vertical Slice Pattern
+10. Repository Pattern
+11. Options pattern for Jwt
+12. EntityFramework Core 8, Entity Audit Logging used Interceptors
+13. PostgreSql Npgsql.EntityFrameworkCore.Postgresql
+14. Mapster
+15. Attribute Based Entity Configurations (Fluent)
+16. Fluent Validation for Request's
+17. Identity Authentication / Authorization, confirmation token mails..
+18. Polly for User Created Send mail event 
+19. Identity Error Describer
+20. Policy and Role based Authorization
+21. Identity Localization
+22. Json Web Token / JwtBearer
+23. RateLimiter -> TokenBucket
+24. Sentry.io for Log Monitoring
+26. Email Sender, Created Account and Weekly Summary
+27. xUnit and NSubstitute Mock for Unit tests 
+28. Cors
