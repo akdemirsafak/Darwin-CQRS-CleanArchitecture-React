@@ -1,51 +1,115 @@
-import { useState } from "react";
 import {createPlaylist } from "../../services/playlist";
 import 'bootstrap/dist/css/bootstrap.min.css';
+import {
+    Card,
+    CardContent,
+    Typography,
+    TextField,
+    Checkbox,
+    Button,
+    CardMedia,
+    FormControlLabel,
+    Stack} from '@mui/material';
+import { Formik, Form } from 'formik';
+import { PlayListSchema } from '../../validations/PlayListSchema';
 
 
 export default function CreatePlayList() {
- const [name,setName]=useState('')
- const [description,setDescription]=useState('')
- const [isPublic,setIsPublic]=useState(true)
- const [isUsable,setIsUsable]=useState(true)
 
 
-const createNewPlaylist=(data)=>{
-        createPlaylist(data).then(res =>{
-            if(res.ok && res.status === 201)
-            { 
-                return res.json()
-            }
-        }).then(data=>console.log(data.data))
-        .catch((err)=>console.log(err))
-    }
-
-
-function handleSubmit(e){
-    e.preventDefault();
-    createNewPlaylist({name, description, isPublic, isUsable})
+const initialValues={
+    name:'',
+    description:'',
+    isPublic:false
 }
 
  return (
-    <>
-        <h3>Oynatma Listesi Oluştur</h3>
-        <form onSubmit={handleSubmit}>
-            <div className="mb-3">
-                <label className="form-label">Oynatma listesi adı</label>
-                <input type="text" className="form-control" onChange={e=>setName(e.target.value)} value={name} placeholder="Oynatma listesinin adını buraya yazınız.."/>
+    <div className='container'>
+        <div className='row'>
+            <div className='col-6 offset-3'>
+                <Card>
+                    <Typography variant="h3" color="initial" className='text-center my-2'>Oynatma listesi oluştur</Typography>
+                    <div className='align-content-center justify-content-center d-flex'>
+                        <CardMedia component='img' image={require("../../attachment_logo.png")}   className='align-self-center w-25' />
+                    </div>
+                    <CardContent>
+                        <Formik
+                            initialValues={initialValues}
+                            validationSchema={PlayListSchema}
+                            onSubmit={(values,actions)=>
+                                {
+                                    createPlaylist(values).then(res =>{
+                                        if(res.ok && res.status === 201)
+                                        { 
+                                            actions.resetForm()
+                                        }
+                                        actions.setSubmitting(false);
+                                    })
+                                    .catch((err)=>console.log(err))
+                                }}
+                        >
+                            {({values, errors, touched, isSubmitting, handleChange, handleReset})=>(
+                                <Form>
+                                    <Stack direction='column'  alignItems='center' padding={1} spacing={1}> 
+                                        <TextField fullWidth
+                                            id="name"
+                                            label="Name"
+                                            name='name'
+                                            onChange={handleChange}
+                                            value={values.name}
+                                            error={touched.name && Boolean(errors.name)}
+                                            helperText={touched.name && errors.name}
+                                            disabled={isSubmitting}
+                                        />
+                                        
+                                        <TextField 
+                                            multiline 
+                                            fullWidth 
+                                            rows={4} 
+                                            id='description'
+                                            label='Açıklama(Opsiyonel)'
+                                            name='description'
+                                            onChange={handleChange}
+                                            value={values.description}
+                                            error={touched.description && Boolean(errors.description)}
+                                            helperText={touched.description && errors.description}
+                                            disabled={isSubmitting}
+                                            />
 
+                                         <FormControlLabel control={
+                                        <Checkbox 
+                                            value={values.isPublic}
+                                            name="isPublic"
+                                            onChange={handleChange}
+                                            disabled={isSubmitting} 
+                                        />} label="Bu listeyi herkes görebilsin mi ?" />
+
+                                        <Button 
+                                            type='reset' 
+                                            variant='outlined' 
+                                            color='error' 
+                                            onClick={handleReset} 
+                                            disabled={isSubmitting} 
+                                            fullWidth
+                                        >
+                                            Temizle
+                                        </Button>
+                                        <Button 
+                                            type='submit' 
+                                            variant='outlined' 
+                                            disabled={isSubmitting} 
+                                            fullWidth
+                                        >
+                                            Oluştur
+                                        </Button>                   
+                                    </Stack>
+                                </Form>
+                            )}        
+                        </Formik>
+                    </CardContent>
+                </Card>
             </div>
-            <div className="mb-3">
-                <label className="form-label">Açıklama</label>
-                <textarea type="text" className="form-control" value={description} onChange={e=>setDescription(e.target.value)} placeholder="Açıklama" ></textarea>
-            </div>
-            <div className="mb-3 form-check align-items-center d-block">
-                <label className="form-check-label" >Herkese açık mı</label>
-                <input type="checkbox" className="form-check-input"checked={isPublic} onChange={e=>setIsPublic(e.target.value)}/>
-            </div>
-            <button type="submit" className="btn btn-primary">Oluştur</button>
-        </form>
-    </>
+        </div>
+    </div>
  )
-    
 }

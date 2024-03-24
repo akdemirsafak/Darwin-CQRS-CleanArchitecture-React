@@ -1,6 +1,8 @@
 import { useState, useEffect } from "react";
 import { useParams} from "react-router-dom";
 import { getPlaylistById } from "../../services/playlist";
+import {Grid,Card,CardContent,CardActions,Button,Typography} from '@mui/material';
+import {Link} from "react-router-dom";
 export default function PlayListDetail() 
 {
     const {id} = useParams();
@@ -14,25 +16,39 @@ export default function PlayListDetail()
             }
         })
         .then(data=>{
-            
             setPlaylist(data.data)
-            
         })
         .catch((err)=>console.log(err))
     },[]);
-    console.log(playlist.contents)
     return(
-        <div>
-            <h1>{playlist.name}</h1>
-            <p>Description: {playlist.description}</p>
-            <p>{playlist.isUsable ? "Kullanılabilir" : "Kullanılamaz"}</p>
-            <p>{playlist.isPublic ? "Herkese açık" : "Kullanıcıya özel."}</p>
-            <p>
-            İçerikler : {
-                playlist.contents && playlist.contents.map((content) => content && content.name).join(', ')
-                }
-            </p>
+        <>
+            <Grid key={playlist.id} item sx={{marginTop:10}}  >
+                    <Card className="col-4 offset-4" >
+                        <CardContent>
+                            <Typography gutterBottom variant="h4" color='black' component="div">
+                                {playlist.name}
+                            </Typography>
+                            <Typography  gutterBottom variant="body1" marginY={3} color='black' component="div">
+                                {playlist.description}
+                            </Typography>
+                          <Typography>
+                                İçerikler : {
+                                    playlist.contents && playlist.contents.map((content) => <div className="btn btn-sm text-primary mx-2">{content.name}</div>) 
+                                    }
+                            </Typography>
+                        </CardContent>
 
-        </div>
+                        <CardActions>
+                            <Button variant="contained" color="error" >
+                                {/* to={`/playlist/delete/${playlist.id}`} component={Link} */}
+                                    Sil
+                                </Button>
+                                <Button variant="contained" color="warning" to={`/playlist/update/${playlist.id}`} component={Link}>
+                                    Güncelle
+                                </Button>
+                        </CardActions>
+                    </Card>
+            </Grid>
+        </>
     )
 }

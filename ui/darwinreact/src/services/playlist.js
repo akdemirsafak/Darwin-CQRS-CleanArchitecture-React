@@ -13,8 +13,7 @@ export const getPlaylistById = (id) => {
     return fetch(`${Base_Url}/playlist/${id}`,{
         method: 'GET',
         headers: {
-            'Content-Type': 'application/json',
-            Authorization : `Bearer ${localStorage.getItem('token')}`
+            'Content-Type': 'application/json'
         }
     })
 }
