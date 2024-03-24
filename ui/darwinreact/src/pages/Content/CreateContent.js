@@ -3,28 +3,50 @@ import { createContent } from "../../services/content";
 import { getCategories } from "../../services/category";
 import { getMoods } from "../../services/mood";
 import {Button,
-    FormControl,
-    MenuItem,
-    Select,
-    InputLabel,
-    FormControlLabel,
+    Card,
+    Typography,
+    CardContent,
+    CardMedia,
+    Stack,
     TextField,
-    Box,
-    Checkbox} from '@mui/material'
-import SaveIcon from '@mui/icons-material/Save';
+    FormControl,
+    InputLabel,
+    Select,
+    MenuItem
+    
+} from '@mui/material'
+import CloudUploadIcon from '@mui/icons-material/CloudUpload';
+import { Form,Formik,ErrorMessage } from "formik";
+import { ContentSchema } from "../../validations/ContentSchema";
+import { styled } from '@mui/material/styles';
+
+
+const VisuallyHiddenInput = styled('input')({
+  clip: 'rect(0 0 0 0)',
+  clipPath: 'inset(50%)',
+  height: 1,
+  overflow: 'hidden',
+  position: 'absolute',
+  bottom: 0,
+  left: 0,
+  whiteSpace: 'nowrap',
+  width: 1,
+});
+
 
 export default function CreateContent() {
     
-    const[name, setName]=useState('')
-    const[lyrics, setLyrics]=useState('')
-    const[imageUrl, setImageUrl]=useState('')
-    const[isUsable, setIsUsable]=useState(false)
     const[categories, setCategories]=useState([])
     const[moods, setMoods]=useState([])
 
-    const[selectedCategories,setSelectedCategories]=useState([])
-    const[selectedMoods,setSelectedMoods]=useState([])
 
+       const initialValues= {
+        name: '',
+        lyrics:'',
+        imageFile:'',
+        selectedCategories:[],
+        selectedMoods:[]
+    };
 
 
     useEffect(() => {
@@ -43,104 +65,153 @@ export default function CreateContent() {
             .catch((err)=>console.log(err))
     }, []);
 
-    const createNewContent=(data)=>{
-        createContent(data).then(res =>{
-            if(res.ok && res.status === 201)
-            { 
-                return res.json()
-            }
-        }).then(data=>console.log(data.data))
-        .catch((err)=>console.log(err))
-    }
-
-    function handleSubmit(e){
-         e.preventDefault();
-        createNewContent({name, lyrics, imageUrl, isUsable, categoryIds:selectedCategories, moodIds:selectedMoods})
-
-    }
-
-
 
     return (
-        <div>
-            <h1>İçerik ekle</h1>
-            <form onSubmit={handleSubmit}>
-                 <Box sx={{
-                    width: '50%',
-                    display: 'block',
-                    justifyContent: 'center',
-                    m: 'auto',
-                    textAlign: 'center'
-                }}>
-                <div className="form-group row" style={{margin:25}}>
-                    <TextField id="name-field" label="Ad" variant="standard" onChange={e=>setName(e.target.value)} />   
-                </div>
-    
-                <div className="form-group row">
-                    <TextField id="lyric-field" label="İçerik sözleri" variant="standard" onChange={e=>setLyrics(e.target.value)} />   
-                </div>
-                <div className="form-group row">
-                   <TextField id="imageUrl-field" label="Görsel adı" variant="standard" onChange={e=>setImageUrl(e.target.value)} />   
-                </div>
-                
 
-                <div className="form-group">
-                <FormControl sx={{ m: 1, minWidth: 120 }}>
-                    <InputLabel id="demo-multiple-select-label">kategoriler</InputLabel>
-                    <Select
-                    multiple
-                    value={selectedCategories}
-                    onChange={e=>setSelectedCategories(e.target.value)}
-                    renderValue={(selected)=>selected.join(',')}>
-                        <MenuItem value="">
-                            <em>Kategori Seçiniz</em>
-                        </MenuItem>
-                        {
-                            categories && categories.map((category)=>(
-                                <MenuItem key={category.id} value={category.id}>{category.name}</MenuItem>
-                            ))
-                        }
-                    </Select>
-                </FormControl>                   
-                </div>
-                <div className="form-group">
-                <FormControl sx={{ m: 1, minWidth: 120 }}>
-                    <InputLabel id="demo-multiple-select-label">modlar</InputLabel>
-                    <Select
-                    width="100%"
-                    multiple
-                    value={selectedMoods}
-                    onChange={e=>setSelectedMoods(e.target.value)}
-                    renderValue={(selected)=>selected.join(',')}>
-                        <MenuItem value="">
-                            <em>Mod Seçiniz</em>
-                        </MenuItem>
-                        {
-                            moods && moods.map((mood)=>(
-                                <MenuItem key={mood.id} value={mood.id}>{mood.name}</MenuItem>
-                            ))
-                        }
-                    </Select>
-                </FormControl>                   
-                </div>
+   <div className='container'>
+            <div className='row'>
+                <div className='col-6 offset-3'>
+                    <Card>
+                        <Typography variant="h3" color="initial" className='text-center my-2'>İçerik ekle</Typography>
+                        <div className='align-content-center justify-content-center d-flex'>
+                            <CardMedia component='img' image={require("../../attachment_logo.png")}   className='align-self-center w-25' />
+                        </div>
+                        <CardContent>
+                            <Formik
+                                initialValues={initialValues}
+                                validationSchema={ContentSchema}
+                                onSubmit={(values,actions)=>
+                                    {
+                                        const formData=new FormData();
+                                        formData.append('name',values.name)
+                                        formData.append('lyrics',values.lyrics)
+                                        formData.append('imageFile',values.imageFile)
+                                        
+                                        values.selectedMoods.forEach((mood, index) => {
+                                            formData.append(`selectedMoods[${index}]`, mood);
+                                            }); // bu kısmı foreach ile dönmezsek direkt string formatla yanyana ekleyip yolluyor ve api 400-500 dönüyor.
+
+                                            values.selectedCategories.forEach((category, index) => {
+                                            formData.append(`selectedCategories[${index}]`, category);
+                                            });
+
+                                        createContent(formData).then((res)=>{
+                                             if(res.ok && res.status === 201){ 
+                                                 actions.resetForm()
+                                                 actions.setSubmitting(false);
+                                             }else{
+                                                console.log(res.body)
+                                                 actions.setSubmitting(false);
+                                             }
+                                        })
+                                    }}
+                            >
+                                {({values,errors,touched,isSubmitting,handleChange,handleReset})=>(
+
+                                    <Form>
+                                        <Stack direction='column'  alignItems='center' padding={1} spacing={1}> 
+                                            <TextField fullWidth
+                                                id="name"
+                                                label="name"
+                                                name="name"
+                                                onChange={handleChange}
+                                                value={values.name}
+                                                error={touched.name && Boolean(errors.name)}
+                                                helperText={touched.name && errors.name}
+                                            />
 
 
-                <div className="form-group row">
-                    <FormControlLabel
-                      label="IsUsable"
-                      control={
-                        <Checkbox
-                          value={isUsable}
-                          checked={isUsable}
-                          onChange={e=>setIsUsable(e.target.checked)}
-                          color="primary"
-                        />
-                      }
-                    />
+                                            <TextField fullWidth
+                                                multiline
+                                                rows={4}
+                                                id="lyrics"
+                                                label="lyrics"
+                                                name="lyrics"
+                                                onChange={handleChange}
+                                                value={values.lyrics}
+                                                error={touched.lyrics && Boolean(errors.lyrics)}
+                                                helperText={touched.lyrics && errors.lyrics}
+                                            />
+
+
+                                    <FormControl fullWidth>
+                                        <InputLabel id="multiple-select-label">Kategoriler</InputLabel>
+                                            <Select
+                                                labelId="multiple-select-label"
+                                                id="multiple-select"
+                                                name="selectedCategories"
+                                                multiple
+                                                value={values.selectedCategories}
+                                                label="Kategoriler"
+                                                onChange={handleChange}
+                                            >
+                                                {categories.map((category) => (
+                                                    <MenuItem key={category.id} value={category.id}>
+                                                        {category.name}
+                                                    </MenuItem>
+                                                ))}
+                                            </Select>
+                                            <ErrorMessage name="selectedCategories" component="div" />
+                                    </FormControl>
+
+
+
+                                    <FormControl fullWidth>
+                                        <InputLabel id="multiple-select-label">Moods</InputLabel>
+                                        <Select
+                                            labelId="multiple-select-label"
+                                            id="multiple-select"
+                                            name="selectedMoods"
+                                            multiple
+                                            value={values.selectedMoods}
+                                            label="Moods"
+                                            onChange={handleChange}
+                                        >
+                                            {moods.map((mood) => (
+                                                <MenuItem key={mood.id} value={mood.id}>
+                                                    {mood.name}
+                                                </MenuItem>
+                                            ))}
+                                        </Select>
+                                        <ErrorMessage name="selectedMoods" component="div" />
+                                    </FormControl>
+
+
+
+                                            <Button
+                                                component="label"
+                                                role={undefined}
+                                                variant="contained"
+                                                tabIndex={-1}
+                                                fullWidth
+                                                className='mb-5'
+                                                startIcon={<CloudUploadIcon />}
+                                                >
+                                                Upload
+                                                <VisuallyHiddenInput type="file" name='imageFile'
+                                                    onChange={e=>values.imageFile=e.target.files[0]}
+                                                />
+                                                </Button> 
+                                                
+                                                 {errors.imageFile && touched.imageFile && (
+                                                    <div className='alert alert-danger'>
+                                                        {errors.imageFile}
+                                                    </div>
+                                                )} 
+
+
+
+                                            <Button type='reset' variant='outlined' color='error' onClick={handleReset} disabled={isSubmitting} fullWidth>Reset</Button>
+                                            <Button type='submit' variant='outlined' disabled={isSubmitting} fullWidth>Create</Button>                   
+                                        </Stack>
+                                    </Form>
+                                )}  
+                            </Formik>
+                        </CardContent>
+                    </Card>
                 </div>
-                <Button type="submit" variant="contained" startIcon={<SaveIcon />}>Kaydet</Button>
-            </Box>
-            </form>
+            </div>
         </div>
+
     );
 }

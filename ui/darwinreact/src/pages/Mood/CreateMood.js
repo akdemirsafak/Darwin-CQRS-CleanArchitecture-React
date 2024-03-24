@@ -58,8 +58,7 @@ export default function CreateMood() {
                                         }
                                         newMood(formData).then((res)=>{
                                             if(res.ok && res.status === 201){ 
-                                                values.name=''
-                                                values.imageFile=''
+                                                actions.resetForm()
                                                 actions.setSubmitting(false);
                                             }else{
                                                 actions.setSubmitting(false);
