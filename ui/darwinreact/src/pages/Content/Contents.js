@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 import { getContents } from "../../services/content";
 import { Helmet } from "react-helmet";
 import {  Grid  } from '@mui/material'
-        import ContentCardItem from "../../components/Contents/ContentCardItem";
+import ContentCardItem from "../../components/Contents/ContentCardItem";
 import { useNavigate, useLocation } from "react-router-dom";
 
 export default function Contents(){
@@ -13,9 +13,6 @@ export default function Contents(){
     const[contents,setContents]=useState(false)
 
     useEffect(()=>{
-        if(!localStorage.getItem('token')){
-            console.log("storage boş")
-        }
         getContents()
             .then((res)=>{
                 if(res.ok && res.status === 200){
@@ -27,7 +24,6 @@ export default function Contents(){
 
                 }
             }).then(data=>{ 
-                console.log(data.data)
                 setContents(data.data)
             })
             .catch((err)=>console.log(err))
