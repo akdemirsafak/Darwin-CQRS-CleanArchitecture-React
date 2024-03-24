@@ -17,12 +17,13 @@ public class PlayListController : CustomBaseController
     {
         _currentUser = currentUser;
     }
-
+    [AllowAnonymous]
     [HttpGet]
     public async Task<IActionResult> Get()
     {
         return CreateActionResult(await _mediator.Send(new GetPlayLists.Query()));
     }
+    [AllowAnonymous]
     [HttpGet("{id}")]
     public async Task<IActionResult> GetById(Guid id)
     {

@@ -7,5 +7,6 @@ public class PlayListBaseResponse
     public string? Description { get; set; }
     public bool IsPublic { get; set; }
     public bool IsUsable { get; set; }
+    public bool isFavorite { get; set; }
 
 }

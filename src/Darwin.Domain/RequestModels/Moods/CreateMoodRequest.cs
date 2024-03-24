@@ -5,4 +5,4 @@ namespace Darwin.Domain.RequestModels.Moods;
 public record CreateMoodRequest(
     string Name,
     IFormFile ImageFile,
-    bool IsUsable);
+    bool IsUsable = true);

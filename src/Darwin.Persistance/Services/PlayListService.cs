@@ -78,11 +78,11 @@ public sealed class PlayListService : IPlayListService
 
     public async Task<GetPlayListByIdResponse> GetByIdAsync(Guid id)
     {
-        var playList = await _playListRepository.GetAsync(x => x.Id == id);
+        var playList = await _playListReadRepository.GetByIdAsync(id);
         if (playList is null)
             throw new Exception("Çalma listesi bulunamadı.");
 
-        return mapper.PlayListToGetPlayListByIdResponse(playList);
+        return playList;
     }
 
 
