@@ -55,11 +55,11 @@ export const createContent = (content) => {
     return fetch(`${BASE_URL}/content`,
     {
         method:'POST', 
-        body: JSON.stringify(content),
         headers: {
-            'Content-Type': 'application/json',
+            // 'Content-Type': 'application/json',
             Authorization: `Bearer ${localStorage.getItem('token')}`
-        }
+        },
+        body: content
     })
 }
 

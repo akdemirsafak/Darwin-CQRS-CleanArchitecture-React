@@ -1,3 +1,5 @@
-﻿namespace Darwin.Domain.RequestModels.Contents;
+﻿using Microsoft.AspNetCore.Http;
 
-public record CreateContentRequest(string Name, string Lyrics, string ImageUrl, IList<Guid> CategoryIds, IList<Guid> MoodIds, bool IsUsable=true);
+namespace Darwin.Domain.RequestModels.Contents;
+
+public record CreateContentRequest(string Name, string Lyrics, IFormFile ImageFile, IList<Guid> SelectedCategories, IList<Guid> SelectedMoods, bool IsUsable=true);

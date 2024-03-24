@@ -60,11 +60,9 @@ useEffect(()=>{
 
                         <CardActions>
                             <Button variant="contained" color="error">
-                                {/* <NavLink to={`/categories/${category.id}`}>Sil</NavLink> */} 
                                     Sil
                                 </Button>
                                 <Button variant="contained" color="warning" >
-                                {/* <NavLink to={`/categories/${category.id}`}>Güncelle</NavLink> */}
                                     Güncelle
                                 </Button>
                         </CardActions>
