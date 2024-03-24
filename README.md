@@ -3,17 +3,16 @@
 1. Asp.net Core 7 Upgraded .Net 8
 2. N Layer Clean Architecture
 3. Cqrs Pattern with Mediatr. Commands, Queries, Notifications and anothers
-4. Redis ile Cache
+4. Redis ile Distributed Cache
 5. Azure Blob storage ile file upload
 6. File upload Static
 7. CronJobs with Hangfire and SqlServerStorage
 8. Serilog Database and file log / Seq
-9. Vertical Slice Pattern
+9. Mapperly
 10. Repository Pattern
 11. Options pattern for Jwt
 12. EntityFramework Core 8, Entity Audit Logging used Interceptors
 13. PostgreSql Npgsql.EntityFrameworkCore.Postgresql
-14. Mapster
 15. Attribute Based Entity Configurations (Fluent)
 16. Fluent Validation for Request's
 17. Identity Authentication / Authorization, confirmation token mails..
