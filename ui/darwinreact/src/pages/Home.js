@@ -9,6 +9,11 @@ export default function Home(){
                 <meta name="description" content="anasayfa description"/>
             </Helmet>
             <h1>Home Page</h1>
+            <h1>Home Page</h1>
+            <h1>Home Page</h1>
+            <h1>Home Page</h1>
+            <h1>Home Page</h1>
+            <h1>Home Page</h1>
         </div>
     )
 }
