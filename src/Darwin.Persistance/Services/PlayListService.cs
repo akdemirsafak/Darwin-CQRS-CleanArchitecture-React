@@ -61,8 +61,7 @@ public sealed class PlayListService : IPlayListService
         if (hasPlayList.IsFavorite)
             throw new Exception("Favori içeriklerim listesi silinemez.");
 
-        hasPlayList.IsUsable = false;
-        await _playListRepository.UpdateAsync(hasPlayList);
+        await _playListRepository.RemoveAsync(hasPlayList);
     }
 
     public async Task<List<GetPlayListResponse>> GetAllAsync()

@@ -32,8 +32,7 @@ public sealed class CategoryService : ICategoryService
     public async Task DeleteAsync(Guid id)
     {
         var category=await _categoryRepository.GetAsync(x=>x.Id==id);
-        category.IsUsable = false;
-        await _categoryRepository.UpdateAsync(category);
+        await _categoryRepository.RemoveAsync(category);
     }
 
     public async Task<List<GetCategoryResponse>> GetAllAsync()
