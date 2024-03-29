@@ -41,13 +41,13 @@ public sealed class ContentRepository : BaseRepository, IContentRepository
                 cat.*
             FROM 
                 ""Contents"" c
-            JOIN 
+            LEFT JOIN 
                 ""ContentMood"" cm ON c.""Id"" = cm.""ContentsId""
-            JOIN 
+            LEFT JOIN 
                 ""Moods"" m ON m.""Id"" = cm.""MoodsId""
-            JOIN
+            LEFT JOIN
                 ""CategoryContent"" cc ON c.""Id"" = cc.""ContentsId""
-            JOIN
+            LEFT JOIN
                 ""Categories"" cat ON cat.""Id"" = cc.""CategoriesId""
             WHERE 
                 c.""Id"" = @id;";

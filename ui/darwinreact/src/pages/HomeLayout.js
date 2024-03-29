@@ -3,7 +3,7 @@ import Navbar from "../components/Navbar";
 import Stack from "@mui/material/Stack";
 export default function HomeLayout(){
     return(
-      <Stack>
+      <Stack >
           <Navbar></Navbar>
           <Outlet />
       </Stack>

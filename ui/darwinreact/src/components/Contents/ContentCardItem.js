@@ -10,7 +10,7 @@ import {
 export default function ContentCardItem({content}){
     return (
           <Grid key={content.id} item xs={12} sm={6} md={4} lg={3}>
-                <Card >
+                <Card>
                     <CardActionArea to={`/contents/${content.id}`} component={Link}>
                         <CardMedia
                             sx={{ height: 256 }}

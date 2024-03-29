@@ -3,7 +3,6 @@ import { useParams } from "react-router-dom";
 import { getContentById } from "../../services/content";
 import 'bootstrap/dist/css/bootstrap.min.css';
 import {
-    Grid,
     Card,
     CardContent,
     Typography,
@@ -17,7 +16,15 @@ export default function ContentDetail(){
 const {id} = useParams()
 
 
-const [content,setContent] = useState({})
+const [content,setContent] = useState({
+    id:'',
+    name:'',
+    imageUrl:'',
+    moods:[],
+    categories:[],
+    lyrics:''
+
+})
  
 useEffect(()=>{
     getContentById(id)
@@ -32,46 +39,42 @@ useEffect(()=>{
         .catch((err)=>console.error('Error:', err))
     },[])
     return (
-        <>
-             <Grid key={content.id} item sx={{marginTop:10}}  >
-                    <Card className="col-4 offset-4" >
-                        <CardMedia
-                            sx={{ height: 512 }}
-                            image={content.imageUrl}
-                            title={content.name}
-                            component='img'
-                        />
+        <div className='contentCenter'>
 
-                        <CardContent>
-                            <Typography gutterBottom variant="h4" color='black' component="div">
-                                {content.name}
-                            </Typography>
-                            <Typography>
-                                Modlar : {
-                                    content.moods && content.moods.map((mood) => mood && mood.name).join(', ')
-                                    }
-                            </Typography>
-                            <Typography >
-                                Kategoriler : {
-                                    content.categories && content.categories.map((category) => category && category.name).join(', ')
-                                    }
-                            </Typography>
-                        </CardContent>
+            <Card>
+                <CardMedia
+                    sx={{ maxHeight: 512,width:512 }}
+                    image={content.imageUrl}
+                    title={content.name}
+                    component='img'
+                />
 
-                        <CardActions>
-                            <Button variant="contained" color="error">
-                                    Sil
-                                </Button>
-                                <Button variant="contained" color="warning" >
-                                    Güncelle
-                                </Button>
-                        </CardActions>
+                <CardContent>
+                    <Typography gutterBottom variant="h4" color='black' component="div">
+                        {content.name}
+                    </Typography>
+                    <Typography>
+                        Modlar : {
+                            content.moods && content.moods.map((mood) => mood && mood.name).join(', ')
+                            }
+                    </Typography>
+                    <Typography >
+                        Kategoriler : {
+                            content.categories && content.categories.map((category) => category && category.name).join(', ')
+                            }
+                    </Typography>
+                </CardContent>
 
-                    </Card>
-            
-            </Grid>                   
+                <CardActions>
+                    <Button variant="contained" color="error">
+                            Sil
+                        </Button>
+                        <Button variant="contained" color="warning" >
+                            Güncelle
+                        </Button>
+                </CardActions>
 
-            
-        </>
+            </Card>
+        </div>
     )
 }
