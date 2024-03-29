@@ -2,11 +2,9 @@ import { useState, useEffect } from "react";
 import { createContent } from "../../services/content";
 import { getCategories } from "../../services/category";
 import { getMoods } from "../../services/mood";
-import {Button,
-    Card,
+import {
+    Button,
     Typography,
-    CardContent,
-    CardMedia,
     Stack,
     TextField,
     FormControl,
@@ -66,30 +64,24 @@ export default function CreateContent() {
     }, []);
 
 
-    return (
-
-   <div className='container'>
-            <div className='row'>
-                <div className='col-6 offset-3'>
-                    <Card>
-                        <Typography variant="h3" color="initial" className='text-center my-2'>İçerik ekle</Typography>
-                        <div className='align-content-center justify-content-center d-flex'>
-                            <CardMedia component='img' image={require("../../attachment_logo.png")}   className='align-self-center w-25' />
-                        </div>
-                        <CardContent>
-                            <Formik
-                                initialValues={initialValues}
-                                validationSchema={ContentSchema}
-                                onSubmit={(values,actions)=>
-                                    {
-                                        const formData=new FormData();
-                                        formData.append('name',values.name)
-                                        formData.append('lyrics',values.lyrics)
-                                        formData.append('imageFile',values.imageFile)
-                                        
-                                        values.selectedMoods.forEach((mood, index) => {
-                                            formData.append(`selectedMoods[${index}]`, mood);
-                                            }); // bu kısmı foreach ile dönmezsek direkt string formatla yanyana ekleyip yolluyor ve api 400-500 dönüyor.
+return (
+        <Stack maxWidth='md' spacing={3}>                  
+            <Typography variant="h3" color="initial" className='text-center my-2'>İçerik oluştur</Typography>
+            <img src={require("../../assets/logo.png")}   className='align-self-center' width={256} alt="logo" />
+            
+            <Formik
+                initialValues={initialValues}
+                validationSchema={ContentSchema}
+                onSubmit={(values,actions)=>
+                    {
+                        const formData=new FormData();
+                        formData.append('name',values.name)
+                        formData.append('lyrics',values.lyrics)
+                        formData.append('imageFile',values.imageFile)
+                        
+                        values.selectedMoods.forEach((mood, index) => {
+                            formData.append(`selectedMoods[${index}]`, mood);
+                            }); // bu kısmı foreach ile dönmezsek direkt string formatla yanyana ekleyip yolluyor ve api 400-500 dönüyor.
 
                                             values.selectedCategories.forEach((category, index) => {
                                             formData.append(`selectedCategories[${index}]`, category);
@@ -207,11 +199,6 @@ export default function CreateContent() {
                                     </Form>
                                 )}  
                             </Formik>
-                        </CardContent>
-                    </Card>
-                </div>
-            </div>
-        </div>
-
+                        </Stack>
     );
 }

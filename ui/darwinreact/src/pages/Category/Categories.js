@@ -30,8 +30,6 @@ export default function Categories(){
                 <title> Kategoriler</title>
             </Helmet>
 
-
-    <div className="container mt-5">
         <h3> Kategoriler</h3>
         <Grid container justifyContent='end' className="mb-5">
             <Button variant="contained" color="primary" component={NavLink} to={`/categories/create`}>
@@ -54,9 +52,7 @@ export default function Categories(){
                         imageUrl:category.imageUrl}} />
                     ))
                 }
-            </Grid>
-        </div>
-                          
+            </Grid>                        
         </>
     )
 }

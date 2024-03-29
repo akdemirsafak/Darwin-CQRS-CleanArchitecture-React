@@ -3,13 +3,12 @@ import { Formik, Form } from 'formik';
 import { CategorySchema } from '../../validations/CategorySchema';
 import CloudUploadIcon from '@mui/icons-material/CloudUpload';
 import { styled } from '@mui/material/styles';
-import {Card, 
-    CardMedia, 
-    CardContent, 
-    Typography, 
-    Button,
-    TextField,
-    Stack} from '@mui/material'
+import {
+        Typography, 
+        Button,
+        TextField,
+        Stack
+} from '@mui/material'
 
 
 
@@ -34,36 +33,31 @@ export default function CreateCategory(){
 
 
     return(
-        <div className='container'>
-            <div className='row'>
-                <div className='col-6 offset-3'>
-                    <Card>
+            <Stack maxWidth='md' spacing={3}>
+                <Typography variant="h3" color="initial" className='text-center my-2'>Kategori oluştur</Typography>
+                <img src={require("../../assets/logo.png")} width={256} className='align-self-center' alt="logo"/>
 
-                        <Typography variant="h3" color="initial" className='text-center my-2'>Kategori oluştur</Typography>
-                        <div className='align-content-center justify-content-center d-flex'>
-                            <CardMedia component='img' image={require("../../attachment_logo.png")}   className='align-self-center w-25' />
-                        </div>
-                        <CardContent>
-                            <Formik
-                                initialValues={initialValues}
-                                validationSchema={CategorySchema}
-                                onSubmit={(values,actions)=>
-                                    {
-                                        const formData=new FormData();
-                                        for(let [key,value] of Object.entries(values)){
-                                            formData.append(key,value);
-                                        }
-                                        newCategory(formData).then((res)=>{
-                                            if(res.ok && res.status === 201){ 
-                                                actions.resetForm()
-                                                actions.setSubmitting(false);
-                                            }else{
-                                                actions.setSubmitting(false);
-                                            }
-                                        })
-                                    }}
-                            >
-                                {({values,errors,touched,isSubmitting,handleChange,handleReset})=>(
+                <Formik
+                    initialValues={initialValues}
+                    validationSchema={CategorySchema}
+                    onSubmit={(values,actions)=>
+                        {
+                            const formData=new FormData();
+                            for(let [key,value] of Object.entries(values)){
+                                formData.append(key,value);
+                            }
+                            newCategory(formData).then((res)=>{
+                                if(res.ok && res.status === 201){ 
+                                    actions.resetForm()
+                                    actions.setSubmitting(false);
+                                }else{
+                                    actions.setSubmitting(false);
+                                }
+                            })
+                        }}
+                >
+
+                {({values,errors,touched,isSubmitting,handleChange,handleReset})=>(
 
                                     <Form>
                                         <Stack direction='column'  alignItems='center' padding={1} spacing={1}> 
@@ -100,18 +94,12 @@ export default function CreateCategory(){
                                                     </div>
                                                 )} 
 
-                                            <Button type='reset' variant='outlined' color='error' onClick={handleReset} disabled={isSubmitting} fullWidth>Reset</Button>
-                                            <Button type='submit' variant='outlined' disabled={isSubmitting} fullWidth>Create</Button>                   
-                                        </Stack>
-                                    </Form>
-
-                                )}  
-                                
-                            </Formik>
-                        </CardContent>
-                    </Card>
-                </div>
-            </div>
-        </div>
+                            <Button type='reset' variant='outlined' color='error' onClick={handleReset} disabled={isSubmitting} fullWidth>Reset</Button>
+                            <Button type='submit' variant='outlined' disabled={isSubmitting} fullWidth>Create</Button>                   
+                        </Stack>
+                    </Form>
+                )}  
+                </Formik>
+            </Stack>
     )
 }
