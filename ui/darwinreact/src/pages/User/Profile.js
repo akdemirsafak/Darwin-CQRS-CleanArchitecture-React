@@ -14,7 +14,7 @@ export default function Profile() {
     return (
        <>
         <h1> Kullanıcının profil sayfası</h1>
-        {!user && <Link to='/auth/login'>Giriş yap</Link>}
+        {!user && <Link to='/auth/login'>Burda olmamalısın loginde bir hata var</Link>}
         { user && <Button onClick={logoutHandle}> Çıkış yap</Button>}
        </>
     );

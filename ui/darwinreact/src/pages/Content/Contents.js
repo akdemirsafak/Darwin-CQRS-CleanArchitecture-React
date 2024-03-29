@@ -34,7 +34,7 @@ export default function Contents(){
         <Helmet>
             <title> İçerikler </title>
         </Helmet>
-            <div className="container mt-5">
+
             <Grid direction='row' container spacing={3}>
         {
             contents && contents.map((content, index) => (
@@ -42,7 +42,6 @@ export default function Contents(){
             ))
         }
             </Grid>
-        </div>
 
     </>
     );
