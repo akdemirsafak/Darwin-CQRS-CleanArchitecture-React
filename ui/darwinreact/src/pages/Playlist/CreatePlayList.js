@@ -1,13 +1,10 @@
 import {createPlaylist } from "../../services/playlist";
 import 'bootstrap/dist/css/bootstrap.min.css';
 import {
-    Card,
-    CardContent,
     Typography,
     TextField,
     Checkbox,
     Button,
-    CardMedia,
     FormControlLabel,
     Stack} from '@mui/material';
 import { Formik, Form } from 'formik';
