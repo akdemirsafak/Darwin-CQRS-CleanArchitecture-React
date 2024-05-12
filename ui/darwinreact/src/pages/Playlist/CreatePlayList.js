@@ -1,13 +1,10 @@
 import {createPlaylist } from "../../services/playlist";
 import 'bootstrap/dist/css/bootstrap.min.css';
 import {
-    Card,
-    CardContent,
     Typography,
     TextField,
     Checkbox,
     Button,
-    CardMedia,
     FormControlLabel,
     Stack} from '@mui/material';
 import { Formik, Form } from 'formik';
@@ -24,57 +21,54 @@ const initialValues={
 }
 
  return (
-    <div className='container'>
-        <div className='row'>
-            <div className='col-6 offset-3'>
-                <Card>
-                    <Typography variant="h3" color="initial" className='text-center my-2'>Oynatma listesi oluştur</Typography>
-                    <div className='align-content-center justify-content-center d-flex'>
-                        <CardMedia component='img' image={require("../../attachment_logo.png")}   className='align-self-center w-25' />
-                    </div>
-                    <CardContent>
-                        <Formik
-                            initialValues={initialValues}
-                            validationSchema={PlayListSchema}
-                            onSubmit={(values,actions)=>
-                                {
-                                    createPlaylist(values).then(res =>{
-                                        if(res.ok && res.status === 201)
-                                        { 
-                                            actions.resetForm()
-                                        }
-                                        actions.setSubmitting(false);
-                                    })
-                                    .catch((err)=>console.log(err))
-                                }}
-                        >
-                            {({values, errors, touched, isSubmitting, handleChange, handleReset})=>(
-                                <Form>
-                                    <Stack direction='column'  alignItems='center' padding={1} spacing={1}> 
-                                        <TextField fullWidth
-                                            id="name"
-                                            label="Name"
-                                            name='name'
-                                            onChange={handleChange}
-                                            value={values.name}
-                                            error={touched.name && Boolean(errors.name)}
-                                            helperText={touched.name && errors.name}
-                                            disabled={isSubmitting}
+
+            <Stack maxWidth='md' spacing={2}>
+                    
+                <Typography variant="h3" color="initial" className='text-center my-2'>Oynatma listesi oluştur</Typography>
+                    <img src={require("../../assets/logo.png")}   className='align-self-center' width={256} alt="logo"/>
+
+                    <Formik
+                        initialValues={initialValues}
+                        validationSchema={PlayListSchema}
+                        onSubmit={(values,actions)=>
+                            {
+                                createPlaylist(values).then(res =>{
+                                    if(res.ok && res.status === 201)
+                                    { 
+                                        actions.resetForm()
+                                    }
+                                    actions.setSubmitting(false);
+                                })
+                                .catch((err)=>console.log(err))
+                            }}
+                    >
+                        {({values, errors, touched, isSubmitting, handleChange, handleReset})=>(
+                            <Form>
+                                <Stack direction='column'  alignItems='center' padding={1} spacing={1}> 
+                                    <TextField fullWidth
+                                        id="name"
+                                        label="Name"
+                                        name='name'
+                                        onChange={handleChange}
+                                        value={values.name}
+                                        error={touched.name && Boolean(errors.name)}
+                                        helperText={touched.name && errors.name}
+                                        disabled={isSubmitting}
+                                    />
+                                    
+                                    <TextField 
+                                        multiline 
+                                        fullWidth 
+                                        rows={4} 
+                                        id='description'
+                                        label='Açıklama(Opsiyonel)'
+                                        name='description'
+                                        onChange={handleChange}
+                                        value={values.description}
+                                        error={touched.description && Boolean(errors.description)}
+                                        helperText={touched.description && errors.description}
+                                        disabled={isSubmitting}
                                         />
-                                        
-                                        <TextField 
-                                            multiline 
-                                            fullWidth 
-                                            rows={4} 
-                                            id='description'
-                                            label='Açıklama(Opsiyonel)'
-                                            name='description'
-                                            onChange={handleChange}
-                                            value={values.description}
-                                            error={touched.description && Boolean(errors.description)}
-                                            helperText={touched.description && errors.description}
-                                            disabled={isSubmitting}
-                                            />
 
                                          <FormControlLabel control={
                                         <Checkbox 
@@ -106,10 +100,7 @@ const initialValues={
                                 </Form>
                             )}        
                         </Formik>
-                    </CardContent>
-                </Card>
-            </div>
-        </div>
-    </div>
+                    </Stack>
+        
  )
 }

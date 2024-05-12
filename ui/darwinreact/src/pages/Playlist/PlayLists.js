@@ -1,8 +1,9 @@
 import { getPlayLists } from "../../services/playlist";
 import { useState, useEffect } from "react";
 import { Helmet } from "react-helmet";
-import {  Grid, Typography, Stack  } from '@mui/material'
+import { Grid, Typography, Stack, Button } from '@mui/material'
 import PlayListCardItem from "../../components/PlayLists/PlayListCardItem";
+import { NavLink } from "react-router-dom";
 
 export default function PlayLists() {
 
@@ -26,19 +27,15 @@ export default function PlayLists() {
             <Stack sx={{
                 marginTop:5
             }} >
-                <Grid>
-                    <Typography variant="h4" color="initial" sx={{
-                        marginX:4,
-                        fontWeight:500
-                    }}>
-                        İçerik Listeleri
-                    </Typography>
+                <Typography variant="h3" marginY={3} color="initial">Oynatma listeleri</Typography>
+                <Grid container justifyContent='end' className="mb-5">
+                    <Button variant="contained" color="primary" component={NavLink} to={`/playlists/create`}> Ekle</Button>
+                </Grid>    
+                <Grid direction='row' container >
+                    {playlists.map((playlist) => (
+                        <PlayListCardItem key={playlist.id} playlist={playlist}/>
+                    ))}
                 </Grid>
-                    <Grid direction='row' container >
-                        {playlists.map(playlist => (
-                            <PlayListCardItem key={playlist.id} playlist={playlist}/>
-                        ))}
-                    </Grid>
             </Stack>
         </>
     )

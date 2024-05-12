@@ -40,7 +40,6 @@ export default function PlayListDetail()
 
                         <CardActions>
                             <Button variant="contained" color="error" >
-                                {/* to={`/playlist/delete/${playlist.id}`} component={Link} */}
                                     Sil
                                 </Button>
                                 <Button variant="contained" color="warning" to={`/playlist/update/${playlist.id}`} component={Link}>

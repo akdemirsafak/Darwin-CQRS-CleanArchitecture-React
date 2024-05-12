@@ -6,7 +6,7 @@ namespace Darwin.Application.Services;
 
 public interface IContentService
 {
-    Task<CreatedContentResponse> CreateAsync(CreateContentRequest request);
+    Task<CreatedContentResponse> CreateAsync(CreateContentRequest request,string imageUrl);
     Task<UpdatedContentResponse> UpdateAsync(Guid id, UpdateContentRequest request);
     Task DeleteAsync(Guid id);
     Task<List<GetContentResponse>> GetAllAsync();

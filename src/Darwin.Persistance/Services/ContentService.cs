@@ -29,10 +29,10 @@ public sealed class ContentService : IContentService
         _contentReadRepository = contentReadRepository;
     }
 
-    public async Task<CreatedContentResponse> CreateAsync(CreateContentRequest request)
+    public async Task<CreatedContentResponse> CreateAsync(CreateContentRequest request, string imageUrl)
     {
         List<Mood> moodList=new();
-        foreach (var moodId in request.MoodIds)
+        foreach (var moodId in request.SelectedMoods)
         {
             Mood existMood = await _moodRepository.GetAsync(x => x.Id == moodId);
             if (existMood is not null)
@@ -43,7 +43,7 @@ public sealed class ContentService : IContentService
 
         //Categories
         List<Category> categoryList=new();
-        foreach (var categoryId in request.CategoryIds)
+        foreach (var categoryId in request.SelectedCategories)
         {
             Category existCategory = await _categoryRepository.GetAsync(x => x.Id == categoryId);
             if (existCategory != null)
@@ -56,7 +56,7 @@ public sealed class ContentService : IContentService
         {
             Name = request.Name,
             Lyrics= request.Lyrics,
-            ImageUrl = request.ImageUrl,
+            ImageUrl = imageUrl,
             IsUsable = request.IsUsable,
             Categories =categoryList,
             Moods =moodList
@@ -72,9 +72,7 @@ public sealed class ContentService : IContentService
     {
         var content = await _contentRepository.GetAsync(x => x.Id == id);
 
-        content.IsUsable = false;
-
-        await _contentRepository.UpdateAsync(content);
+       await _contentRepository.RemoveAsync(content);
     }
 
     public async Task<List<GetContentResponse>> GetAllAsync()
