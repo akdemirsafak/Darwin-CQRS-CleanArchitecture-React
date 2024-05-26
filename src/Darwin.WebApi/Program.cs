@@ -2,6 +2,7 @@
 using Darwin.WebApi.Configurations;
 using FluentValidation;
 using Hangfire;
+using MassTransit;
 using Microsoft.Extensions.DependencyModel;
 using Scrutor;
 using Serilog;
@@ -35,6 +36,18 @@ builder.Services.Scan(scan => scan.FromAssemblies(assemblies)
         .AsMatchingInterface()
         .WithScopedLifetime());
 
+
+builder.Services.AddMassTransit(x =>
+{
+    x.UsingRabbitMq((context, cfg) =>
+    {
+        cfg.Host(builder.Configuration["RabbitMQ:ConnectionString"], h =>
+        {
+            h.Username(builder.Configuration["RabbitMQ:UserName"]);
+            h.Password(builder.Configuration["RabbitMQ:Password"]);
+        });
+    });
+});
 
 
 

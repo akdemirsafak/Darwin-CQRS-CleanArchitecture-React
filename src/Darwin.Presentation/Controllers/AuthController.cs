@@ -3,7 +3,7 @@ using Darwin.Application.Features.Auth.RefreshToken;
 using Darwin.Application.Features.Auth.Register;
 using Darwin.Application.Features.Auth.RevokeAllTokens;
 using Darwin.Application.Features.Auth.RevokeToken;
-using Darwin.Application.Features.Users;
+using Darwin.Application.Features.Users.Commands.ResetPassword;
 using Darwin.Domain.RequestModels.Authentications;
 using Darwin.Domain.RequestModels.Users;
 using Darwin.Presentation.Abstraction;

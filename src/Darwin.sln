@@ -19,6 +19,10 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Darwin.Infrastructure", "Da
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Darwin.Presentation", "Darwin.Presentation\Darwin.Presentation.csproj", "{98B0C7D0-709A-472F-AFC7-5331ED471CE7}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Darwin.Notification", "Darwin.Notification\Darwin.Notification.csproj", "{9DF385FB-3A90-402E-B498-BA95B24A0EED}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Darwin.Shared", "Darwin.Shared\Darwin.Shared.csproj", "{E3EB3F1D-7715-43C8-AC5E-204AEC1608D9}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -49,6 +53,14 @@ Global
 		{98B0C7D0-709A-472F-AFC7-5331ED471CE7}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{98B0C7D0-709A-472F-AFC7-5331ED471CE7}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{98B0C7D0-709A-472F-AFC7-5331ED471CE7}.Release|Any CPU.Build.0 = Release|Any CPU
+		{9DF385FB-3A90-402E-B498-BA95B24A0EED}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{9DF385FB-3A90-402E-B498-BA95B24A0EED}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{9DF385FB-3A90-402E-B498-BA95B24A0EED}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{9DF385FB-3A90-402E-B498-BA95B24A0EED}.Release|Any CPU.Build.0 = Release|Any CPU
+		{E3EB3F1D-7715-43C8-AC5E-204AEC1608D9}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E3EB3F1D-7715-43C8-AC5E-204AEC1608D9}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E3EB3F1D-7715-43C8-AC5E-204AEC1608D9}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E3EB3F1D-7715-43C8-AC5E-204AEC1608D9}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

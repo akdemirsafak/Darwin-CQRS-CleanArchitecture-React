@@ -5,7 +5,9 @@ using Darwin.Application.Services;
 using Darwin.Domain.BaseDto;
 using Darwin.Domain.Common;
 using Darwin.Domain.RequestModels.Users;
+using Darwin.Shared.Events;
 using FluentValidation;
+using MassTransit;
 using MediatR;
 
 namespace Darwin.Application.Features.Auth.Register;
@@ -19,19 +21,22 @@ public static class Register
     {
         private readonly IAuthService _authService;
         private readonly IUserService _userService;
-        private readonly IPublisher _publisher;
+        private readonly MediatR.IPublisher _publisher;
         private readonly ILinkCreator _linkCreator;
+        private readonly ISendEndpointProvider _sendEndpointProvider;
 
         public CommandHandler(IAuthService authService,
-            IPublisher publisher,
             ILinkCreator linkCreator,
-            IUserService userService)
+            IUserService userService,
+            ISendEndpointProvider sendEndpointProvider,
+            MediatR.IPublisher publisher
+            )
         {
             _authService = authService;
-            _publisher = publisher;
             _linkCreator = linkCreator;
             _userService = userService;
-
+            _sendEndpointProvider = sendEndpointProvider;
+            _publisher = publisher;
         }
 
         public async Task<DarwinResponse<NoContent>> Handle(Command request, CancellationToken cancellationToken)
@@ -44,15 +49,24 @@ public static class Register
 
 
             //Create confirmation link
-            //var confirmationToken = await _userService.GenerateEmailConfirmationTokenAsyncByUserIdAsync(appUser.Id);
-            //var confirmationUrl = await _linkCreator.CreateTokenMailUrl("ConfirmEmail", "User", appUser.Id, confirmationToken);
+            var confirmationToken = await _userService.GenerateEmailConfirmationTokenAsyncByUserIdAsync(appUser.Id);
+            var confirmationUrl = await _linkCreator.CreateTokenMailUrl("ConfirmEmail", "User", appUser.Id, confirmationToken);
 
 
+            var sendEndpoint=await _sendEndpointProvider.GetSendEndpoint(new System.Uri("queue:user-created-event-queue"));
 
-            ////Send welcome message with confirmation link
-            //var userCreatedEventModel = new UserCreatedMailModel(appUser.Email!, confirmationUrl, appUser.CreatedOnUtc);
-            //await _publisher.Publish(new UserCreatedSendMailEvent(userCreatedEventModel));
-
+            var userCreatedEvent=new UserCreatedEvent
+            {
+                Email = appUser.Email!,
+                Name = appUser.Name,
+                LastName = appUser.LastName,
+                UserName = appUser.UserName!,
+                PhoneNumber = appUser.PhoneNumber,
+                CreatedDate = appUser.CreatedOnUtc,
+                EmailConfirmationLink=confirmationUrl
+            };
+            await sendEndpoint.Send<UserCreatedEvent>(userCreatedEvent);
+           
             return DarwinResponse<NoContent>.Success(201);
         }
     }

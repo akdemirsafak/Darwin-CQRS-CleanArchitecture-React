@@ -1,5 +1,4 @@
 ﻿using Azure.Storage.Blobs;
-using Darwin.Infrastructure.Options;
 using Darwin.Service.TokenOperations;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
@@ -11,7 +10,6 @@ public static class InfrastructureServiceInstaller
 {
     public static void AddInfrastructureServices(this IServiceCollection services, IConfiguration configuration)
     {
-        services.Configure<EmailSettings>(configuration.GetSection("EmailSettings"));
 
         var tokenOptions = configuration.GetSection("AppTokenOptions").Get<AppTokenOptions>();
 

@@ -1,34 +1,40 @@
 ﻿using Darwin.Application.Services;
-using Darwin.Domain.Dtos;
+using Darwin.Shared.Events;
+using MassTransit;
 
 namespace Darwin.Application.CronJobs;
 
 
 public sealed class WeeklyContents
 {
-    private readonly IEmailService _emailService;
     private readonly IUserService _userService;
     private readonly IContentService _contentService;
-    public WeeklyContents(IEmailService emailService, IUserService userService, IContentService contentService)
+    private readonly ISendEndpointProvider _sendEndpointProvider;
+    public WeeklyContents(
+        IUserService userService,
+        IContentService contentService,
+        ISendEndpointProvider sendEndpointProvider)
     {
-        _emailService = emailService;
         _userService = userService;
         _contentService = contentService;
+        _sendEndpointProvider = sendEndpointProvider;
     }
 
 
-    public async Task SendNew5Contents()
+    public async Task SendNewContents()
     {
         var users = await _userService.GetAllAsync();
-
 
         var newContents = await _contentService.GetNewContentsAsync(5);
 
         var newContent = string.Join("", newContents.Select(content => $"<li>{content.Name}</li>"));
+      
+
         if (users is not null)
         {
+            #region MailBody
             var to = users.Select(x => x.Email).ToList();
-            var title = "Darwin'de Haftanın ennnn yenileri Birden fazla kişiye";
+            var subject = "Darwin'de Haftanın ennnn yenileri ";
             var body = $@"
             <html>
                 <body>
@@ -60,7 +66,15 @@ public sealed class WeeklyContents
             </html>
 ";
 
-            await _emailService.SendNew5ContentsAsync(new SendEmailModel(to, title, body, true));
+            #endregion
+
+            var sender= await _sendEndpointProvider.GetSendEndpoint(new Uri("queue:send-newcontents-queue"));
+            await sender.Send(new SendNewContentsEvent 
+            {
+                To=to,
+                Subject = subject,
+                Body = body
+            });
         }
     }
 }
