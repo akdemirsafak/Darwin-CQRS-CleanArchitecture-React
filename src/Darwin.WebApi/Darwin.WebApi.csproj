@@ -21,6 +21,7 @@
     <ProjectReference Include="..\Darwin.Infrastructure\Darwin.Infrastructure.csproj" />
     <ProjectReference Include="..\Darwin.Persistance\Darwin.Persistance.csproj" />
     <ProjectReference Include="..\Darwin.Presentation\Darwin.Presentation.csproj" />
+    <ProjectReference Include="..\Darwin.Shared\Darwin.Shared.csproj" />
   </ItemGroup>
 
   <ItemGroup>

@@ -1,0 +1,6 @@
+@Darwin.Notification_HostAddress = http://localhost:5054
+
+GET {{Darwin.Notification_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###

@@ -4,7 +4,7 @@ using Darwin.Domain.BaseDto;
 using Darwin.Domain.Common;
 using Darwin.Domain.RequestModels.Users;
 
-namespace Darwin.Application.Features.Users;
+namespace Darwin.Application.Features.Users.Commands.ResetPassword;
 
 public static class ResetPasswordEmailVerify
 {

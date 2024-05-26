@@ -37,7 +37,7 @@ public static class ApplicationServiceInstaller
         {
             x.UseSqlServerStorage(configuration.GetConnectionString("HangfireJobsConnection"));
 
-            RecurringJob.AddOrUpdate<WeeklyContents>(j => j.SendNew5Contents(),
+            RecurringJob.AddOrUpdate<WeeklyContents>(j => j.SendNewContents(),
                 Cron.Weekly(DayOfWeek.Friday, 12), TimeZoneInfo.Local);
         });
         services.AddHangfireServer();

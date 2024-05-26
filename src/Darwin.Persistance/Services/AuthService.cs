@@ -83,6 +83,9 @@ public sealed class AuthService : IAuthService
 
         var loginResult = await _signInManager.CheckPasswordSignInAsync(existUser, request.Password, true);
 
+
+        //Buralarda kıyaslamaları yapalım hata fırlatıyor.
+
         // User Locked
         if (loginResult.IsLockedOut)
             throw new AuthenticationException("User locked.Try again 5 min.");
