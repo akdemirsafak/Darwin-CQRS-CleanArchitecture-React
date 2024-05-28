@@ -2,7 +2,7 @@
 using Darwin.Application.Features.Contents.Queries;
 using Darwin.Domain.RequestModels;
 using Darwin.Domain.RequestModels.Contents;
-using Darwin.Presentation.Abstraction;
+using Darwin.Shared.Base;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -11,8 +11,11 @@ namespace Darwin.Presentation.Controllers;
 
 public class ContentController : CustomBaseController
 {
-    public ContentController(IMediator mediator) : base(mediator)
+    private readonly IMediator _mediator;
+
+    public ContentController(IMediator mediator)
     {
+        _mediator = mediator;
     }
 
     [HttpGet]

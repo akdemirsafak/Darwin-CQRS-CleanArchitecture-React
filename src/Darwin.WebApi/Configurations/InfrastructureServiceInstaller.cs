@@ -1,5 +1,4 @@
-﻿using Azure.Storage.Blobs;
-using Darwin.Service.TokenOperations;
+﻿using Darwin.Service.TokenOperations;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
@@ -32,8 +31,6 @@ public static class InfrastructureServiceInstaller
             };
         });
         services.Configure<AppTokenOptions>(configuration.GetSection("AppTokenOptions"));
-
-        services.AddSingleton(new BlobServiceClient(configuration.GetValue<string>("AzureBlobStorageConnectionString")));
 
     }
 }

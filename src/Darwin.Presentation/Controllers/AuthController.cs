@@ -6,7 +6,7 @@ using Darwin.Application.Features.Auth.RevokeToken;
 using Darwin.Application.Features.Users.Commands.ResetPassword;
 using Darwin.Domain.RequestModels.Authentications;
 using Darwin.Domain.RequestModels.Users;
-using Darwin.Presentation.Abstraction;
+using Darwin.Shared.Base;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 
@@ -15,8 +15,10 @@ namespace Darwin.Presentation.Controllers;
 [Route("[controller]/[action]")]
 public class AuthController : CustomBaseController
 {
-    public AuthController(IMediator mediator) : base(mediator)
+    private readonly IMediator _mediator;
+    public AuthController(IMediator mediator)
     {
+        _mediator = mediator;
     }
     [HttpPost]
     public async Task<IActionResult> Login(LoginRequest request)

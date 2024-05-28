@@ -1,97 +1,72 @@
-﻿using Azure.Storage.Blobs;
-using Azure.Storage.Blobs.Models;
-using Darwin.Application.Services;
-using Darwin.Domain.Azure;
+﻿using Darwin.Application.Services;
+using Darwin.Share.Dtos;
+using Darwin.Shared.Dtos.Azure;
 using Microsoft.AspNetCore.Http;
+using System.Net.Http.Json;
 
-namespace Darwin.Service.Services;
+namespace Darwin.Infrastructure.Services;
 
 public class AzureBlobStorageService : IAzureBlobStorageService
 {
-    private readonly BlobServiceClient _blobServiceClient;
+    private readonly HttpClient _httpClient;
 
-    public AzureBlobStorageService(BlobServiceClient blobServiceClient)
+    public AzureBlobStorageService(HttpClient httpClient)
     {
-        _blobServiceClient = blobServiceClient;
+        _httpClient = httpClient;
     }
 
-    public async Task<BlobResponseDto> DeleteAsync(string fileName, string containerName)
+    #region DeleteAsync
+
+    public async Task<DarwinResponse<BlobResponseDto>> DeleteAsync(string fileName, string containerName)
     {
-        var blobContainter=_blobServiceClient.GetBlobContainerClient(containerName);
-        BlobClient file = blobContainter.GetBlobClient(fileName);
-        await file.DeleteIfExistsAsync();
-        return new BlobResponseDto
+
+        var clientResponse= await _httpClient.DeleteAsync($"blobs/delete?fileName={fileName}&containerName={containerName}");
+        var responseData=await clientResponse.Content.ReadFromJsonAsync<BlobResponseDto>();
+        if (!clientResponse.IsSuccessStatusCode)
         {
-            IsSuccess = true,
-            Status = $"File {fileName} Deleted Successfully."
-        };
-    }
-
-    public async Task<BlobDto> DownloadAsync(string fileName, string containerName)
-    {
-        BlobContainerClient blobContainerClient = _blobServiceClient.GetBlobContainerClient(containerName);
-
-        BlobClient file = blobContainerClient.GetBlobClient(fileName);
-
-
-        if (await file.ExistsAsync())
-        {
-            BlobDownloadInfo download = await file.DownloadAsync();
-            return new BlobDto
-            {
-                Name = file.Name,
-                ContentType = download.ContentType,
-                Url = file.Uri.AbsoluteUri,
-                Content = download.Content
-            };
+            return DarwinResponse<BlobResponseDto>.Fail(responseData.Status, 500);
         }
-        return null;
+
+        return DarwinResponse<BlobResponseDto>.Success(new BlobResponseDto { IsSuccess = true, Status = $"File {fileName} Deleted Successfully." });
+    }
+    #endregion
+    public async Task<DarwinResponse<List<BlobDto>>> ListAsync(string containerName)
+    {
+
+        var response=await _httpClient.GetFromJsonAsync<DarwinResponse<List<BlobDto>>>($"blobs/listblobs?containerName={containerName}");
+
+        return DarwinResponse<List<BlobDto>>.Success(response.Data);
 
     }
 
-    public async Task<List<BlobDto>> ListAsync(string containerName)
+    #region UploadAsync
+    public async Task<DarwinResponse<BlobResponseDto>> UploadAsync(IFormFile file, string containerName)
     {
-        List<BlobDto> files= new();
 
-        var blobContainerClient = _blobServiceClient.GetBlobContainerClient(containerName);
-
-
-        await foreach (var blobItem in blobContainerClient.GetBlobsAsync())
+        if (file == null || file.Length == 0)
         {
-
-            string uri=blobContainerClient.Uri.ToString();
-            string name=blobItem.Name;
-            var fullUri = $"{uri}/{name}";
-            files.Add(new BlobDto
-            {
-                Name = name,
-                Url = fullUri,
-                ContentType = blobItem.Properties.ContentType
-            });
+            return DarwinResponse<BlobResponseDto>.Fail("Dosya geçersiz.");
         }
-        return files;
-    }
 
-    public async Task<BlobResponseDto> UploadAsync(IFormFile blob, string containerName)
-    {
 
-        BlobContainerClient blobContainerClient = _blobServiceClient.GetBlobContainerClient(containerName);
-        blobContainerClient.CreateIfNotExists(PublicAccessType.BlobContainer);
-
-        BlobClient file = blobContainerClient.GetBlobClient(blob.FileName);
-        await using var data = blob.OpenReadStream();
-        await file.UploadAsync(data, true);
-
-        return new BlobResponseDto
+        using (var content = new MultipartFormDataContent())
         {
-            IsSuccess = true,
-            Status = $"File {blob.FileName} Uploaded Successfully.",
-            Blob = new BlobDto
+            var randomFilename = $"{Guid.NewGuid().ToString()}{Path.GetExtension(file.FileName)}";
+            using var ms = new MemoryStream();
+            await file.CopyToAsync(ms);
+            var multipartContent = new MultipartFormDataContent();
+            multipartContent.Add(new ByteArrayContent(ms.ToArray()), "file", randomFilename);
+            multipartContent.Add(new StringContent(containerName), "containerName");
+
+            var clientResponse = await _httpClient.PostAsync("blobs/upload", multipartContent);
+            var response= await clientResponse.Content.ReadFromJsonAsync<DarwinResponse<BlobResponseDto>>();
+            if (!clientResponse.IsSuccessStatusCode)
             {
-                Name = file.Name,
-                Url = file.Uri.AbsoluteUri,
-                ContentType = blob.ContentType
+                return DarwinResponse<BlobResponseDto>.Fail(response.Data.Status);
             }
-        };
+            return DarwinResponse<BlobResponseDto>.Success(response.Data, 201);
+
+        }
     }
+    #endregion
 }

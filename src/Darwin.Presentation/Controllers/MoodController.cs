@@ -2,7 +2,7 @@
 using Darwin.Application.Features.Moods.Queries;
 using Darwin.Domain.RequestModels;
 using Darwin.Domain.RequestModels.Moods;
-using Darwin.Presentation.Abstraction;
+using Darwin.Shared.Base;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -12,8 +12,11 @@ namespace Darwin.Presentation.Controllers;
 
 public class MoodController : CustomBaseController
 {
-    public MoodController(IMediator mediator) : base(mediator)
+    private readonly IMediator _mediator;
+
+    public MoodController(IMediator mediator)
     {
+        _mediator = mediator;
     }
 
     [HttpGet]

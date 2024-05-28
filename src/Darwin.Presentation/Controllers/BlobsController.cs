@@ -1,4 +1,5 @@
 ﻿using Darwin.Application.Services;
+using Darwin.Shared.Base;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
@@ -6,7 +7,7 @@ namespace Darwin.Presentation.Controllers;
 
 [Route("[controller]/[action]")]
 [ApiController]
-public class BlobsController : ControllerBase
+public class BlobsController : CustomBaseController
 {
     private readonly IAzureBlobStorageService _azureBlobStorageService;
 
@@ -19,7 +20,7 @@ public class BlobsController : ControllerBase
     public async Task<IActionResult> ListBlobs(string containerName)
     {
 
-        return Ok(await _azureBlobStorageService.ListAsync(containerName));
+        return CreateActionResult(await _azureBlobStorageService.ListAsync(containerName));
     }
 
 
@@ -27,20 +28,14 @@ public class BlobsController : ControllerBase
     public async Task<IActionResult> Upload(IFormFile file, string containerName)
     {
         var response= await _azureBlobStorageService.UploadAsync(file,containerName);
-        return Ok();
+        return CreateActionResult(response);
     }
 
-
-    [HttpPost]
-    public async Task<IActionResult> Download(string fileName, string containerName)
-    {
-        var response= await _azureBlobStorageService.DownloadAsync(fileName,containerName);
-        return File(response.Content, response.ContentType, response.Name);
-    }
 
     [HttpDelete]
     public async Task<IActionResult> Delete(string fileName, string containerName)
     {
-        return Ok(await _azureBlobStorageService.DeleteAsync(fileName, containerName));
+
+        return CreateActionResult(await _azureBlobStorageService.DeleteAsync(fileName, containerName));
     }
 }

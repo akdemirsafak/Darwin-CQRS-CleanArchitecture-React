@@ -1,20 +1,14 @@
-﻿using Darwin.Domain.BaseDto;
-using MediatR;
+﻿using Darwin.Share.Dtos;
 using Microsoft.AspNetCore.Mvc;
 
-namespace Darwin.Presentation.Abstraction
+namespace Darwin.Shared.Base
 {
     [ApiController]
     [Route("[controller]")]
     //[EnableRateLimiting("TokenBucket")]
     public class CustomBaseController : ControllerBase
     {
-        protected readonly IMediator _mediator;
 
-        public CustomBaseController(IMediator mediator)
-        {
-            _mediator = mediator;
-        }
         [NonAction]
         public IActionResult CreateActionResult<T>(DarwinResponse<T> response)
         {

@@ -2,7 +2,7 @@
 using Darwin.Application.Features.Users.Commands;
 using Darwin.Application.Features.Users.Queries;
 using Darwin.Domain.RequestModels.Users;
-using Darwin.Presentation.Abstraction;
+using Darwin.Shared.Base;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -13,9 +13,12 @@ namespace Darwin.Presentation.Controllers;
 [Route("[action]")]
 public class UserController : CustomBaseController
 {
-    public UserController(IMediator mediator) : base(mediator)
+    private readonly IMediator _mediator;
+    public UserController(IMediator mediator)
     {
+        _mediator = mediator;
     }
+
     [HttpGet("{id}")]
     public async Task<IActionResult> Get(Guid id)
     {

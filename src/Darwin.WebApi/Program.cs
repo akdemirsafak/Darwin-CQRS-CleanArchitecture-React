@@ -18,7 +18,7 @@ builder.Services.AddEndpointsApiExplorer();
 
 
 
-
+builder.Services.AddHttpClientServices();
 builder.Services.AddApplicationServices(builder.Configuration);
 builder.Services.AddPersistanceServices(builder.Configuration);
 builder.Services.AddInfrastructureServices(builder.Configuration);

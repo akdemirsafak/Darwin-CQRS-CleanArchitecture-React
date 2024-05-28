@@ -1,8 +1,8 @@
 ﻿using Darwin.Notification.Settings;
-using Microsoft.Extensions.Options;
-using System.Net.Mail;
-using System.Net;
 using Darwin.Shared.Events;
+using Microsoft.Extensions.Options;
+using System.Net;
+using System.Net.Mail;
 
 namespace Darwin.Notification.Services;
 
@@ -11,7 +11,7 @@ public class EmailService : IEmailService
     private readonly EmailSettings _emailSettings;
     public EmailService(IOptions<EmailSettings> settings)
     {
-        _emailSettings=settings.Value;
+        _emailSettings = settings.Value;
     }
 
     public async Task SendWellcomeEmailAsync(UserCreatedEvent mailDetails)

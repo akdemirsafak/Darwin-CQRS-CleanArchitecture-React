@@ -20,5 +20,5 @@ public class Mood : BaseEntity, IAuditableEntity
     public string? UpdatedBy { get; set; }
     public bool IsDeleted { get; set; }
     public DateTime? DeletedOnUtc { get; set; }
-    public string? DeletedBy { get ; set ; }
+    public string? DeletedBy { get; set; }
 }

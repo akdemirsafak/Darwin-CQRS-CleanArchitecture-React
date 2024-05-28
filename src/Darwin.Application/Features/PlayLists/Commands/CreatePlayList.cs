@@ -1,8 +1,8 @@
 ﻿using Darwin.Application.Common;
 using Darwin.Application.Services;
-using Darwin.Domain.BaseDto;
 using Darwin.Domain.RequestModels.PlayLists;
 using Darwin.Domain.ResponseModels.PlayLists;
+using Darwin.Share.Dtos;
 using FluentValidation;
 
 namespace Darwin.Application.Features.PlayLists.Commands;

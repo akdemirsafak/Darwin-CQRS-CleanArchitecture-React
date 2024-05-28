@@ -1,26 +1,23 @@
 ﻿using Darwin.Application.Common;
 using Darwin.Application.Services;
-using Darwin.Domain.BaseDto;
-using Darwin.Domain.Common;
+using Darwin.Share.Dtos;
 using FluentValidation;
 
 namespace Darwin.Application.Features.Contents.Commands;
 
 public static class DeleteContent
 {
-    public record Command(Guid Id) : ICommand<DarwinResponse<NoContent>>;
+    public record Command(Guid Id) : ICommand<DarwinResponse<NoContentDto>>;
 
     public class CommandHandler(IContentService _contentService)
-        : ICommandHandler<Command, DarwinResponse<NoContent>>
+        : ICommandHandler<Command, DarwinResponse<NoContentDto>>
     {
-
-        public async Task<DarwinResponse<NoContent>> Handle(Command request, CancellationToken cancellationToken)
+        public async Task<DarwinResponse<NoContentDto>> Handle(Command request, CancellationToken cancellationToken)
         {
             await _contentService.DeleteAsync(request.Id);
-            return DarwinResponse<NoContent>.Success(204);
+            return DarwinResponse<NoContentDto>.Success(204);
         }
     }
-
 
     public class DeleteContentCommandValidator : AbstractValidator<Command>
     {

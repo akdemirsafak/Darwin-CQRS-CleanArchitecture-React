@@ -1,9 +1,10 @@
 ﻿using Darwin.Application.Common;
 using Darwin.Application.Services;
-using Darwin.Domain.Azure;
-using Darwin.Domain.BaseDto;
 using Darwin.Domain.RequestModels.Contents;
 using Darwin.Domain.ResponseModels.Contents;
+using Darwin.Share.Dtos;
+using Darwin.Shared.Dtos.Azure;
+using Darwin.Shared.Utils;
 using FluentValidation;
 
 namespace Darwin.Application.Features.Contents.Commands;
@@ -17,7 +18,7 @@ public static class CreateContent
         private readonly IContentService _contentService;
         private readonly IAzureBlobStorageService _azureBlobStorageService;
 
-        public CommandHandler(IContentService contentService, 
+        public CommandHandler(IContentService contentService,
             IAzureBlobStorageService azureBlobStorageService)
         {
             _contentService = contentService;
@@ -26,13 +27,13 @@ public static class CreateContent
 
         public async Task<DarwinResponse<CreatedContentResponse>> Handle(Command request, CancellationToken cancellationToken)
         {
-            BlobResponseDto uploadResponse = await _azureBlobStorageService.UploadAsync(request.Model.ImageFile, "contentimages");
-            string imageUrl = uploadResponse.Blob.Url;
+            var uploadResponse=await _azureBlobStorageService.UploadAsync(request.Model.ImageFile, AzureContainerNames.Contents);
+            BlobResponseDto uploadBlobResponse =uploadResponse.Data;
+            string imageUrl = uploadBlobResponse.Blob.Url;
 
-            return DarwinResponse<CreatedContentResponse>.Success(await _contentService.CreateAsync(request.Model,imageUrl), 201);
+            return DarwinResponse<CreatedContentResponse>.Success(await _contentService.CreateAsync(request.Model, imageUrl), 201);
         }
     }
-
     public class CreateContentCommandValidator : AbstractValidator<Command>
     {
         public CreateContentCommandValidator()

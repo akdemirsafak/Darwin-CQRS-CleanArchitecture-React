@@ -1,0 +1,6 @@
+@Darwin.FileService_HostAddress = http://localhost:5063
+
+GET {{Darwin.FileService_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###

@@ -1,14 +1,13 @@
 ﻿using Darwin.Application.Common;
 using Darwin.Application.Services;
-using Darwin.Domain.BaseDto;
 using Darwin.Domain.ResponseModels.Contents;
+using Darwin.Share.Dtos;
 using FluentValidation;
 
 namespace Darwin.Application.Features.Contents.Queries;
 
 public static class GetContentById
 {
-
     public record Query(Guid Id) : IQuery<DarwinResponse<GetContentByIdResponse>>;
 
     public class QueryHandler : IQueryHandler<Query, DarwinResponse<GetContentByIdResponse>>

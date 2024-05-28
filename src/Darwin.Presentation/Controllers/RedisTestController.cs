@@ -1,5 +1,5 @@
 using Darwin.Application.Features.RedisTests;
-using Darwin.Presentation.Abstraction;
+using Darwin.Shared.Base;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -8,9 +8,10 @@ namespace Darwin.Presentation.Controllers;
 
 public class RedisTestController : CustomBaseController
 {
-    public RedisTestController(IMediator mediator) : base(mediator)
+    private readonly IMediator _mediator;
+    public RedisTestController(IMediator mediator)
     {
-
+        _mediator = mediator;
     }
     [HttpPost]
     [Authorize]

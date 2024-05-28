@@ -1,8 +1,7 @@
 ﻿using Darwin.Application.Common;
 using Darwin.Application.Helper;
 using Darwin.Application.Services;
-using Darwin.Domain.BaseDto;
-using Darwin.Domain.Common;
+using Darwin.Share.Dtos;
 using Darwin.Shared.Events;
 using MassTransit;
 
@@ -10,9 +9,9 @@ namespace Darwin.Application.Features.Users;
 
 public static class VerifyEmail
 {
-    public record Command() : ICommand<DarwinResponse<NoContent>>;
+    public record Command() : ICommand<DarwinResponse<NoContentDto>>;
 
-    public class CommandHandler : ICommandHandler<Command, DarwinResponse<NoContent>>
+    public class CommandHandler : ICommandHandler<Command, DarwinResponse<NoContentDto>>
     {
         private readonly IUserService _userService;
         private readonly ICurrentUser _currentUser;
@@ -20,7 +19,7 @@ public static class VerifyEmail
         private readonly ISendEndpointProvider _sendEndpointProvider;
 
         public CommandHandler(IUserService userService,
-            ICurrentUser currentUser, 
+            ICurrentUser currentUser,
             ILinkCreator linkCreator,
             ISendEndpointProvider sendEndpointProvider)
         {
@@ -30,13 +29,13 @@ public static class VerifyEmail
             _sendEndpointProvider = sendEndpointProvider;
         }
 
-        public async Task<DarwinResponse<NoContent>> Handle(Command request, CancellationToken cancellationToken)
+        public async Task<DarwinResponse<NoContentDto>> Handle(Command request, CancellationToken cancellationToken)
         {
             var user= await _userService.FindByIdAsync(_currentUser.GetUserId);
             var confirmationToken=await _userService.GenerateEmailConfirmationTokenAsyncByUserIdAsync(_currentUser.GetUserId);
             var confirmationUrl = await _linkCreator.CreateTokenMailUrl("ConfirmEmail", "Auth", _currentUser.GetUserId, confirmationToken);
 
-            
+
             var verifyEmailMessage=new VerifyEmailEvent
             {
                 FullName = $"{user.Name} {user.LastName}",
@@ -48,7 +47,7 @@ public static class VerifyEmail
             var sendEndpoint=await _sendEndpointProvider.GetSendEndpoint(new System.Uri("queue:verify-email-event-queue"));
             await sendEndpoint.Send<VerifyEmailEvent>(verifyEmailMessage, cancellationToken);
 
-            return DarwinResponse<NoContent>.Success();
+            return DarwinResponse<NoContentDto>.Success();
         }
     }
 }

@@ -1,5 +1,5 @@
 ﻿using Darwin.Application.Features.Youtube;
-using Darwin.Presentation.Abstraction;
+using Darwin.Shared.Base;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 
@@ -8,8 +8,10 @@ namespace Darwin.Presentation.Controllers;
 
 public class YoutubeController : CustomBaseController
 {
-    public YoutubeController(IMediator mediator) : base(mediator)
+    private readonly IMediator _mediator;
+    public YoutubeController(IMediator mediator)
     {
+        _mediator = mediator;
     }
     [HttpGet]
     public async Task<IActionResult> Get(string? pageToken, int maxResults = 10)

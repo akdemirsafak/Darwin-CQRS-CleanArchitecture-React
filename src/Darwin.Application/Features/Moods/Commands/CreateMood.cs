@@ -1,9 +1,10 @@
 ﻿using Darwin.Application.Common;
 using Darwin.Application.Services;
-using Darwin.Domain.Azure;
-using Darwin.Domain.BaseDto;
 using Darwin.Domain.RequestModels.Moods;
 using Darwin.Model.Response.Moods;
+using Darwin.Share.Dtos;
+using Darwin.Shared.Dtos.Azure;
+using Darwin.Shared.Utils;
 using FluentValidation;
 
 namespace Darwin.Application.Features.Moods.Commands;
@@ -14,13 +15,12 @@ public static class CreateMood
     public class CommandHandler : ICommandHandler<Command, DarwinResponse<CreatedMoodResponse>>
     {
         private readonly IMoodService _moodService;
-        private readonly IFileService _fileService;
         private readonly IAzureBlobStorageService _azureBlobStorageService;
 
-        public CommandHandler(IMoodService moodService, IFileService fileService, IAzureBlobStorageService azureBlobStorageService)
+        public CommandHandler(IMoodService moodService,
+            IAzureBlobStorageService azureBlobStorageService)
         {
             _moodService = moodService;
-            _fileService = fileService;
             _azureBlobStorageService = azureBlobStorageService;
         }
 
@@ -31,8 +31,9 @@ public static class CreateMood
 
             //var imageUrl= await _fileService.UploadImage(request.Model.ImageFile);
 
-            BlobResponseDto uploadResponse = await _azureBlobStorageService.UploadAsync(request.Model.ImageFile, "moodimages");
-            string imageUrl = uploadResponse.Blob.Url;
+            var uploadMoodResponse=await _azureBlobStorageService.UploadAsync(request.Model.ImageFile, AzureContainerNames.Moods);
+            BlobResponseDto responseData = uploadMoodResponse.Data; //Content
+            string imageUrl = responseData.Blob.Url;
             var createdMoodResponse=await _moodService.CreateAsync(request.Model.Name,request.Model.IsUsable,imageUrl);
 
             return DarwinResponse<CreatedMoodResponse>.Success(createdMoodResponse, 201);

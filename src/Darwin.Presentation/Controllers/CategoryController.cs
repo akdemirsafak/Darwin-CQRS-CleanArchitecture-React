@@ -2,7 +2,7 @@
 using Darwin.Application.Features.Categories.Queries;
 using Darwin.Domain.RequestModels;
 using Darwin.Domain.RequestModels.Categories;
-using Darwin.Presentation.Abstraction;
+using Darwin.Shared.Base;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -13,8 +13,11 @@ namespace Darwin.Presentation.Controllers;
 
 public class CategoryController : CustomBaseController
 {
-    public CategoryController(IMediator mediator) : base(mediator)
+    private readonly IMediator _mediator;
+
+    public CategoryController(IMediator mediator)
     {
+        _mediator = mediator;
     }
 
     [HttpGet]

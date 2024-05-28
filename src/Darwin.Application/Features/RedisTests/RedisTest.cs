@@ -1,30 +1,28 @@
 ﻿using Darwin.Application.Common;
 using Darwin.Application.Services;
-using Darwin.Domain.BaseDto;
-using Darwin.Domain.Common;
+using Darwin.Share.Dtos;
 
-namespace Darwin.Application.Features.RedisTests
+namespace Darwin.Application.Features.RedisTests;
+
+public static class RedisTest
 {
-    public static class RedisTest
+    public record RedisCategoryTestCommand() : ICommand<DarwinResponse<NoContentDto>>;
+
+    public class CommandHandler : ICommandHandler<RedisCategoryTestCommand, DarwinResponse<NoContentDto>>
     {
-        public record RedisCategoryTestCommand() : ICommand<DarwinResponse<NoContent>>;
 
-        public class CommandHandler : ICommandHandler<RedisCategoryTestCommand, DarwinResponse<NoContent>>
+        private readonly IRedisTestService _redisTestService;
+
+        public CommandHandler(IRedisTestService redisTestService)
         {
+            _redisTestService = redisTestService;
+        }
 
-            private readonly IRedisTestService _redisTestService;
+        public async Task<DarwinResponse<NoContentDto>> Handle(RedisCategoryTestCommand request, CancellationToken cancellationToken)
+        {
+            await _redisTestService.CreateFakeCategoryDataAsync();
+            return DarwinResponse<NoContentDto>.Success(201);
 
-            public CommandHandler(IRedisTestService redisTestService)
-            {
-                _redisTestService = redisTestService;
-            }
-
-            public async Task<DarwinResponse<NoContent>> Handle(RedisCategoryTestCommand request, CancellationToken cancellationToken)
-            {
-                await _redisTestService.CreateFakeCategoryDataAsync();
-                return DarwinResponse<NoContent>.Success(201);
-
-            }
         }
     }
 }

@@ -1,8 +1,8 @@
 ﻿using Darwin.Application.Common;
 using Darwin.Application.TokenOperations;
-using Darwin.Domain.BaseDto;
 using Darwin.Domain.Dtos;
 using Darwin.Domain.RequestModels.Authentications;
+using Darwin.Share.Dtos;
 
 namespace Darwin.Application.Features.Auth.RefreshToken;
 

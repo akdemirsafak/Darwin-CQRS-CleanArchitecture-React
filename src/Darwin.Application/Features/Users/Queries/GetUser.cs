@@ -1,7 +1,7 @@
 using Darwin.Application.Common;
 using Darwin.Application.Services;
-using Darwin.Domain.BaseDto;
 using Darwin.Domain.ResponseModels.Users;
+using Darwin.Share.Dtos;
 
 namespace Darwin.Application.Features.Users.Queries;
 

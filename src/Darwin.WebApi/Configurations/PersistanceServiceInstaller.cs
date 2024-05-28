@@ -1,10 +1,8 @@
 ﻿using Darwin.Application.Helper;
 using Darwin.Domain.Entities;
-using Darwin.Domain.RepositoryCore;
 using Darwin.Persistance.DbContexts;
 using Darwin.Persistance.Helper;
 using Darwin.Persistance.Interceptors;
-using Darwin.Persistance.Repository;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using System.Reflection;

@@ -1,14 +1,13 @@
 using Darwin.Application.Common;
 using Darwin.Application.Services;
-using Darwin.Domain.BaseDto;
-using Darwin.Domain.Common;
+using Darwin.Share.Dtos;
 
 namespace Darwin.Application.Features.Users.Commands
 {
     public static class SuspendUser
     {
-        public record Command() : ICommand<DarwinResponse<NoContent>>;
-        public class CommandHandler : ICommandHandler<Command, DarwinResponse<NoContent>>
+        public record Command() : ICommand<DarwinResponse<NoContentDto>>;
+        public class CommandHandler : ICommandHandler<Command, DarwinResponse<NoContentDto>>
         {
             private readonly IUserService _userService;
 
@@ -18,10 +17,10 @@ namespace Darwin.Application.Features.Users.Commands
             }
 
 
-            public async Task<DarwinResponse<NoContent>> Handle(Command request, CancellationToken cancellationToken)
+            public async Task<DarwinResponse<NoContentDto>> Handle(Command request, CancellationToken cancellationToken)
             {
                 await _userService.SuspendUserAsync();
-                return DarwinResponse<NoContent>.Success(204);
+                return DarwinResponse<NoContentDto>.Success(204);
             }
         }
     }

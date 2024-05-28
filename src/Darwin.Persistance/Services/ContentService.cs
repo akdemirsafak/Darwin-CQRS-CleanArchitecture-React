@@ -72,7 +72,7 @@ public sealed class ContentService : IContentService
     {
         var content = await _contentRepository.GetAsync(x => x.Id == id);
 
-       await _contentRepository.RemoveAsync(content);
+        await _contentRepository.RemoveAsync(content);
     }
 
     public async Task<List<GetContentResponse>> GetAllAsync()

@@ -28,7 +28,7 @@ public sealed class WeeklyContents
         var newContents = await _contentService.GetNewContentsAsync(5);
 
         var newContent = string.Join("", newContents.Select(content => $"<li>{content.Name}</li>"));
-      
+
 
         if (users is not null)
         {
@@ -69,9 +69,9 @@ public sealed class WeeklyContents
             #endregion
 
             var sender= await _sendEndpointProvider.GetSendEndpoint(new Uri("queue:send-newcontents-queue"));
-            await sender.Send(new SendNewContentsEvent 
+            await sender.Send(new SendNewContentsEvent
             {
-                To=to,
+                To = to,
                 Subject = subject,
                 Body = body
             });

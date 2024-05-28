@@ -2,7 +2,7 @@
 using Darwin.Application.Features.PlayLists.Queries;
 using Darwin.Application.Helper;
 using Darwin.Domain.RequestModels.PlayLists;
-using Darwin.Presentation.Abstraction;
+using Darwin.Shared.Base;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -12,10 +12,12 @@ namespace Darwin.Presentation.Controllers;
 [Authorize]
 public class PlayListController : CustomBaseController
 {
+    private readonly IMediator _mediator;
     private readonly ICurrentUser _currentUser;
-    public PlayListController(IMediator mediator, ICurrentUser currentUser) : base(mediator)
+    public PlayListController(IMediator mediator, ICurrentUser currentUser)
     {
         _currentUser = currentUser;
+        _mediator = mediator;
     }
     [AllowAnonymous]
     [HttpGet]

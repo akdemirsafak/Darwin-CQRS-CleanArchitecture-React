@@ -1,15 +1,14 @@
 ﻿using Darwin.Application.Common;
 using Darwin.Application.Services;
-using Darwin.Domain.BaseDto;
-using Darwin.Domain.Common;
+using Darwin.Share.Dtos;
 using FluentValidation;
 
 namespace Darwin.Application.Features.Auth.RevokeToken;
 
 public static class RevokeToken
 {
-    public record Command(string Email) : ICommand<DarwinResponse<NoContent>>;
-    public class CommandHandler : ICommandHandler<Command, DarwinResponse<NoContent>>
+    public record Command(string Email) : ICommand<DarwinResponse<NoContentDto>>;
+    public class CommandHandler : ICommandHandler<Command, DarwinResponse<NoContentDto>>
     {
         private readonly IAuthService _authService;
 
@@ -18,10 +17,10 @@ public static class RevokeToken
             _authService = authService;
         }
 
-        public async Task<DarwinResponse<NoContent>> Handle(Command request, CancellationToken cancellationToken)
+        public async Task<DarwinResponse<NoContentDto>> Handle(Command request, CancellationToken cancellationToken)
         {
             await _authService.RevokeTokenByEmailAsync(request.Email);
-            return DarwinResponse<NoContent>.Success();
+            return DarwinResponse<NoContentDto>.Success();
         }
     }
     public class RevokeTokenCommandValidator : AbstractValidator<Command>
@@ -33,5 +32,4 @@ public static class RevokeToken
                 .EmailAddress();
         }
     }
-
 }

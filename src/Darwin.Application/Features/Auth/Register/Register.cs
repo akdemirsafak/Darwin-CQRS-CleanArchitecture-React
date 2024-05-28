@@ -2,22 +2,20 @@
 using Darwin.Application.Events.UserCreated;
 using Darwin.Application.Helper;
 using Darwin.Application.Services;
-using Darwin.Domain.BaseDto;
-using Darwin.Domain.Common;
 using Darwin.Domain.RequestModels.Users;
+using Darwin.Share.Dtos;
 using Darwin.Shared.Events;
 using FluentValidation;
 using MassTransit;
-using MediatR;
 
 namespace Darwin.Application.Features.Auth.Register;
 
 public static class Register
 {
-    public record Command(RegisterRequest Model) : ICommand<DarwinResponse<NoContent>>;
+    public record Command(RegisterRequest Model) : ICommand<DarwinResponse<NoContentDto>>;
 
 
-    public class CommandHandler : ICommandHandler<Command, DarwinResponse<NoContent>>
+    public class CommandHandler : ICommandHandler<Command, DarwinResponse<NoContentDto>>
     {
         private readonly IAuthService _authService;
         private readonly IUserService _userService;
@@ -39,7 +37,7 @@ public static class Register
             _publisher = publisher;
         }
 
-        public async Task<DarwinResponse<NoContent>> Handle(Command request, CancellationToken cancellationToken)
+        public async Task<DarwinResponse<NoContentDto>> Handle(Command request, CancellationToken cancellationToken)
         {
             var appUser= await _authService.RegisterAsync(request.Model);
 
@@ -66,8 +64,8 @@ public static class Register
                 EmailConfirmationLink=confirmationUrl
             };
             await sendEndpoint.Send<UserCreatedEvent>(userCreatedEvent);
-           
-            return DarwinResponse<NoContent>.Success(201);
+
+            return DarwinResponse<NoContentDto>.Success(201);
         }
     }
     public class RegisterCommandValidator : AbstractValidator<Command>
