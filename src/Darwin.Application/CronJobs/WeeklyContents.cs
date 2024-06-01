@@ -1,4 +1,5 @@
 ﻿using Darwin.Application.Services;
+using Darwin.Domain.Entities;
 using Darwin.Shared.Events;
 using MassTransit;
 
@@ -7,15 +8,15 @@ namespace Darwin.Application.CronJobs;
 
 public sealed class WeeklyContents
 {
-    private readonly IUserService _userService;
+    //private readonly IUserService _userService;
     private readonly IContentService _contentService;
     private readonly ISendEndpointProvider _sendEndpointProvider;
     public WeeklyContents(
-        IUserService userService,
+        //IUserService userService,
         IContentService contentService,
         ISendEndpointProvider sendEndpointProvider)
     {
-        _userService = userService;
+        //_userService = userService;
         _contentService = contentService;
         _sendEndpointProvider = sendEndpointProvider;
     }
@@ -23,7 +24,8 @@ public sealed class WeeklyContents
 
     public async Task SendNewContents()
     {
-        var users = await _userService.GetAllAsync();
+        //var users = await _userService.GetAllAsync();
+        var users = new List<AppUser>();
 
         var newContents = await _contentService.GetNewContentsAsync(5);
 

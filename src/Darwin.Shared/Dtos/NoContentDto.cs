@@ -1,4 +1,4 @@
-﻿namespace Darwin.Share.Dtos;
+﻿namespace Darwin.Shared.Dtos;
 
 public class NoContentDto
 {

@@ -1,6 +1,6 @@
 ﻿using Azure.Storage.Blobs;
 using Azure.Storage.Blobs.Models;
-using Darwin.Share.Dtos;
+using Darwin.Shared.Dtos;
 using Darwin.Shared.Dtos.Azure;
 
 namespace Darwin.FileService.Services;

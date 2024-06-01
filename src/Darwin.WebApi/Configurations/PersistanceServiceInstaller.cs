@@ -1,7 +1,5 @@
-﻿using Darwin.Application.Helper;
-using Darwin.Domain.Entities;
+﻿using Darwin.Domain.Entities;
 using Darwin.Persistance.DbContexts;
-using Darwin.Persistance.Helper;
 using Darwin.Persistance.Interceptors;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
@@ -33,8 +31,5 @@ public static class PersistanceServiceInstaller
         .AddEntityFrameworkStores<DarwinDbContext>()
         //.AddErrorDescriber<LocalizationsIdentityErrorDescriber>()
         .AddDefaultTokenProviders();
-
-
-        services.AddScoped<ILinkCreator, LinkCreator>();
     }
 }

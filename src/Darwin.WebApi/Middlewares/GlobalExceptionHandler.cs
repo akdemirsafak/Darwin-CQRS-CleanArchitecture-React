@@ -1,4 +1,4 @@
-﻿using Darwin.Domain.BaseDto;
+﻿using Darwin.Shared.Dtos;
 using FluentValidation;
 using Microsoft.AspNetCore.Diagnostics;
 using Microsoft.AspNetCore.Http.HttpResults;
@@ -21,7 +21,7 @@ namespace Darwin.WebApi.Middlewares
                         _ => 500
                     };
                     context.Response.StatusCode = statusCode;
-                    var response = DarwinResponse<NoContent>.Fail(exceptionFeature.Error.Message, statusCode);
+                    var response = DarwinResponse<NoContentDto>.Fail(exceptionFeature.Error.Message, statusCode);
                     await context.Response.WriteAsJsonAsync(response);
                 });
             });

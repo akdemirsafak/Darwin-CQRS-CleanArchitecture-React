@@ -1,7 +1,7 @@
 ﻿using Darwin.Application.Features.PlayLists.Commands;
 using Darwin.Application.Features.PlayLists.Queries;
-using Darwin.Application.Helper;
 using Darwin.Domain.RequestModels.PlayLists;
+using Darwin.Shared.Auth;
 using Darwin.Shared.Base;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;

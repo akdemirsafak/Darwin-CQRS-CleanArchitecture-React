@@ -24,7 +24,7 @@ builder.Services.AddSingleton<IEmailService, EmailService>();
 builder.Services.AddMassTransit(x =>
 {
     x.AddConsumer<UserCreatedEventConsumer>();
-    x.AddConsumer<VerifyEmailEventConsumer>();
+    x.AddConsumer<ConfirmEmailEventConsumer>();
     x.AddConsumer<ResetPasswordEventConsumer>();
     x.AddConsumer<SendNewContentsEventConsumer>();
     x.UsingRabbitMq((context, cfg) =>
@@ -38,9 +38,9 @@ builder.Services.AddMassTransit(x =>
         {
             e.ConfigureConsumer<UserCreatedEventConsumer>(context);
         });
-        cfg.ReceiveEndpoint("verify-email-event-queue", e =>
+        cfg.ReceiveEndpoint("confirm-email-event-queue", e =>
         {
-            e.ConfigureConsumer<VerifyEmailEventConsumer>(context);
+            e.ConfigureConsumer<ConfirmEmailEventConsumer>(context);
         });
         cfg.ReceiveEndpoint("reset-password-event-queue", e =>
         {

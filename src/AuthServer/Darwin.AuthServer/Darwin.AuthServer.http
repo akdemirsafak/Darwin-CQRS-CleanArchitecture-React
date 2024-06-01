@@ -1,0 +1,6 @@
+@Darwin.AuthServer_HostAddress = https://localhost:7000
+
+GET {{Darwin.AuthServer_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###

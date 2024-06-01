@@ -59,11 +59,6 @@ public class EmailService : IEmailService
         await smtpClient.SendMailAsync(mailMessage);
     }
 
-
-
-
-
-
     public async Task SendNewContentsAsync(SendNewContentsEvent sendNewContentsEvent)
     {
         var smtpClient=new SmtpClient();
@@ -85,7 +80,7 @@ public class EmailService : IEmailService
         await smtpClient.SendMailAsync(mailMessage);
     }
 
-    public async Task SendVerifyEmailAsync(VerifyEmailEvent verifyEmailMessage)
+    public async Task SendConfirmEmailAsync(ConfirmEmailEvent confirmEmailMessage)
     {
         var smtpClient=new SmtpClient();
         smtpClient.Host = _emailSettings.Host;
@@ -98,16 +93,16 @@ public class EmailService : IEmailService
         var mailMessage= new MailMessage();
         mailMessage.From = new MailAddress(_emailSettings.Email);
 
-        mailMessage.To.Add(verifyEmailMessage.To);
+        mailMessage.To.Add(confirmEmailMessage.To);
 
         mailMessage.Subject = "Darwin Hesap Doğrulama.";
         mailMessage.Body = $@"
         <body>
     </br></br>
-            <h2>Merhaba {verifyEmailMessage.FullName}, {verifyEmailMessage.UserName} kullanıcı adlı hesabını aşağıdaki linke tıklayarak doğrulayabilirsiniz.</h2>
+            <h2>Merhaba {confirmEmailMessage.FullName}, {confirmEmailMessage.UserName} kullanıcı adlı hesabını aşağıdaki linke tıklayarak doğrulayabilirsiniz.</h2>
 </br></br>
 
-             <h2> <a href=""{verifyEmailMessage.ConfirmationUrl}""> bu yazıya tıklayarak hesabınızı doğrulayabilirsiniz.</a></h2>
+             <h2> <a href=""{confirmEmailMessage.ConfirmationUrl}""> bu yazıya tıklayarak hesabınızı doğrulayabilirsiniz.</a></h2>
            
 </br></br>
             <footer> Keyifli günler..</footer>

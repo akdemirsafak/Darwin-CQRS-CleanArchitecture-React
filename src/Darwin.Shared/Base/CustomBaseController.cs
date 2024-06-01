@@ -1,4 +1,4 @@
-﻿using Darwin.Share.Dtos;
+﻿using Darwin.Shared.Dtos;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Darwin.Shared.Base
