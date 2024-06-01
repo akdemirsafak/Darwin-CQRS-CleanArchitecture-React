@@ -1,6 +1,6 @@
 ﻿using Darwin.Application.Common;
 using Darwin.Application.Services;
-using Darwin.Share.Dtos;
+using Darwin.Shared.Dtos;
 using FluentValidation;
 
 namespace Darwin.Application.Features.Contents.Commands;

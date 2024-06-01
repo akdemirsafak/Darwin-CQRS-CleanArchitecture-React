@@ -2,7 +2,7 @@
 using Darwin.Application.Services;
 using Darwin.Domain.RequestModels;
 using Darwin.Domain.ResponseModels.Categories;
-using Darwin.Share.Dtos;
+using Darwin.Shared.Dtos;
 using FluentValidation;
 
 namespace Darwin.Application.Features.Categories.Queries;

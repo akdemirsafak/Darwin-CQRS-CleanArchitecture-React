@@ -1,6 +1,6 @@
 ﻿using System.Text.Json.Serialization;
 
-namespace Darwin.Share.Dtos;
+namespace Darwin.Shared.Dtos;
 
 public class DarwinResponse<T>
 {

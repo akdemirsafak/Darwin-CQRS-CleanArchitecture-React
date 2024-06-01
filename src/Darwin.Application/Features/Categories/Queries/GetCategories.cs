@@ -1,7 +1,7 @@
 ﻿using Darwin.Application.Common;
 using Darwin.Application.Services;
 using Darwin.Domain.ResponseModels.Categories;
-using Darwin.Share.Dtos;
+using Darwin.Shared.Dtos;
 
 namespace Darwin.Application.Features.Categories.Queries;
 

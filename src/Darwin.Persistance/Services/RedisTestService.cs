@@ -1,8 +1,8 @@
 ﻿using Bogus;
-using Darwin.Application.Helper;
 using Darwin.Application.Services;
 using Darwin.Domain.Entities;
 using Darwin.Persistance.DbContexts;
+using Darwin.Shared.Auth;
 
 namespace Darwin.Persistance.Services;
 

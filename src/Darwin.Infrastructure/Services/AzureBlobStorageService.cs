@@ -1,5 +1,5 @@
 ﻿using Darwin.Application.Services;
-using Darwin.Share.Dtos;
+using Darwin.Shared.Dtos;
 using Darwin.Shared.Dtos.Azure;
 using Microsoft.AspNetCore.Http;
 using System.Net.Http.Json;

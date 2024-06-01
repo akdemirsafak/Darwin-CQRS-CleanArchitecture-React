@@ -1,4 +1,4 @@
-﻿using Darwin.Share.Dtos;
+﻿using Darwin.Shared.Dtos;
 using Darwin.Shared.Dtos.Azure;
 
 namespace Darwin.FileService.Services;

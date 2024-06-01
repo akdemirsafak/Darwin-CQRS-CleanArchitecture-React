@@ -2,7 +2,7 @@
 using Darwin.Application.Services;
 using Darwin.Domain.RequestModels.Contents;
 using Darwin.Domain.ResponseModels.Contents;
-using Darwin.Share.Dtos;
+using Darwin.Shared.Dtos;
 using FluentValidation;
 
 namespace Darwin.Application.Features.Contents.Commands;
