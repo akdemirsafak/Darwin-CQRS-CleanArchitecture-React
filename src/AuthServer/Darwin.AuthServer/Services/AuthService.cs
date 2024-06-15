@@ -1,4 +1,5 @@
-﻿using Darwin.AuthServer.Entities;
+﻿using Darwin.AuthServer.Controllers;
+using Darwin.AuthServer.Entities;
 using Darwin.AuthServer.Helper;
 using Darwin.AuthServer.Mapper;
 using Darwin.AuthServer.Models.Requests.Auth;
@@ -29,15 +30,18 @@ public sealed class AuthService : IAuthService
     public AuthService(UserManager<AppUser> userManager,
         RoleManager<AppRole> roleManager,
         SignInManager<AppUser> signInManager,
-
         ITokenService tokenService,
-        ISendEndpointProvider sendEndpointProvider)
+        ISendEndpointProvider sendEndpointProvider,
+        ILinkCreator linkCreator,
+        IUserService userService)
     {
         _userManager = userManager;
         _roleManager = roleManager;
         _signInManager = signInManager;
         _tokenService = tokenService;
         _sendEndpointProvider = sendEndpointProvider;
+        _linkCreator = linkCreator;
+        _userService = userService;
     }
     #region Register işlemi tamamlandı.
     public async Task<DarwinResponse<GetUserResponse>> RegisterAsync(RegisterRequest request)
@@ -71,7 +75,7 @@ public sealed class AuthService : IAuthService
 
         //Create confirmation link
         var confirmationToken = await _userService.GenerateEmailConfirmationTokenAsyncByUserIdAsync(appUser.Id);
-        var confirmationUrl = await _linkCreator.CreateTokenMailUrl("ConfirmEmail", "User", appUser.Id, confirmationToken);
+        var confirmationUrl = await  _linkCreator.CreateTokenMailUrl("ConfirmEmail", "User", appUser.Id, confirmationToken);
 
 
         var sendEndpoint=await _sendEndpointProvider.GetSendEndpoint(new System.Uri("queue:user-created-event-queue"));
@@ -87,7 +91,6 @@ public sealed class AuthService : IAuthService
             EmailConfirmationLink=confirmationUrl
         };
         await sendEndpoint.Send<UserCreatedEvent>(userCreatedEvent);
-
         return DarwinResponse<GetUserResponse>.Success(_mapper.AppUserToGetUserResponse(appUser), 201);
     }
     #endregion
@@ -136,9 +139,12 @@ public sealed class AuthService : IAuthService
         if (user is null)
             return DarwinResponse<NoContentDto>.Fail("User not found.", 404);
 
-
         var token= await _userManager.GeneratePasswordResetTokenAsync(user);
-        var resetLink= await _linkCreator.CreateTokenMailUrl("ResetPassword", "User", user.Id, token); // Unutulan şifreyi yenilemek için.
+
+        var resetLink=await _linkCreator.CreateTokenMailUrl("ResetPassword", nameof(UserController), user.Id, token); // Unutulan şifreyi yenilemek için.
+
+        if(resetLink is null)
+            return DarwinResponse<NoContentDto>.Fail("Reset link cannot created.", 500);
 
         var sendEndpoint=await _sendEndpointProvider.GetSendEndpoint(new System.Uri("queue:reset-password-event-queue"));
 

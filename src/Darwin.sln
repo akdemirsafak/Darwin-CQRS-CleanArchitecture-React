@@ -25,7 +25,17 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Darwin.Shared", "Darwin.Sha
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Darwin.FileService", "Services\Darwin.FileService\Darwin.FileService.csproj", "{4EAA52A6-CA72-43C3-A3E6-433BBB57C478}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Darwin.AuthServer", "AuthServer\Darwin.AuthServer\Darwin.AuthServer.csproj", "{47B0F5F8-7C96-4F2E-9D1D-A3FB421D39DF}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Darwin.AuthServer", "AuthServer\Darwin.AuthServer\Darwin.AuthServer.csproj", "{47B0F5F8-7C96-4F2E-9D1D-A3FB421D39DF}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Darwin.Contents.API", "Services\Contents\Darwin.Contents.API\Darwin.Contents.API.csproj", "{7CBBC17D-1AAE-4FF6-A169-357D1849C136}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Darwin.Contents.Core", "Services\Contents\Darwin.Contents.Core\Darwin.Contents.Core.csproj", "{D5BCDF47-7B94-48A3-A6F3-91609EA8623A}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Darwin.Contents.Repository", "Services\Contents\Darwin.Contents.Repository\Darwin.Contents.Repository.csproj", "{4545C145-F183-46A2-8E40-C40FE2819D07}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Darwin.Contents.Service", "Services\Contents\Darwin.Contents.Service\Darwin.Contents.Service.csproj", "{99AECCC1-63E9-4F1B-9D97-34F8DBB97A89}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Darwin.Contents.Shared", "Services\Contents\Darwin.Contents.Shared\Darwin.Contents.Shared.csproj", "{B5E099A0-8139-40BA-AFA9-6B93F7F8617F}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -73,6 +83,26 @@ Global
 		{47B0F5F8-7C96-4F2E-9D1D-A3FB421D39DF}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{47B0F5F8-7C96-4F2E-9D1D-A3FB421D39DF}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{47B0F5F8-7C96-4F2E-9D1D-A3FB421D39DF}.Release|Any CPU.Build.0 = Release|Any CPU
+		{7CBBC17D-1AAE-4FF6-A169-357D1849C136}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7CBBC17D-1AAE-4FF6-A169-357D1849C136}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7CBBC17D-1AAE-4FF6-A169-357D1849C136}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7CBBC17D-1AAE-4FF6-A169-357D1849C136}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D5BCDF47-7B94-48A3-A6F3-91609EA8623A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D5BCDF47-7B94-48A3-A6F3-91609EA8623A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D5BCDF47-7B94-48A3-A6F3-91609EA8623A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D5BCDF47-7B94-48A3-A6F3-91609EA8623A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{4545C145-F183-46A2-8E40-C40FE2819D07}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{4545C145-F183-46A2-8E40-C40FE2819D07}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{4545C145-F183-46A2-8E40-C40FE2819D07}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{4545C145-F183-46A2-8E40-C40FE2819D07}.Release|Any CPU.Build.0 = Release|Any CPU
+		{99AECCC1-63E9-4F1B-9D97-34F8DBB97A89}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{99AECCC1-63E9-4F1B-9D97-34F8DBB97A89}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{99AECCC1-63E9-4F1B-9D97-34F8DBB97A89}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{99AECCC1-63E9-4F1B-9D97-34F8DBB97A89}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B5E099A0-8139-40BA-AFA9-6B93F7F8617F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B5E099A0-8139-40BA-AFA9-6B93F7F8617F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B5E099A0-8139-40BA-AFA9-6B93F7F8617F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B5E099A0-8139-40BA-AFA9-6B93F7F8617F}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
