@@ -3,6 +3,7 @@ using Darwin.AuthServer.Entities;
 using Darwin.AuthServer.Helper;
 using Darwin.AuthServer.Interceptors;
 using Darwin.AuthServer.Services;
+using Darwin.Shared.Options;
 using MassTransit;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
@@ -20,7 +21,7 @@ builder.Services.AddSwaggerGen();
 builder.Services.AddAuthentication().AddJwtBearer(options =>
 {
     options.Authority = builder.Configuration["IdentityServer:Authority"];
-    options.Audience = builder.Configuration["IdentityServer:Audience"];
+    options.Audience = builder.Configuration["IdentityServer:Audiences"];
     options.RequireHttpsMetadata = false;
 });
 
@@ -31,6 +32,8 @@ builder.Services.AddScoped<IRoleService, RoleService>();
 builder.Services.AddScoped<IUserService, UserService>();
 builder.Services.AddScoped<ILinkCreator, LinkCreator>();
 
+
+builder.Services.Configure<AppTokenOptions>(builder.Configuration.GetSection("TokenOptions"));
 
 builder.Services.AddHttpContextAccessor();
 
@@ -47,8 +50,6 @@ builder.Services.AddDbContext<AuthServerDbContext>((sp, options) =>
 builder.Services.AddIdentity<AppUser, AppRole>()
     .AddEntityFrameworkStores<AuthServerDbContext>()
     .AddDefaultTokenProviders();
-
-
 
 
 builder.Services.AddMassTransit(x =>

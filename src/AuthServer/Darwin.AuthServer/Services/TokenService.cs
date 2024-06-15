@@ -62,7 +62,7 @@ public sealed class TokenService : ITokenService
 
         return Convert.ToBase64String(numberByte);
     }
-    private IEnumerable<Claim> GetClaims(AppUser appUser, List<String> audiences)
+    private  IEnumerable<Claim> GetClaims(AppUser appUser, List<String> audiences)
     {
         var roles= _userManager.GetRolesAsync(appUser).Result;
         var claims = new List<Claim>

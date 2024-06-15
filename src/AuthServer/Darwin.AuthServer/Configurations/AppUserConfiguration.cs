@@ -10,6 +10,6 @@ public class AppUserConfiguration : IEntityTypeConfiguration<AppUser>
     {
         builder.Property(prop => prop.Name).HasMaxLength(16);
         builder.Property(prop => prop.LastName).HasMaxLength(16);
-        builder.Property(prop => prop.CreatedBy).HasDefaultValue(DateTime.Now);
+        builder.Property(prop => prop.CreatedBy).HasDefaultValue(DateTime.UtcNow);
     }
 }

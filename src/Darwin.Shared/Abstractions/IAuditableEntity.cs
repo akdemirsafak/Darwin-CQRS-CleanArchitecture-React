@@ -2,13 +2,13 @@
 
 public interface IAuditableEntity
 {
-    DateTime CreatedOnUtc { get; set; }
+    DateTime CreatedAt { get; set; }
     string? CreatedBy { get; set; }
-    DateTime? UpdatedOnUtc { get; set; }
+    DateTime? UpdatedAt { get; set; }
     string? UpdatedBy { get; set; }
 
 
     bool IsDeleted { get; set; }
-    DateTime? DeletedOnUtc { get; set; }
+    DateTime? DeletedAt { get; set; }
     string? DeletedBy { get; set; }
 }
