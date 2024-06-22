@@ -1,4 +1,5 @@
 using Darwin.Contents.API.Extensions;
+using Darwin.Contents.API.Middlewares;
 using Darwin.Contents.Core.AbstractRepositories;
 using Darwin.Contents.Repository.DbContexts;
 using Darwin.Contents.Repository.Interceptors;
@@ -17,13 +18,14 @@ builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
-
 builder.Services.RegisterServices();
 
+builder.Services.AddScoped<UpdateAuditableEntitiesInterceptor>();
+string connectionString=builder.Configuration.GetConnectionString("DefaultConnection");
 builder.Services.AddDbContext<AppDbContext>((sp, opt) =>
 {
     var interceptor=sp.GetService<UpdateAuditableEntitiesInterceptor>()!;
-    opt.UseNpgsql(builder.Configuration.GetConnectionString("DefaultConnection"),
+    opt.UseSqlServer(connectionString,
     option => { option.MigrationsAssembly(Assembly.GetAssembly(typeof(AppDbContext))!.GetName().Name); });
     opt.AddInterceptors(interceptor);
 });
@@ -57,8 +59,6 @@ builder.Services.AddScoped<ICurrentUser, CurrentUser>();
 builder.Services.AddHttpClientServices();
 builder.Services.AddHttpContextAccessor();
 
-
-
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
@@ -67,6 +67,7 @@ if (app.Environment.IsDevelopment())
     app.UseSwagger();
     app.UseSwaggerUI();
 }
+app.UseGlobalExceptionMiddleware();
 
 app.UseHttpsRedirection();
 

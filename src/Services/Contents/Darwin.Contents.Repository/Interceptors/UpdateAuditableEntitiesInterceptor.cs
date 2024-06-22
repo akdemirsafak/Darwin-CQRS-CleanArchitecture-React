@@ -34,20 +34,20 @@ public sealed class UpdateAuditableEntitiesInterceptor : SaveChangesInterceptor
         {
             if (entry.State == EntityState.Added)
             {
-                entry.Property(x => x.CreatedAt).CurrentValue = DateTime.UtcNow;
+                entry.Property(x => x.CreatedAt).CurrentValue = DateTime.Now;
                 entry.Property(x => x.CreatedBy).CurrentValue = _currentUser.GetUserId;
 
             }
 
             if (entry.State == EntityState.Modified)
             {
-                entry.Property(x => x.UpdatedAt).CurrentValue = DateTime.UtcNow;
+                entry.Property(x => x.UpdatedAt).CurrentValue = DateTime.Now;
                 entry.Property(x => x.UpdatedBy).CurrentValue = _currentUser.GetUserId;
             }
             if (entry.State == EntityState.Deleted)
             {
                 entry.State = EntityState.Modified;
-                entry.Property(x => x.DeletedAt).CurrentValue = DateTime.UtcNow;
+                entry.Property(x => x.DeletedAt).CurrentValue = DateTime.Now;
                 entry.Entity.IsDeleted = true;
                 entry.Property(x => x.DeletedBy).CurrentValue = _currentUser.GetUserId;
             }
