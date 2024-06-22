@@ -20,10 +20,12 @@ builder.Services.AddSwaggerGen();
 
 builder.Services.RegisterServices();
 
+builder.Services.AddScoped<UpdateAuditableEntitiesInterceptor>();
+string connectionString=builder.Configuration.GetConnectionString("DefaultConnection");
 builder.Services.AddDbContext<AppDbContext>((sp, opt) =>
 {
     var interceptor=sp.GetService<UpdateAuditableEntitiesInterceptor>()!;
-    opt.UseNpgsql(builder.Configuration.GetConnectionString("DefaultConnection"),
+    opt.UseSqlServer(connectionString,
     option => { option.MigrationsAssembly(Assembly.GetAssembly(typeof(AppDbContext))!.GetName().Name); });
     opt.AddInterceptors(interceptor);
 });
