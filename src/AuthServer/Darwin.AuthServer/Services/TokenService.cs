@@ -24,8 +24,8 @@ public sealed class TokenService : ITokenService
     }
     public async Task<TokenResponse> CreateTokenAsync(AppUser appUser)
     {
-        var accessTokenExpiration = DateTime.UtcNow.AddMinutes(_tokenOptions.AccessTokenExpiration);
-        var refreshTokenExpiration = DateTime.UtcNow.AddMinutes(_tokenOptions.RefreshTokenExpiration);
+        var accessTokenExpiration = DateTime.Now.AddMinutes(_tokenOptions.AccessTokenExpiration);
+        var refreshTokenExpiration = DateTime.Now.AddMinutes(_tokenOptions.RefreshTokenExpiration);
 
         var securityKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_tokenOptions.SecurityKey));
         var signingCredentials = new SigningCredentials(securityKey, SecurityAlgorithms.HmacSha256Signature);
@@ -35,7 +35,7 @@ public sealed class TokenService : ITokenService
         var jwtSecurityToken = new JwtSecurityToken(
             issuer:_tokenOptions.Issuer,
             expires: accessTokenExpiration,
-            notBefore: DateTime.UtcNow,
+            notBefore: DateTime.Now,
             claims: claims,
             signingCredentials: signingCredentials);
 
