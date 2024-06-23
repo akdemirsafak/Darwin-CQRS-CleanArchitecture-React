@@ -1,6 +1,5 @@
-﻿namespace Darwin.Contents.Core.Dtos.Responses.Content;
-
-public class GetContentResponse
+﻿namespace Darwin.CronJobs.Models;
+public class GetContentDto
 {
     public Guid Id { get; set; }
     public string Name { get; set; }

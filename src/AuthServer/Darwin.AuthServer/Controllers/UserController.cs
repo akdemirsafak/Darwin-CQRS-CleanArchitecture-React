@@ -7,7 +7,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace Darwin.AuthServer.Controllers;
 
-[Authorize]
+
 [Route("[action]")]
 public class UserController : CustomBaseController
 {
@@ -18,22 +18,30 @@ public class UserController : CustomBaseController
         _userService = userService;
     }
 
+    [HttpGet]
+    public async Task<IActionResult> Get()
+    {
+        return CreateActionResult(await _userService.GetUsersAsync());
+    }
 
     [HttpGet("{id}")]
     public async Task<IActionResult> GetById(string id)
     {
         return CreateActionResult(await _userService.GetByIdAsync(id));
     }
+    [Authorize]
     [HttpPut("{userId}")]
     public async Task<IActionResult> Update(string userId, [FromBody] UpdateUserRequest request)
     {
         return CreateActionResult(await _userService.UpdateAsync(userId, request));
     }
+    [Authorize]
     [HttpDelete]
     public async Task<IActionResult> Delete(string userId)
     {
         return CreateActionResult(await _userService.DeleteAsync(userId));
     }
+    [Authorize]
     [HttpPost]
     public async Task<IActionResult> ChangePassword([FromBody] ChangePasswordRequest request)
     {
@@ -44,6 +52,7 @@ public class UserController : CustomBaseController
     //{
     //    return CreateActionResult(await _mediator.Send(new SuspendUser.Command()));
     //}
+    [Authorize]
     [HttpGet]
     public async Task<IActionResult> SendConfirmationEmail(string userId)
     {
