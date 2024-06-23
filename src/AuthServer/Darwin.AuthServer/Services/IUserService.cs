@@ -7,6 +7,7 @@ namespace Darwin.AuthServer.Services;
 
 public interface IUserService
 {
+    Task<DarwinResponse<List<GetUserResponse>>> GetUsersAsync();
     Task<DarwinResponse<UpdatedUserResponse>> UpdateAsync(string userId, UpdateUserRequest updateUserRequest);
     Task<DarwinResponse<GetUserResponse>> GetByIdAsync(string userId);
     Task<DarwinResponse<NoContentDto>> DeleteAsync(string userId);

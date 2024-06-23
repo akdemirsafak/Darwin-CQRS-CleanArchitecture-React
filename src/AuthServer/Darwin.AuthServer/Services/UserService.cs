@@ -8,6 +8,7 @@ using Darwin.Shared.Dtos;
 using Darwin.Shared.Events;
 using MassTransit;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
 
 namespace Darwin.AuthServer.Services;
 
@@ -125,5 +126,11 @@ public sealed class UserService : IUserService
         await sendEndpoint.Send<ConfirmEmailEvent>(confirmEmailEvent);
         return DarwinResponse<NoContentDto>.Success(204);
 
+    }
+
+    public async Task<DarwinResponse<List<GetUserResponse>>> GetUsersAsync()
+    {
+        var users = await _userManager.Users.ToListAsync();
+        return DarwinResponse<List<GetUserResponse>>.Success(_mapper.AppUserListToGetUserResponseList(users), 200);
     }
 }
