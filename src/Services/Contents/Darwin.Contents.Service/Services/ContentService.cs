@@ -6,7 +6,6 @@ using Darwin.Contents.Core.Entities;
 using Darwin.Contents.Core.RequestModels;
 using Darwin.Contents.Core.RequestModels.Contents;
 using Darwin.Contents.Service.Helper;
-using Darwin.Shared.Auth;
 using Microsoft.EntityFrameworkCore;
 
 namespace Darwin.Contents.Service.Services;
