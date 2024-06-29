@@ -12,6 +12,6 @@ public class CurrentUser : ICurrentUser
         _httpContextAccessor = httpContextAccessor;
     }
     public string GetUserId => _httpContextAccessor.HttpContext.User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
-    public string GetUserName => _httpContextAccessor.HttpContext.User.FindFirst(x=>x.Type=="name")?.Value;
+    public string GetUserName => _httpContextAccessor.HttpContext.User.FindFirst(x=>x.Type== "NameLastName")?.Value;
 
 }

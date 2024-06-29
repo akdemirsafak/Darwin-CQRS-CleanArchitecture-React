@@ -1,0 +1,6 @@
+@Darwin.Contentlists.API_HostAddress = http://localhost:5062
+
+GET {{Darwin.Contentlists.API_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###

@@ -69,7 +69,7 @@ public sealed class TokenService : ITokenService
         {
             new(ClaimTypes.NameIdentifier, appUser.Id),
             new(JwtRegisteredClaimNames.Email, appUser.Email),
-            new(JwtRegisteredClaimNames.Name, $"{appUser.Name} {appUser.LastName}"),
+            new("NameLastName", $"{appUser.Name} {appUser.LastName}"),
             new(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()) //Jwt'nin id sini temsil eder.
 
         };

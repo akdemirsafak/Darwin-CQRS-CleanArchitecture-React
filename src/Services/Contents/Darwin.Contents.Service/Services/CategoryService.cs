@@ -6,7 +6,6 @@ using Darwin.Contents.Core.Entities;
 using Darwin.Contents.Core.RequestModels;
 using Darwin.Contents.Core.RequestModels.Categories;
 using Darwin.Contents.Service.Helper;
-using Darwin.Shared.Auth;
 
 namespace Darwin.Contents.Service.Services;
 
@@ -14,15 +13,13 @@ public sealed class CategoryService : ICategoryService
 {
     private readonly IGenericRepository<Category> _categoryRepository;
     private readonly IMapper _mapper;
-    private readonly ICurrentUser _currentUser;
 
     public CategoryService(IGenericRepository<Category> categoryRepository,
-        IMapper mapper,
-        ICurrentUser currentUser)
+        IMapper mapper)
     {
         _categoryRepository = categoryRepository;
         _mapper = mapper;
-        _currentUser = currentUser;
+
     }
 
     public async Task<CreatedCategoryResponse> CreateAsync(CreateCategoryRequest request, string imageUrl)
