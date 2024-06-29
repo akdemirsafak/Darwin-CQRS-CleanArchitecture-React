@@ -15,7 +15,6 @@
 
   <ItemGroup>
     <ProjectReference Include="..\Darwin.Contents.Repository\Darwin.Contents.Repository.csproj" />
-    <ProjectReference Include="..\Darwin.Contents.Shared\Darwin.Contents.Shared.csproj" />
   </ItemGroup>
 
 </Project>
