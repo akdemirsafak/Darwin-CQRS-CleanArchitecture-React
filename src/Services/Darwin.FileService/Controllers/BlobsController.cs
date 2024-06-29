@@ -5,7 +5,6 @@ using Microsoft.AspNetCore.Mvc;
 namespace Darwin.FileService.Controllers;
 
 [Route("[controller]/[action]")]
-[ApiController]
 public class BlobsController : CustomBaseController
 {
     private readonly IAzureBlobStorageService _azureBlobStorageService;

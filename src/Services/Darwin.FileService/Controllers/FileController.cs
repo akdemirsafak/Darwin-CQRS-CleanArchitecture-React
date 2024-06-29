@@ -1,11 +1,10 @@
 ﻿using Darwin.FileService.Services;
+using Darwin.Shared.Base;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Darwin.FileService.Controllers;
 
-[Route("api/[controller]")]
-[ApiController]
-public class FileController : ControllerBase
+public class FileController : CustomBaseController
 {
     private readonly IFileService _fileService;
 

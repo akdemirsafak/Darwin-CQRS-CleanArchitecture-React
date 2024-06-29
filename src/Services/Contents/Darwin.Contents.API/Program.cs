@@ -1,4 +1,4 @@
-using Darwin.Contents.API.Extensions;
+﻿using Darwin.Contents.API.Extensions;
 using Darwin.Contents.API.Middlewares;
 using Darwin.Contents.Core.AbstractRepositories;
 using Darwin.Contents.Repository.DbContexts;
@@ -8,6 +8,7 @@ using Darwin.Contents.Service;
 using Darwin.Shared.Auth;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.OpenApi.Models;
 using System.Reflection;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -21,7 +22,7 @@ builder.Services.AddSwaggerGen();
 builder.Services.RegisterServices();
 
 builder.Services.AddScoped<UpdateAuditableEntitiesInterceptor>();
-string connectionString=builder.Configuration.GetConnectionString("DefaultConnection");
+string connectionString=builder.Configuration.GetConnectionString("DefaultConnection")!;
 builder.Services.AddDbContext<AppDbContext>((sp, opt) =>
 {
     var interceptor=sp.GetService<UpdateAuditableEntitiesInterceptor>()!;
@@ -58,6 +59,40 @@ builder.Services.AddScoped<ICurrentUser, CurrentUser>();
 
 builder.Services.AddHttpClientServices();
 builder.Services.AddHttpContextAccessor();
+
+
+builder.Services.AddSwaggerGen(x =>
+{
+    x.SwaggerDoc("v1", new OpenApiInfo
+    {
+        Title = "Darwin Content Api"
+    });
+    x.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme()
+    {
+        Name = "Authorization",
+        Type = SecuritySchemeType.ApiKey,
+        Scheme = "Bearer",
+        BearerFormat = "JWT",
+        In = ParameterLocation.Header,
+        Description = "Bearerdan sonra boşluk sonra token"
+
+    });
+    x.AddSecurityRequirement(new OpenApiSecurityRequirement()
+    {
+        {
+            new OpenApiSecurityScheme
+            {
+                Reference=new OpenApiReference
+                {
+                    Id="Bearer",
+                    Type=ReferenceType.SecurityScheme
+                }
+            },
+            Array.Empty<string>()
+        }
+    });
+});
+
 
 var app = builder.Build();
 

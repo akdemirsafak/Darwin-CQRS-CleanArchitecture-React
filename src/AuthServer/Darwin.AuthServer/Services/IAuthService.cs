@@ -7,7 +7,7 @@ namespace Darwin.AuthServer.Services;
 
 public interface IAuthService
 {
-    Task<DarwinResponse<GetUserResponse>> RegisterAsync(RegisterRequest request);
+    Task<DarwinResponse<GetUserResponse>> RegisterAsync(Models.Requests.Auth.RegisterRequest request);
     Task<DarwinResponse<TokenResponse>> LoginAsync(LoginRequest request);
     Task<DarwinResponse<NoContentDto>> ForgotPasswordAsync(string email);
     Task<DarwinResponse<NoContentDto>> ResetPasswordAsync(string newPassword, string userId, string token); //şifremi unuttumdan gelen

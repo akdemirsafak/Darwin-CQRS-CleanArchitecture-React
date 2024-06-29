@@ -44,13 +44,15 @@ public sealed class AuthService : IAuthService
         _userService = userService;
     }
     #region Register işlemi tamamlandı.
-    public async Task<DarwinResponse<GetUserResponse>> RegisterAsync(RegisterRequest request)
+    public async Task<DarwinResponse<GetUserResponse>> RegisterAsync(Models.Requests.Auth.RegisterRequest request)
     {
 
         AppUser appUser = new()
         {
             Email=request.Email,
             UserName=request.Email,
+            Name=request.Name,
+            LastName=request.LastName,
             SecurityStamp=Guid.NewGuid().ToString()
         };
         var registerResult = await _userManager.CreateAsync(appUser, request.Password);

@@ -6,7 +6,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace Darwin.AuthServer.Controllers;
 
-[Route("[action]")]
+[Route("[controller]/[action]")]
 public class AuthController : CustomBaseController
 {
     private readonly IAuthService _authService;
@@ -22,7 +22,7 @@ public class AuthController : CustomBaseController
         return CreateActionResult(await _authService.LoginAsync(request));
     }
     [HttpPost]
-    public async Task<IActionResult> Register(RegisterRequest request)
+    public async Task<IActionResult> Register(Models.Requests.Auth.RegisterRequest request)
     {
         return CreateActionResult(await _authService.RegisterAsync(request));
     }
