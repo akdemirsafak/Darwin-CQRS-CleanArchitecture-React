@@ -6,6 +6,7 @@ using Darwin.Contents.Core.Entities;
 using Darwin.Contents.Core.RequestModels;
 using Darwin.Contents.Core.RequestModels.Contents;
 using Darwin.Contents.Service.Helper;
+using Darwin.Shared.Auth;
 using Microsoft.EntityFrameworkCore;
 
 namespace Darwin.Contents.Service.Services;
@@ -17,7 +18,8 @@ public sealed class ContentService : IContentService
     private readonly IGenericRepository<Mood> _moodRepository;
     private readonly IMapper _mapper;
 
-    public ContentService(IGenericRepository<Content> contentRepository,
+    public ContentService(
+        IGenericRepository<Content> contentRepository,
         IGenericRepository<Category> categoryRepository,
         IGenericRepository<Mood> moodRepository,
         IMapper mapper)

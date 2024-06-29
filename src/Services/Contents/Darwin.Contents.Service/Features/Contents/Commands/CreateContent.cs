@@ -11,8 +11,8 @@ namespace Darwin.Application.Features.Contents.Commands;
 
 public static class CreateContent
 {
-    public record Command(CreateContentRequest Model) : ICommand<DarwinResponse<CreatedContentResponse>>;
-    public class CommandHandler : ICommandHandler<Command, DarwinResponse<CreatedContentResponse>>
+    public record Command(CreateContentRequest Model) : ICommand<DarwinResponse<NoContentDto>>;
+    public class CommandHandler : ICommandHandler<Command, DarwinResponse<NoContentDto>>
     {
         private readonly IFileService _fileService;
         private readonly IContentService _contentService;
@@ -25,14 +25,14 @@ public static class CreateContent
             _contentService = contentService;
         }
 
-        public async Task<DarwinResponse<CreatedContentResponse>> Handle(Command request, CancellationToken cancellationToken)
+        public async Task<DarwinResponse<NoContentDto>> Handle(Command request, CancellationToken cancellationToken)
         {
             var uploadResponse=await _fileService.UploadAsync(request.Model.ImageFile, AzureContainerNames.Contents);
-            BlobResponseDto uploadBlobResponse =uploadResponse.Data;
+            BlobResponseDto uploadBlobResponse = uploadResponse.Data;
             string imageUrl = uploadBlobResponse.Blob.Url!;
 
             await _contentService.CreateAsync(request.Model, imageUrl);
-            return DarwinResponse<CreatedContentResponse>.Success(201);
+            return DarwinResponse<NoContentDto>.Success(201);
         }
     }
     public class CreateContentCommandValidator : AbstractValidator<Command>
