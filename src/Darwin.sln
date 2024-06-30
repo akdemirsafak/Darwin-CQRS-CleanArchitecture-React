@@ -37,13 +37,15 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Darwin.Contents.Service", "
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Darwin.CronJobs", "Services\WorkerServices\Darwin.CronJobs\Darwin.CronJobs.csproj", "{EB15C560-3A83-4BF7-9FF9-B2D6CEF4E69E}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Darwin.Contentlists.API", "Services\Playlists\Darwin.Contentlists.API\Darwin.Contentlists.API.csproj", "{DE7BDA8A-B3D1-4CEA-9DDC-478B8A7ADE4B}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Darwin.Contentlists.API", "Services\Playlists\Darwin.Contentlists.API\Darwin.Contentlists.API.csproj", "{DE7BDA8A-B3D1-4CEA-9DDC-478B8A7ADE4B}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Darwin.Contentlists.Core", "Services\Playlists\Darwin.Contentlists.Core\Darwin.Contentlists.Core.csproj", "{9CD3D3B0-F17D-47A4-81AD-81DDD8A5A514}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Darwin.Contentlists.Core", "Services\Playlists\Darwin.Contentlists.Core\Darwin.Contentlists.Core.csproj", "{9CD3D3B0-F17D-47A4-81AD-81DDD8A5A514}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Darwin.Contentlists.Repository", "Services\Playlists\Darwin.Contentlists.Repository\Darwin.Contentlists.Repository.csproj", "{3D65393D-A46B-4BED-B570-FAA8C80E7E27}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Darwin.Contentlists.Repository", "Services\Playlists\Darwin.Contentlists.Repository\Darwin.Contentlists.Repository.csproj", "{3D65393D-A46B-4BED-B570-FAA8C80E7E27}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Darwin.Contentlists.Service", "Services\Playlists\Darwin.Contentlists.Service\Darwin.Contentlists.Service.csproj", "{E22DEC29-1BD9-4F78-93BA-A8CA4B24C078}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Darwin.Contentlists.Service", "Services\Playlists\Darwin.Contentlists.Service\Darwin.Contentlists.Service.csproj", "{E22DEC29-1BD9-4F78-93BA-A8CA4B24C078}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OcelotGateway", "Gateways\OcelotGateway\OcelotGateway.csproj", "{129CA555-F2E9-420E-ADB9-3FCA884EACEF}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -127,6 +129,10 @@ Global
 		{E22DEC29-1BD9-4F78-93BA-A8CA4B24C078}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{E22DEC29-1BD9-4F78-93BA-A8CA4B24C078}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{E22DEC29-1BD9-4F78-93BA-A8CA4B24C078}.Release|Any CPU.Build.0 = Release|Any CPU
+		{129CA555-F2E9-420E-ADB9-3FCA884EACEF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{129CA555-F2E9-420E-ADB9-3FCA884EACEF}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{129CA555-F2E9-420E-ADB9-3FCA884EACEF}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{129CA555-F2E9-420E-ADB9-3FCA884EACEF}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
