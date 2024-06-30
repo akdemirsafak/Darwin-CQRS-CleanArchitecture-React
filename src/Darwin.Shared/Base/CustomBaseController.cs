@@ -4,7 +4,7 @@ using Microsoft.AspNetCore.Mvc;
 namespace Darwin.Shared.Base
 {
     [ApiController]
-    [Route("[controller]")]
+    [Route("api/[controller]")]
     //[EnableRateLimiting("TokenBucket")]
     public class CustomBaseController : ControllerBase
     {

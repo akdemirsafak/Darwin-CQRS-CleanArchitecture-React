@@ -5,8 +5,7 @@ using Microsoft.AspNetCore.Identity.Data;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Darwin.AuthServer.Controllers;
-
-[Route("[controller]/[action]")]
+[Route("api/[controller]/[action]")]
 public class AuthController : CustomBaseController
 {
     private readonly IAuthService _authService;

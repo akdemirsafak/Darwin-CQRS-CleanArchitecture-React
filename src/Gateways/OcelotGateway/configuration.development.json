@@ -1,0 +1,85 @@
+{
+  "Routes": [
+    {
+      "DownstreamPathTemplate": "/api/{everything}",
+      "DownstreamScheme": "https",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "localhost",
+          "Port": 7000
+        }
+      ],
+      "UpstreamPathTemplate": "/services/Auth/{everything}",
+      "UpstreamHttpMethod": [ "GET", "POST", "PUT", "DELETE" ],
+      "UpstreamScheme": "https"
+    },
+    {
+      "DownstreamPathTemplate": "/api/{everything}",
+      "DownstreamScheme": "https",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "localhost",
+          "Port": 7004
+        }
+      ],
+      "UpstreamPathTemplate": "/services/contents/{everything}",
+      "UpstreamHttpMethod": [ "GET", "POST", "PUT", "DELETE" ],
+      "UpstreamScheme": "https"
+    },
+    {
+      "DownstreamPathTemplate": "/api/{everything}",
+      "DownstreamScheme": "https",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "localhost",
+          "Port": 7005
+        }
+      ],
+      "UpstreamPathTemplate": "/services/playlists/{everything}",
+      "UpstreamHttpMethod": [ "GET", "POST", "PUT", "DELETE" ],
+      "UpstreamScheme": "https"
+    },
+    {
+      "DownstreamPathTemplate": "/api/{everything}",
+      "DownstreamScheme": "https",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "localhost",
+          "Port": 7001
+        }
+      ],
+      "UpstreamPathTemplate": "/services/fileservices/{everything}",
+      "UpstreamHttpMethod": [ "GET", "POST", "PUT", "DELETE" ],
+      "UpstreamScheme": "https"
+    },
+    {
+      "DownstreamPathTemplate": "/api/{everything}",
+      "DownstreamScheme": "https",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "localhost",
+          "Port": 7002
+        }
+      ],
+      "UpstreamPathTemplate": "/services/notifications/{everything}",
+      "UpstreamHttpMethod": [ "GET", "POST", "PUT", "DELETE" ],
+      "UpstreamScheme": "https"
+    },
+    {
+      "DownstreamPathTemplate": "/api/{everything}",
+      "DownstreamScheme": "https",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "localhost",
+          "Port": 5000
+        }
+      ],
+      "UpstreamPathTemplate": "/services/cronjobs/{everything}",
+      "UpstreamHttpMethod": [ "GET", "POST", "PUT", "DELETE" ],
+      "UpstreamScheme": "https"
+    }
+  ],
+  "GlobalConfiguration": {
+    "BaseUrl": "http://localhost:9000"
+  }
+}
