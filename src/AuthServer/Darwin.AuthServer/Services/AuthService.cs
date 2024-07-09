@@ -80,9 +80,10 @@ public sealed class AuthService : IAuthService
         var confirmationUrl = await  _linkCreator.CreateTokenMailUrl("ConfirmEmail", "User", appUser.Id, confirmationToken);
 
 
-        var sendEndpoint=await _sendEndpointProvider.GetSendEndpoint(new System.Uri("queue:user-created-event-queue"));
+        //Send Notification Event(Email)
+        var sendEndpoint=await _sendEndpointProvider.GetSendEndpoint(new System.Uri("queue:user-created-send-notification-event-queue"));
 
-        var userCreatedEvent=new UserCreatedEvent
+        var userCreatedEvent=new UserCreatedSendNotificationEvent
         {
             UserId=appUser.Id,
             Email = appUser.Email!,
@@ -92,7 +93,21 @@ public sealed class AuthService : IAuthService
             PhoneNumber = appUser.PhoneNumber,
             EmailConfirmationLink=confirmationUrl
         };
-        await sendEndpoint.Send<UserCreatedEvent>(userCreatedEvent);
+        await sendEndpoint.Send<UserCreatedSendNotificationEvent>(userCreatedEvent);
+
+
+        // Create Favorite List 
+        sendEndpoint=await _sendEndpointProvider.GetSendEndpoint(new System.Uri("queue:user-created-create-favoriteplaylist-event-queue"));
+
+        var userCreatedCreatePlaylistEvent=new UserCreatedCreateFavoritePlaylistEvent
+        {
+            UserId=appUser.Id,
+            Name=appUser.Name,
+            LastName=appUser.LastName,
+            CreatedDate=DateTime.Now
+        };
+        await sendEndpoint.Send<UserCreatedCreateFavoritePlaylistEvent>(userCreatedEvent);
+
         return DarwinResponse<GetUserResponse>.Success(_mapper.AppUserToGetUserResponse(appUser), 201);
     }
     #endregion
