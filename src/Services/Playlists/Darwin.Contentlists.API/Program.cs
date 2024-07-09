@@ -2,10 +2,12 @@
 using Darwin.Contentlists.Core.Services;
 using Darwin.Contentlists.Repository.DbContexts;
 using Darwin.Contentlists.Repository.Repositories;
+using Darwin.Contentlists.Service.Consumers;
 using Darwin.Contentlists.Service.Mappers;
 using Darwin.Contentlists.Service.Services;
 using Darwin.Shared.Auth;
 using FluentValidation;
+using MassTransit;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.OpenApi.Models;
@@ -26,6 +28,25 @@ builder.Services.AddDbContext<AppDbContext>(options =>
 builder.Services.AddScoped<IPlaylistRepository, PlaylistRepository>();
 builder.Services.AddScoped<IPlaylistService, PlaylistService>();
 
+
+builder.Services.AddMassTransit(x =>
+{
+
+    x.AddConsumer<UserCreatedCreateFavoritePlaylistEventConsumer>();
+    x.UsingRabbitMq((context, cfg) =>
+    {
+        cfg.Host(builder.Configuration["RabbitMQ:ConnectionString"], h =>
+        {
+            h.Username(builder.Configuration["RabbitMQ:UserName"]);
+            h.Password(builder.Configuration["RabbitMQ:Password"]);
+        });
+        cfg.ReceiveEndpoint("user-created-create-favoriteplaylist-event-queue", e =>
+        {
+            e.ConfigureConsumer<UserCreatedCreateFavoritePlaylistEventConsumer>(context);
+        });
+
+    });
+});
 
 builder.Services.AddAuthentication(
     options =>
@@ -49,6 +70,8 @@ builder.Services.AddAuthentication(
     });
 builder.Services.AddHttpContextAccessor();
 builder.Services.AddScoped<ICurrentUser, CurrentUser>();
+
+
 
 builder.Services.AddAutoMapper(typeof(PlaylistMapper));
 
@@ -95,7 +118,9 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseHttpsRedirection();
+
 app.UseAuthentication();
+
 app.UseAuthorization();
 
 app.MapControllers();

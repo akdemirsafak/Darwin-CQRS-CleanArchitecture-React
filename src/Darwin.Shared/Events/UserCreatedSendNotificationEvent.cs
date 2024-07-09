@@ -1,6 +1,6 @@
 ﻿namespace Darwin.Shared.Events;
 
-public class UserCreatedEvent
+public class UserCreatedSendNotificationEvent
 {
     public string UserId { get; set; }
     public string UserName { get; set; }

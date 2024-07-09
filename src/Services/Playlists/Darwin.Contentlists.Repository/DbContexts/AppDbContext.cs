@@ -8,10 +8,9 @@ public class AppDbContext : DbContext
 {
     private readonly ICurrentUser _currentUser;
 
-    public AppDbContext(DbContextOptions<AppDbContext> options,  
-        ICurrentUser currentUser) : base(options)
+    public AppDbContext(DbContextOptions<AppDbContext> options, ICurrentUser currentUser) : base(options)
     {
-        _currentUser = currentUser;
+       _currentUser = currentUser;
     }
 
 
@@ -31,7 +30,10 @@ public class AppDbContext : DbContext
     {
         var entries = ChangeTracker
             .Entries()
-            .Where(e => e.Entity is Playlist && (e.State == EntityState.Added || e.State == EntityState.Modified || e.State == EntityState.Deleted));
+            .Where(e => e.Entity is Playlist && (
+            e.State == EntityState.Added || 
+            e.State == EntityState.Modified || 
+            e.State == EntityState.Deleted));
 
         foreach (var entry in entries)
         {

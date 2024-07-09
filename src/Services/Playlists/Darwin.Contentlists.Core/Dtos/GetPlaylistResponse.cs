@@ -6,12 +6,12 @@ public sealed class GetPlaylistResponse
     public string Name { get; set; }
     public string? Description { get; set; }
     public bool IsPublic { get; set; }
-
+    public bool IsFavorite { get; set; }
     public DateTime CreatedAt { get; set; }
-    public Guid CreatedBy { get; set; }
+    public string CreatedBy { get; set; }
     public string CreatorName { get; set; }
 
-    public Guid? UpdatedAt { get; set; }
+    public string? UpdatedAt { get; set; }
     public string? UpdatedBy { get; set; }
 
     public Guid? DeletedAt { get; set; }

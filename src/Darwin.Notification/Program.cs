@@ -34,7 +34,7 @@ builder.Services.AddMassTransit(x =>
             h.Username(builder.Configuration["RabbitMQ:UserName"]);
             h.Password(builder.Configuration["RabbitMQ:Password"]);
         });
-        cfg.ReceiveEndpoint("user-created-event-queue", e =>
+        cfg.ReceiveEndpoint("user-created-send-notification-event-queue", e =>
         {
             e.ConfigureConsumer<UserCreatedEventConsumer>(context);
         });

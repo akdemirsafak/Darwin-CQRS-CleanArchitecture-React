@@ -8,7 +8,7 @@ public sealed class PlaylistMapper : Profile
 {
     public PlaylistMapper()
     {
-        CreateMap<CreatePlaylistRequest, Playlist>();
-        CreateMap<Playlist, GetPlaylistResponse>();
+        CreateMap<CreatePlaylistRequest, Playlist>().ReverseMap();
+        CreateMap<Playlist, GetPlaylistResponse>().ReverseMap();
     }
 }

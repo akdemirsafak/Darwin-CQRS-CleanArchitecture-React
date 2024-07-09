@@ -14,7 +14,7 @@ public class EmailService : IEmailService
         _emailSettings = settings.Value;
     }
 
-    public async Task SendWellcomeEmailAsync(UserCreatedEvent mailDetails)
+    public async Task SendWellcomeEmailAsync(UserCreatedSendNotificationEvent mailDetails)
     {
         var smtpClient=new SmtpClient();
         smtpClient.Host = _emailSettings.Host;

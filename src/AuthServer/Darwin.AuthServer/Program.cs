@@ -3,6 +3,7 @@ using Darwin.AuthServer.Entities;
 using Darwin.AuthServer.Helper;
 using Darwin.AuthServer.Interceptors;
 using Darwin.AuthServer.Services;
+using Darwin.Shared.Auth;
 using Darwin.Shared.Options;
 using MassTransit;
 using Microsoft.AspNetCore.Identity;
@@ -36,6 +37,7 @@ builder.Services.AddScoped<ILinkCreator, LinkCreator>();
 builder.Services.Configure<AppTokenOptions>(builder.Configuration.GetSection("TokenOptions"));
 
 builder.Services.AddHttpContextAccessor();
+builder.Services.AddScoped<ICurrentUser, CurrentUser>();
 
 builder.Services.AddSingleton<AuditInterceptor>();
 

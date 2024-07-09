@@ -4,7 +4,7 @@ using MassTransit;
 
 namespace Darwin.Notification.Consumers;
 
-public class UserCreatedEventConsumer : IConsumer<UserCreatedEvent>
+public class UserCreatedEventConsumer : IConsumer<UserCreatedSendNotificationEvent>
 {
 
     private readonly IEmailService _emailService;
@@ -14,7 +14,7 @@ public class UserCreatedEventConsumer : IConsumer<UserCreatedEvent>
         _emailService = emailService;
     }
 
-    public async Task Consume(ConsumeContext<UserCreatedEvent> context)
+    public async Task Consume(ConsumeContext<UserCreatedSendNotificationEvent> context)
     {
         await _emailService.SendWellcomeEmailAsync(context.Message);
 
