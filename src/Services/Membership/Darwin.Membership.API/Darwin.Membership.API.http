@@ -1,0 +1,6 @@
+@Darwin.Membership.API_HostAddress = http://localhost:5251
+
+GET {{Darwin.Membership.API_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###
