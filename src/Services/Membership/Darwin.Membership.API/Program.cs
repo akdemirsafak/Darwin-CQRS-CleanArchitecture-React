@@ -1,6 +1,8 @@
 using Darwin.Membership.API.DbContexts;
 using Darwin.Membership.API.Repositories;
 using Darwin.Membership.API.Services;
+using Darwin.Membership.API.Validations;
+using FluentValidation;
 using FluentValidation.AspNetCore;
 using Microsoft.EntityFrameworkCore;
 
@@ -21,7 +23,7 @@ builder.Services.AddDbContext<MembershipDbContext>(options =>
 });
 
 builder.Services.AddAutoMapper(typeof(Program));
-builder.Services.AddFluentValidationAutoValidation();/*.AddValidatorsFromAssemblyContaining<MyModelValidator>();*/
+builder.Services.AddFluentValidationAutoValidation().AddValidatorsFromAssemblyContaining<CreatePlanRequestValidator>();
 
 
 builder.Services.AddScoped<IPlanRepository, PlanRepository>();
