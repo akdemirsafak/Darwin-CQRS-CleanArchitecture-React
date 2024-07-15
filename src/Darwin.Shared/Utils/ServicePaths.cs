@@ -7,4 +7,6 @@ public static class ServicePaths
     public const string FileService = "https://localhost:7001/";
     public const string NotificationService = "https://localhost:7002/";
     public const string ContentService = "https://localhost:7004/";
+    public const string ContentlistService = "https://localhost:7005/";
+    public const string MembershipService = "https://localhost:7006/";
 }

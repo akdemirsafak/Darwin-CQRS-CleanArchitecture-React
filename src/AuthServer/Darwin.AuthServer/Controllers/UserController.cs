@@ -8,7 +8,7 @@ using Microsoft.AspNetCore.Mvc;
 namespace Darwin.AuthServer.Controllers;
 
 
-[Route("[action]")]
+[Route("[controller]/[action]")]
 public class UserController : CustomBaseController
 {
     private readonly IUserService _userService;
