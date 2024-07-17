@@ -1,12 +1,9 @@
-using Darwin.Web.Services;
+using Darwin.Web.Extensions;
 
 var builder = WebApplication.CreateBuilder(args);
 
 
-builder.Services.AddHttpClient<IPlanService, PlanService>(opt =>
-{
-    opt.BaseAddress = new Uri("https://localhost:7006");
-});
+builder.Services.AddHttpClientServices(builder.Configuration);
 
 builder.Services.AddControllersWithViews();
 
@@ -15,11 +12,9 @@ var app = builder.Build();
 if (!app.Environment.IsDevelopment())
 {
     app.UseExceptionHandler("/Home/Error");
-   
+
     app.UseHsts();
 }
-
-//builder.Services.AddHttpClientServices();
 
 
 app.UseHttpsRedirection();

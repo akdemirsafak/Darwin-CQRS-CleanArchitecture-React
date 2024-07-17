@@ -1,0 +1,39 @@
+﻿@model List<MoodViewModel>
+
+@{
+    ViewBag.Title = "Moods";
+}
+
+<div class="container">
+
+    <div class="row">
+        <div class="col">
+            <h2 class="">Ruh halleri</h2>
+        </div>
+        <div class="col">
+            <a class="btn btn-primary float-end" asp-action="Create">Ekle</a>
+        </div>
+    </div>
+@if (Model.Count > 0)
+{
+    <div class="row">
+        @foreach (var item in Model)
+        {
+            <div class="col-sm-4 mb-3 mb-sm-0">
+                <div class="card">
+                    <img class="card-img" src="@item.ImageUrl" />
+                    <div class="card-body">
+                        <h5 class="card-title">@item.Name</h5>
+                   
+                        <p>@item.Id</p>
+                    </div>
+                </div>
+            </div>
+        }
+    </div>
+}
+else
+{
+    <h2 class="bg-warning badge">Kayıt bulunamadı.</h2>
+}
+</div>

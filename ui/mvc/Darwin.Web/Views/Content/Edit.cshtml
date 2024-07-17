@@ -1,0 +1,18 @@
+﻿@{
+}
+@model UpdateContentDto
+<div class="container">
+    <h1>İçerik bilgilerini güncelle</h1>
+    <form asp-action="Edit">
+        <input type="hidden" asp-for="Id" />
+        <div class="form-group">
+            <label asp-for="Name"></label>
+            <input asp-for="Name" class="form-control" />
+        </div>
+        <div class="form-group">
+            <label asp-for="Lyrics"></label>
+            <input asp-for="Lyrics" class="form-control" />
+        </div>
+        <button type="submit" class="btn btn-primary">Edit</button>
+    </form>
+</div>

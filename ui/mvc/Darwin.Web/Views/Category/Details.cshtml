@@ -1,0 +1,17 @@
+﻿@model CategoryViewModel
+
+@{
+    ViewBag.Title = "Details";
+}
+
+<h2>Details</h2>
+
+<div>
+    <h4>Category</h4>
+    <hr />
+    <div class="card">
+        <div class="card-body">
+            <h5 class="card-title">@Model.Name</h5>
+            <img src="@Model.ImageUrl"/>
+        </div>
+</div>
