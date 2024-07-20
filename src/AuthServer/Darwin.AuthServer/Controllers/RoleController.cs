@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Mvc;
 namespace Darwin.AuthServer.Controllers;
 
 
+[Route("api/[controller]/[action]")]
 public class RoleController : CustomBaseController
 {
     private readonly IRoleService _roleService;
