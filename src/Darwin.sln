@@ -7,8 +7,6 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 		.editorconfig = .editorconfig
 	EndProjectSection
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Darwin.WebApi", "Darwin.WebApi\Darwin.WebApi.csproj", "{A3AE9A3C-453F-4E01-94E8-BEF7F8E67124}"
-EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Darwin.Notification", "Darwin.Notification\Darwin.Notification.csproj", "{9DF385FB-3A90-402E-B498-BA95B24A0EED}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Darwin.Shared", "Darwin.Shared\Darwin.Shared.csproj", "{E3EB3F1D-7715-43C8-AC5E-204AEC1608D9}"
@@ -45,10 +43,6 @@ Global
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{A3AE9A3C-453F-4E01-94E8-BEF7F8E67124}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{A3AE9A3C-453F-4E01-94E8-BEF7F8E67124}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{A3AE9A3C-453F-4E01-94E8-BEF7F8E67124}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{A3AE9A3C-453F-4E01-94E8-BEF7F8E67124}.Release|Any CPU.Build.0 = Release|Any CPU
 		{9DF385FB-3A90-402E-B498-BA95B24A0EED}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{9DF385FB-3A90-402E-B498-BA95B24A0EED}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{9DF385FB-3A90-402E-B498-BA95B24A0EED}.Release|Any CPU.ActiveCfg = Release|Any CPU
