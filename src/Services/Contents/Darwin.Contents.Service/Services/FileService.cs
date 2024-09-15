@@ -45,7 +45,7 @@ public class FileService : IFileService
 
         if (file == null || file.Length == 0)
             return DarwinResponse<BlobResponseDto>.Fail("Dosya geçersiz.");
-  
+
         using (var content = new MultipartFormDataContent())
         {
             var randomFilename = $"{Guid.NewGuid().ToString()}{Path.GetExtension(file.FileName)}";
@@ -60,7 +60,7 @@ public class FileService : IFileService
             var response= await clientResponse.Content.ReadFromJsonAsync<DarwinResponse<BlobResponseDto>>();
             if (!clientResponse.IsSuccessStatusCode)
                 return DarwinResponse<BlobResponseDto>.Fail(response.Data.Status);
- 
+
             return DarwinResponse<BlobResponseDto>.Success(response.Data, 201);
         }
     }

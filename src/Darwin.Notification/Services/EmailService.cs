@@ -141,7 +141,7 @@ public class EmailService : IEmailService
                  <h4> <a href=""{resetPasswordTokenAddress}""> bu yazıya tıklayarak şifrenizi yeniden tanımlayabilirsiniz.</a></h4>
 
     </br></br>
-        Link : { resetPasswordTokenAddress }
+        Link : {resetPasswordTokenAddress}
                 <footer> Keyifli günler..</footer>
             <body>
     ";

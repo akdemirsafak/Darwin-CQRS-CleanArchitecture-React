@@ -1,9 +1,4 @@
-﻿using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.Infrastructure;
-using Microsoft.AspNetCore.Mvc.Routing;
-using System;
-
-namespace Darwin.AuthServer.Helper;
+﻿namespace Darwin.AuthServer.Helper;
 
 public sealed class LinkCreator : ILinkCreator
 {
@@ -22,7 +17,7 @@ public sealed class LinkCreator : ILinkCreator
         var requestScheme=_httpContextAccessor.HttpContext!.Request.Scheme;
         var apiHost=_httpContextAccessor.HttpContext.Request.Host;
         var response= _linkGenerator.GetUriByAction(action, controller, new { userId = userId, token = token }, requestScheme, apiHost)!;
-       
+
         return response;
     }
 }

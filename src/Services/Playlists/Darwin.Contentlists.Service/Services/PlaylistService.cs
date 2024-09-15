@@ -3,7 +3,6 @@ using Darwin.Contentlists.Core.Dtos;
 using Darwin.Contentlists.Core.Entities;
 using Darwin.Contentlists.Core.Repositories;
 using Darwin.Contentlists.Core.Services;
-using Darwin.Shared.Auth;
 using Darwin.Shared.Dtos;
 
 namespace Darwin.Contentlists.Service.Services;
@@ -43,14 +42,14 @@ public class PlaylistService : IPlaylistService
     {
         var playlists=await _playlistRepository.GetAllAsync();
         var response=_mapper.Map<List<GetPlaylistResponse>>(playlists);
-        return DarwinResponse<List<GetPlaylistResponse>>.Success(response,200);
+        return DarwinResponse<List<GetPlaylistResponse>>.Success(response, 200);
     }
 
     public async Task<DarwinResponse<GetPlaylistResponse>> GetByIdAsync(Guid id)
     {
         var playlist= await _playlistRepository.GetByIdAsync(id);
 
-        return DarwinResponse<GetPlaylistResponse>.Success(_mapper.Map<GetPlaylistResponse>(playlist),200);
+        return DarwinResponse<GetPlaylistResponse>.Success(_mapper.Map<GetPlaylistResponse>(playlist), 200);
     }
 
     public async Task<DarwinResponse<NoContentDto>> UpdateAsync(Guid id, UpdatePlaylistRequest request)

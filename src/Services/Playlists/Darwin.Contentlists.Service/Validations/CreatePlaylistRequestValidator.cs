@@ -3,7 +3,7 @@ using FluentValidation;
 
 namespace Darwin.Contentlists.Service.Validations;
 
-public sealed class CreatePlaylistRequestValidator:AbstractValidator<CreatePlaylistRequest>
+public sealed class CreatePlaylistRequestValidator : AbstractValidator<CreatePlaylistRequest>
 {
     public CreatePlaylistRequestValidator()
     {

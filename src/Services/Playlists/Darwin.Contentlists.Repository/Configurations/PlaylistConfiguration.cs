@@ -11,6 +11,6 @@ public sealed class PlaylistConfiguration : IEntityTypeConfiguration<Playlist>
         builder.Property(x => x.CreatedAt).HasDefaultValue(DateTime.Now);
         builder.Property(x => x.Name).IsRequired().HasMaxLength(32);
         builder.Property(x => x.Description).HasMaxLength(256);
-        builder.Property(x=> x.IsPublic).HasDefaultValue(false);
+        builder.Property(x => x.IsPublic).HasDefaultValue(false);
     }
 }

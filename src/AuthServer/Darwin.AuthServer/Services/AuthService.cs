@@ -97,7 +97,7 @@ public sealed class AuthService : IAuthService
 
 
         // Create Favorite List 
-        sendEndpoint=await _sendEndpointProvider.GetSendEndpoint(new System.Uri("queue:user-created-create-favoriteplaylist-event-queue"));
+        sendEndpoint = await _sendEndpointProvider.GetSendEndpoint(new System.Uri("queue:user-created-create-favoriteplaylist-event-queue"));
 
         var userCreatedCreatePlaylistEvent=new UserCreatedCreateFavoritePlaylistEvent
         {
@@ -160,7 +160,7 @@ public sealed class AuthService : IAuthService
 
         var resetLink=await _linkCreator.CreateTokenMailUrl("ResetPassword", nameof(UserController), user.Id, token); // Unutulan şifreyi yenilemek için.
 
-        if(resetLink is null)
+        if (resetLink is null)
             return DarwinResponse<NoContentDto>.Fail("Reset link cannot created.", 500);
 
         var sendEndpoint=await _sendEndpointProvider.GetSendEndpoint(new System.Uri("queue:reset-password-event-queue"));

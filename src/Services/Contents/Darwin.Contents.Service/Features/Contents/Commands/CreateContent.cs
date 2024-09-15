@@ -1,5 +1,4 @@
 ﻿using Darwin.Contents.Core.AbstractServices;
-using Darwin.Contents.Core.Dtos.Responses.Content;
 using Darwin.Contents.Core.RequestModels.Contents;
 using Darwin.Contents.Service.Common;
 using Darwin.Shared.Dtos;

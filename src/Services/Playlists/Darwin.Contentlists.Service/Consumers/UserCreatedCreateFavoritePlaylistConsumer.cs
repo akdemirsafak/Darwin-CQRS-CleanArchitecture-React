@@ -1,5 +1,4 @@
 ﻿using Darwin.Contentlists.Core.Entities;
-using Darwin.Contentlists.Core.Repositories;
 using Darwin.Contentlists.Repository.DbContexts;
 using Darwin.Shared.Events;
 using MassTransit;
@@ -28,6 +27,6 @@ public class UserCreatedCreateFavoritePlaylistEventConsumer : IConsumer<UserCrea
             IsFavorite = true
         });
         _dbContext.SaveChanges();
-        
+
     }
 }

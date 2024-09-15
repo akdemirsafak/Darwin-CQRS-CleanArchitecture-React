@@ -21,7 +21,7 @@ builder.Services.AddSwaggerGen();
 
 builder.Services.AddDbContext<AppDbContext>(options =>
 {
-    options.UseSqlServer(builder.Configuration.GetConnectionString("PlaylistDbConnection"), 
+    options.UseSqlServer(builder.Configuration.GetConnectionString("PlaylistDbConnection"),
         opt => { opt.MigrationsAssembly(Assembly.GetAssembly(typeof(AppDbContext))!.GetName().Name); });
 });
 
