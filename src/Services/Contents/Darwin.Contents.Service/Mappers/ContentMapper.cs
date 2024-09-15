@@ -13,6 +13,7 @@ public class ContentMapper : Profile
         CreateMap<Content, UpdatedContentResponse>();
         CreateMap<Content, SearchContentResponse>().ReverseMap();
         CreateMap<Content, GetContentResponse>();
+        CreateMap<Content, GetContentByIdResponse>();
         CreateMap<Paginate<Content>, GetContentListResponse>();
 
     }
